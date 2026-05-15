@@ -395,85 +395,53 @@
                 <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
                     <div>
                         <div class="product-box-3 h-100 wow fadeInUp">
-                            <div class="product-header">
-                                <div class="product-image">
-                                    <a href="product-left-thumbnail.html">
-                                        <img src="../assets/images/cake/product/2.png" class="img-fluid blur-up lazyload" alt="">
-                                    </a>
+                            <div class="product-box-4 wow fadeInUp">
 
-                                    <ul class="product-option">
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
+                        <!-- IMAGEN -->
+                        <div class="product-image">
 
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                            <a href="compare.html">
-                                                <i data-feather="refresh-cw"></i>
-                                            </a>
-                                        </li>
+                            <div class="label-flex">
 
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                            <a href="wishlist.html" class="notifi-wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
-                            <div class="product-footer">
-                                <div class="product-detail">
-                                    <span class="span-name">Vegetable</span>
-                                    <a href="product-left-thumbnail.html">
-                                        <h5 class="name">Fresh Bread and Pastry Flour 200 g</h5>
-                                    </a>
-                                    <p class="text-content mt-1 mb-2 product-content">Cheesy feet cheesy grin brie.
-                                        Mascarpone cheese and wine hard cheese the big cheese everyone loves smelly
-                                        cheese macaroni cheese croque monsieur.</p>
-                                    <div class="product-rating mt-2">
-                                        <ul class="rating">
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                        </ul>
-                                        <span>(4.0)</span>
-                                    </div>
-                                    <h6 class="unit">250 ml</h6>
-                                    <h5 class="price"><span class="theme-color">$08.02</span> <del>$15.15</del>
-                                    </h5>
-                                    <div class="add-to-cart-box bg-white">
-                                        <button class="btn btn-add-cart addcart-button">Add
-                                            <span class="add-icon bg-light-gray">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
-                                        </button>
-                                        <div class="cart_qty qty-box">
-                                            <div class="input-group bg-white">
-                                                <button type="button" class="qty-left-minus bg-gray" data-type="minus" data-field="">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <input class="form-control input-number qty-input" type="text" name="quantity" value="0">
-                                                <button type="button" class="qty-right-plus bg-gray" data-type="plus" data-field="">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
+                        </div>
+
+                        <!-- DETALLE -->
+                        <div class="product-detail">
+
+                            <!-- RATING -->
+                            <ul class="rating">
+                                @for ($i = 1; $i <= 5; $i++)
+                                @endfor
+                            </ul>
+
+                            <!-- NOMBRE -->
+                            <!-- PRECIO -->
+                            <!-- CANTIDAD + CARRITO -->
+                            <div class="price-qty">
+                                <div class="counter-number">
+                                    <div class="counter">
+                                        <div class="qty-left-minus">
+                                                {{-- Cambio: se reutiliza quantity.js del template para evitar doble incremento. --}}
+                                            <i class="fa-solid fa-minus"></i>
+                                        </div>
+
+                                        <input class="form-control input-number qty-input"
+                                                type="text"
+
+                                                value="1">
+
+                                        <div class="qty-right-plus">
+                                                {{-- Cambio: se reutiliza quantity.js del template para evitar doble incremento. --}}
+                                            <i class="fa-solid fa-plus"></i>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- BOTÓN CARRITO -->
                             </div>
+
+                        </div>
+                    </div>
                         </div>
                     </div>
 
