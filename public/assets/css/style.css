@@ -14030,7 +14030,7 @@ template {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    color: #222;
+    color: #f36900;;
     padding: calc(7px + 7*(100vw - 320px)/1600) calc(14px + 18*(100vw - 320px)/1600);
     font-weight: 500;
     background: rgba(0, 0, 0, 0);
@@ -47085,5 +47085,73 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
 [dir=rtl] ul {
     padding-right: 0
 }
+/* estilos para shop */
+.shop-page .shop-sidebar {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 1.25rem;
+        position: sticky;
+        top: 100px;
+    }
 
+    .shop-page .shop-toolbar {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+    }
+
+    .shop-page .product-grid .product-box-4 {
+        height: 100%;
+    }
+
+    @media (max-width: 991.98px) {
+        .shop-page .shop-sidebar-wrap {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            z-index: 1050;
+            background: #fff;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .shop-page .shop-sidebar-wrap.show,
+        .shop-page .left-box.show {
+            left: 0;
+        }
+
+        .shop-page .shop-sidebar {
+            position: static;
+            top: auto;
+            border: none;
+            border-radius: 0;
+            min-height: 100%;
+            padding: 0;
+        }
+
+        .shop-page .shop-sidebar .back-button {
+            display: block;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            padding: 1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .shop-page .shop-sidebar .back-button h3 {
+            font-size: 1rem;
+            margin: 0;
+            font-weight: 600;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .shop-page .shop-sidebar .back-button {
+            display: none;
+        }
+    }
 /*# sourceMappingURL=style.css.map */
