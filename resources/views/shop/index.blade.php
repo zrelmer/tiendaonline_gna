@@ -355,15 +355,17 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- BOTÓN CARRITO -->
                             </div>
+
 
                         @endforeach
 
                         </div>
                     </div>
                         </div>
+
+                        @endforeach
+
                     </div>
 
                     <div class="mt-4 d-flex justify-content-center">
