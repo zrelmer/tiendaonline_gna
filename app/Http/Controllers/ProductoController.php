@@ -183,87 +183,50 @@ class ProductoController extends Controller
 
     public function shop(Request $request)
     {
-        $query = Producto::with([
-            'imagenes',
-            'categoria',
-            'marca',
-            'comentarios',
-        ]);
+        $query = Producto::with(['imagenes', 'categoria', 'marca', 'comentarios'])
+            ->where('Prod_Activo', 1);
 
-        // 🔍 Buscar por nombre
         if ($request->filled('search')) {
-
-            $query->where(
-                'Prod_Nombre',
-                'LIKE',
-                '%' . $request->search . '%'
-            );
+            $query->where('Prod_Nombre', 'LIKE', '%' . $request->search . '%');
         }
 
-        // 📂 Filtrar categoría
-        if ($request->filled('categoria')) {
-
-            $query->where(
-                'Id_Categoria',
-                $request->categoria
-            );
+        if ($request->filled('category')) {
+            $query->where('Id_Categoria', $request->integer('category'));
         }
 
-        // 🏷️ Filtrar por Id_Marca (name="marca" en shop/index, columna tb_producto.Id_Marca)
-        if ($request->filled('marca')) {
-
-            $query->where(
-                'Id_Marca',
-                $request->marca
-            );
+        if ($request->filled('brand')) {
+            $query->where('Id_Marca', $request->integer('brand'));
         }
 
-        // 💰 Precio mínimo
         if ($request->filled('min_price')) {
-
-            $query->where(
-                'Prod_Precio',
-                '>=',
-                $request->min_price
-            );
+            $query->where('Prod_Precio', '>=', $request->min_price);
         }
 
-        // 💰 Precio máximo
         if ($request->filled('max_price')) {
-
-            $query->where(
-                'Prod_Precio',
-                '<=',
-                $request->max_price
-            );
+            $query->where('Prod_Precio', '<=', $request->max_price);
         }
 
-        // ⭐ Reviews: promedio de tb_comentario.Rating >= valor (Id_Producto enlazado)
         if ($request->filled('rating')) {
-
-            $rating = (float) $request->rating;
-
+            $rating = (int) $request->rating;
             $comentarioTable = (new Comentario)->getTable();
 
-            $productoTable = (new Producto)->getTable();
-
-            $query->whereRaw(
-                '(select avg(`Rating`) from `'.$comentarioTable.'` where `'.$comentarioTable.'`.`Id_Producto` = `'.$productoTable.'`.`Id_Producto`) >= ?',
-                [$rating]
-            );
+            // Igual que la vista: solo productos cuyo round(promedio) coincide con las estrellas elegidas.
+            $query->whereIn('Id_Producto', function ($sub) use ($rating, $comentarioTable) {
+                $sub->select('Id_Producto')
+                    ->from($comentarioTable)
+                    ->groupBy('Id_Producto')
+                    ->havingRaw('ROUND(AVG(Rating), 0) = ?', [$rating]);
+            });
         }
 
-        $productos = $query->paginate(12);
+        $products = $query->orderByDesc('Id_Producto')
+            ->paginate(12)
+            ->withQueryString();
 
-        $categorias = Categoria::all();
+        $categories = Categoria::orderBy('Cate_Nombre')->get();
+        $brands = Marca::orderBy('Nom_Marca')->get();
 
-        $marcas = Marca::all();
-
-        return view('shop.index', compact(
-            'productos',
-            'categorias',
-            'marcas'
-        ));
+        return view('shop.index', compact('products', 'categories', 'brands'));
     }
 
 }

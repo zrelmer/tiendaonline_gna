@@ -9,9 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $topSellingProducts = Producto::withCount('carritodetalles') // Contar la cantidad de veces
-            ->orderByDesc('carritodetalles_count') // Ordenar por los más vendidos
-            ->take(12) // Tomar solo 24 productos
+        $topSellingProducts = Producto::with(['imagenes', 'comentarios'])
+            ->withCount('carritodetalles')
+            ->where('Prod_Activo', 1)
+            ->orderByDesc('carritodetalles_count')
+            ->take(12)
             ->get();
 
         return view('welcome', compact('topSellingProducts'));
