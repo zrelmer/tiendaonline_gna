@@ -3,6 +3,7 @@
 @section('title', 'Tienda')
 
 @section('content')
+
 <!-- Breadcrumb -->
 <section class="breadcrumb-section pt-0">
     <div class="container-fluid-lg">
@@ -309,63 +310,11 @@
                                                     )">
                                                 <i class="iconly-Buy icli text-white m-0"></i>
                                             </button>
-
-                <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                    <div>
-                        <div class="product-box-3 h-100 wow fadeInUp">
-                            <div class="product-box-4 wow fadeInUp">
-
-                        <!-- IMAGEN -->
-                        <div class="product-image">
-
-                            <div class="label-flex">
-
-                            </div>
-                        </div>
-
-                        <!-- DETALLE -->
-                        <div class="product-detail">
-
-                            <!-- RATING -->
-                            <ul class="rating">
-                                @for ($i = 1; $i <= 5; $i++)
-                                @endfor
-                            </ul>
-
-                            <!-- NOMBRE -->
-                            <!-- PRECIO -->
-                            <!-- CANTIDAD + CARRITO -->
-                            <div class="price-qty">
-                                <div class="counter-number">
-                                    <div class="counter">
-                                        <div class="qty-left-minus">
-                                                {{-- Cambio: se reutiliza quantity.js del template para evitar doble incremento. --}}
-                                            <i class="fa-solid fa-minus"></i>
-                                        </div>
-
-                                        <input class="form-control input-number qty-input"
-                                                type="text"
-
-                                                value="1">
-
-                                        <div class="qty-right-plus">
-                                                {{-- Cambio: se reutiliza quantity.js del template para evitar doble incremento. --}}
-                                            <i class="fa-solid fa-plus"></i>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         @endforeach
-
-                        </div>
-                    </div>
-                        </div>
-
-                        @endforeach
-
                     </div>
 
                     <div class="mt-4 d-flex justify-content-center">
