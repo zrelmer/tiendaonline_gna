@@ -46,25 +46,7 @@
                               class="shop-filter-form">
                             <div class="accordion custom-accordion" id="accordionExample">
 
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#collapseSearch">
-                                            <span>Buscar</span>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseSearch" class="accordion-collapse collapse show">
-                                        <div class="accordion-body">
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="search"
-                                                   value="{{ request('search') }}"
-                                                   placeholder="Buscar producto...">
-                                        </div>
-                                    </div>
-                                </div>
+                                {{-- El filtro por texto (search) está en partials/header.blade.php --}}
 
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
@@ -218,6 +200,12 @@
                     <div>
                         <h5 class="mb-0">Productos</h5>
                         <p class="text-content mb-0 small">{{ $products->total() }} resultado(s)</p>
+                        {{-- Término enviado desde el buscador del header (?search=) --}}
+                        @if (request('search'))
+                            <p class="text-content mb-0 small">
+                                Búsqueda: <strong>{{ request('search') }}</strong>
+                            </p>
+                        @endif
                     </div>
                     <button type="button" class="btn btn-sm btn-outline-secondary filter-button d-lg-none">
                         <i class="fa-solid fa-filter me-1"></i> Filtros
@@ -359,7 +347,8 @@
                 input.addEventListener('change', submitFilters);
             });
 
-            form.querySelectorAll('input[name="search"], input[name="min_price"], input[name="max_price"]').forEach(function (input) {
+            // Sin name="search": la búsqueda por texto se hace desde el header.
+            form.querySelectorAll('input[name="min_price"], input[name="max_price"]').forEach(function (input) {
                 input.addEventListener('input', debouncedSubmit);
                 input.addEventListener('change', debouncedSubmit);
             });

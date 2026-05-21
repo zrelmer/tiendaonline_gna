@@ -44,26 +44,47 @@
                         <img src="{{ asset('assets/images/logo/LogoGNA.png') }}" class="img-fluid blur-up lazyload" alt="Logo GNA" style="width: 120px;">
                     </a>
 
+                    {{-- Búsqueda global (móvil): envía a shop.index con ?search= --}}
                     <div class="search-full">
-                        <div class="input-group">
+                        <form method="GET"
+                              action="{{ route('shop.index') }}"
+                              class="input-group"
+                              role="search"
+                              id="header-search-form-mobile">
                             <span class="input-group-text">
                                 <i data-feather="search" class="font-light"></i>
                             </span>
-                            <input type="text" class="form-control search-type" placeholder="Search here..">
+                            <input type="search"
+                                   name="search"
+                                   class="form-control search-type"
+                                   value="{{ request('search') }}"
+                                   placeholder="Buscar productos..."
+                                   aria-label="Buscar productos">
                             <span class="input-group-text close-search">
                                 <i data-feather="x" class="font-light"></i>
                             </span>
-                        </div>
+                        </form>
                     </div>
 
                     <div class="middle-box">
                         <div class="center-box">
-                            <div class="searchbar-box order-xl-1 d-none d-xl-block">
-                                <input type="search" class="form-control" id="exampleFormControlInput1" placeholder="search for product, delivered to your door...">
-                                <button class="btn search-button">
+                            {{-- Búsqueda global (escritorio): mismo diseño searchbar-box, redirige a la tienda --}}
+                            <form method="GET"
+                                  action="{{ route('shop.index') }}"
+                                  class="searchbar-box order-xl-1 d-none d-xl-block"
+                                  role="search"
+                                  id="header-search-form">
+                                <input type="search"
+                                       name="search"
+                                       class="form-control"
+                                       id="header-search-input"
+                                       value="{{ request('search') }}"
+                                       placeholder="Buscar productos..."
+                                       aria-label="Buscar productos">
+                                <button type="submit" class="btn search-button" aria-label="Buscar">
                                     <i class="iconly-Search icli"></i>
                                 </button>
-                            </div>
+                            </form>
                         </div>
                     </div>
 

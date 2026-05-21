@@ -186,6 +186,7 @@ class ProductoController extends Controller
         $query = Producto::with(['imagenes', 'categoria', 'marca', 'comentarios'])
             ->where('Prod_Activo', 1);
 
+        // Búsqueda por nombre: el parámetro ?search= llega desde el formulario del header.
         if ($request->filled('search')) {
             $query->where('Prod_Nombre', 'LIKE', '%' . $request->search . '%');
         }
