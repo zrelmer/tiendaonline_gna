@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departamento;
 use App\Http\Requests\CheckoutStoreRequest;
 use App\Services\BoletaPagoService;
 use App\Services\CarritoService;
@@ -36,6 +37,16 @@ class CarritoController extends Controller
     {
         $usuario = Auth::user();
         $direcciones = $this->checkoutService->direccionesEntrega();
+        $departamentos = Departamento::query()
+            ->with(['municipios' => fn ($query) => $query->orderBy('Nom_Municipio')])
+            ->orderBy('Nom_Departamento')
+            ->get();
+        $municipiosPorDepartamento = $departamentos->mapWithKeys(fn ($departamento) => [
+            $departamento->Id_Departamento => $departamento->municipios->map(fn ($municipio) => [
+                'id' => $municipio->Id_Municipio,
+                'nombre' => $municipio->Nom_Municipio,
+            ])->values(),
+        ]);
         $metodosPago = $this->checkoutService->metodosPago();
         $pedidosPendientesBoleta = $this->boletaPagoService->pedidosPendientesDeBoleta();
         $lineasCarrito = $this->carritoService->detallesCarrito();
@@ -48,6 +59,8 @@ class CarritoController extends Controller
         return view('cart.checkout', compact(
             'usuario',
             'direcciones',
+            'departamentos',
+            'municipiosPorDepartamento',
             'metodosPago',
             'pedidosPendientesBoleta',
             'lineasCarrito',
@@ -55,6 +68,42 @@ class CarritoController extends Controller
             'envioCarrito',
             'totalCarrito'
         ));
+    }
+
+    public function storeDireccion(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'direccion' => ['required', 'string', 'max:200'],
+            'id_departamento' => ['required', 'integer', 'exists:tb_departamento,Id_Departamento'],
+            'id_municipio' => ['required', 'integer', 'exists:tb_municipio,Id_Municipio'],
+        ]);
+
+        $departamento = Departamento::query()
+            ->with('municipios')
+            ->findOrFail((int) $validated['id_departamento']);
+
+        $idMunicipio = (int) $validated['id_municipio'];
+        $municipioPertenece = $departamento->municipios
+            ->contains(fn ($municipio) => (int) $municipio->Id_Municipio === $idMunicipio);
+
+        if (! $municipioPertenece) {
+            return back()
+                ->withErrors([
+                    'id_municipio' => 'El municipio seleccionado no pertenece al departamento.',
+                ], 'direccion')
+                ->withInput()
+                ->with('abrir_modal_direccion', true);
+        }
+
+        $direccion = Auth::user()->direcciones()->create([
+            'Direccion' => $validated['direccion'],
+            'Id_Municipio' => $idMunicipio,
+        ]);
+
+        return redirect()
+            ->route('cart.checkout')
+            ->with('success', 'Dirección registrada correctamente.')
+            ->with('id_direccion_reciente', $direccion->Id_Direccion);
     }
 
     public function store(CheckoutStoreRequest $request): RedirectResponse

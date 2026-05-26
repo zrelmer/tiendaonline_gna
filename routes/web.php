@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart/checkout', [CarritoController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/checkout', [CarritoController::class, 'store'])->name('cart.checkout.store');
+    Route::post('/cart/checkout/direccion', [CarritoController::class, 'storeDireccion'])->name('cart.checkout.direccion.store');
     Route::post('/boleta-pago', [BoletaPagoController::class, 'store'])->name('boleta-pago.store');
 
     // API lista de deseos (JSON)
