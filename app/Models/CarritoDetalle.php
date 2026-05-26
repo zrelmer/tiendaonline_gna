@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CarritoDetalle extends Model
 {
     protected $table = 'tb_carritodetalle';
-    protected $primarykey = 'Id_CarritoDetalle';
+    protected $primaryKey = 'Id_CarritoDetalle';
 
     protected $fillable =[
         'Id_Carrito',

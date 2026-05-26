@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pago extends Model
 {
     protected $table = 'tb_pago';
-    protected $primarykey = 'Id_pago';
+    protected $primaryKey = 'Id_Pago';
 
     protected $fillable = [
         'Id_Pedido',

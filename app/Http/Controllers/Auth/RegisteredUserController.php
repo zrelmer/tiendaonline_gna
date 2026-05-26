@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BienvenidaUsuario;
 use App\Http\Controllers\Controller;
+use App\Models\Carrito;
 use App\Models\Usuario;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -46,6 +47,9 @@ class RegisteredUserController extends Controller
             'Usu_Pass'     => Hash::make($request->Usu_Pass),
             'Id_Rol'       => 2 // 👈 usuario normal
         ]);
+
+        // Un carrito vacío por usuario (Id_Usuario es unique en tb_carrito)
+        Carrito::firstOrCreate(['Id_Usuario' => $user->Id_Usuario]);
 
         // EVENTO DE REGISTRO
         event(new Registered($user));

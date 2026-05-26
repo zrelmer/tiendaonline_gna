@@ -131,8 +131,8 @@
 
                                         <div class="button-group">
                                             <a href="{{ route('cart.index') }}" class="btn btn-sm cart-button">Ver Carrito</a>
-                                            <a href="checkout.html" class="btn btn-sm cart-button theme-bg-color
-                                            text-white">Proceder al pago</a>
+                                            <a href="{{ auth()->check() ? route('cart.checkout') : route('login') }}"
+                                               class="btn btn-sm cart-button theme-bg-color text-white">Proceder al pago</a>
                                         </div>
                                     </div>
                                 </li>
@@ -167,7 +167,9 @@
                                             <li class="product-box-contain">
                                                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                                     @csrf
-                                                    <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="text-danger">
+                                                    <a href="#"
+                                                       onclick="event.preventDefault(); if (typeof clearClientShopStorage === 'function') { clearClientShopStorage(); } this.closest('form').submit();"
+                                                       class="text-danger">
                                                         Cerrar Sesión
                                                     </a>
                                                 </form>

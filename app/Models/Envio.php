@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Envio extends Model
 {
     protected $table = 'tb_envio';
-    protected $primarykey = 'Id_Envio';
+    protected $primaryKey = 'Id_Envio';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'Id_Pedido',

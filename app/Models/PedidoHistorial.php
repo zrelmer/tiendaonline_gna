@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PedidoHistorial extends Model
 {
     protected $table = 'tb_pedidohistorial';
-    protected $primarykey = 'Id_PedidoHistorial';
+    protected $primaryKey = 'Id_PedidoHistorial';
     public $timestamps = false;
 
     protected $fillable =[

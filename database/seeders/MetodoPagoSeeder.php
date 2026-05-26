@@ -11,10 +11,10 @@ class MetodoPagoSeeder extends Seeder
     {
         $metodos = [
             ['Id_MetodoPago' => 1, 'MetPag_Descripcion' => 'Tarjeta de Crédito/Débito'],
-            ['Id_MetodoPago' => 2, 'MetPag_Descripcion' => 'PayPal'],
-            ['Id_MetodoPago' => 3, 'MetPag_Descripcion' => 'Transferencia Bancaria'],
-            ['Id_MetodoPago' => 4, 'MetPag_Descripcion' => 'Efectivo / Contra Entrega'],
-            ['Id_MetodoPago' => 5, 'MetPag_Descripcion' => 'Billetera Digital (Apple Pay/Google Pay)'],
+            // ['Id_MetodoPago' => 2, 'MetPag_Descripcion' => 'PayPal'],
+            ['Id_MetodoPago' => 2, 'MetPag_Descripcion' => 'Transferencia Bancaria'],
+            ['Id_MetodoPago' => 3, 'MetPag_Descripcion' => 'Efectivo / Contra Entrega'],
+            // ['Id_MetodoPago' => 5, 'MetPag_Descripcion' => 'Billetera Digital (Apple Pay/Google Pay)'],
         ];
 
         foreach ($metodos as $metodo) {

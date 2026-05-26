@@ -30,3 +30,11 @@
 <script src="{{ asset('js/detalles.js') }}"></script>
  <!-- Price Range Js -->
  <script src="../assets/js/ion.rangeSlider.min.js"></script>
+<script>
+    window.clearClientShopStorage = function () {
+        localStorage.removeItem('carrito');
+        localStorage.removeItem('wishlist');
+        sessionStorage.removeItem('tiendaonline_cart_guest_merged');
+        sessionStorage.removeItem('tiendaonline_wishlist_guest_merged');
+    };
+</script>

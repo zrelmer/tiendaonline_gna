@@ -2,64 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ListaDeseo;
+use App\Services\ListaDeseoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ListaDeseoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        protected ListaDeseoService $listaDeseoService
+    ) {}
+
     public function index()
     {
         return view('listadeseo.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function items(): JsonResponse
     {
-        //
+        return response()->json([
+            'items' => $this->listaDeseoService->itemsParaFrontend(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function sync(Request $request): JsonResponse
     {
-        //
+        $validated = $request->validate([
+            'items' => ['nullable', 'array'],
+            'items.*.id' => ['required', 'integer', 'exists:tb_producto,Id_Producto'],
+        ]);
+
+        $items = $this->listaDeseoService->sincronizarDesdeCliente(
+            $validated['items'] ?? []
+        );
+
+        return response()->json([
+            'items' => $items,
+            'message' => 'Lista de deseos sincronizada',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ListaDeseo $listaDeseo)
+    public function storeItem(Request $request): JsonResponse
     {
-        //
+        $validated = $request->validate([
+            'id_producto' => ['required', 'integer', 'exists:tb_producto,Id_Producto'],
+        ]);
+
+        $items = $this->listaDeseoService->agregarProducto(
+            (int) $validated['id_producto']
+        );
+
+        return response()->json([
+            'items' => $items,
+            'message' => 'Producto agregado a favoritos',
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ListaDeseo $listaDeseo)
+    public function destroyItem(int $idProducto): JsonResponse
     {
-        //
-    }
+        $items = $this->listaDeseoService->eliminarProducto($idProducto);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ListaDeseo $listaDeseo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ListaDeseo $listaDeseo)
-    {
-        //
+        return response()->json([
+            'items' => $items,
+            'message' => 'Producto eliminado de favoritos',
+        ]);
     }
 }

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('Cate_Nombre',200);
             $table->string('Cate_Slug',200)->unique();
             $table->text('Cate_Descripcion');
+            // nueva columna para la imagen de la categoría sera la url de la imagen
+            $table->string('Cate_Imagen',255)->nullable();
             $table->timestamps();
 
         });

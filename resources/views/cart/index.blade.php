@@ -118,7 +118,7 @@
                         <ul>
 
                             <li>
-                                <a href="{{ route('home') }}"
+                                <a href="{{ auth()->check() ? route('cart.checkout') : route('login') }}"
                                    class="btn btn-animation proceed-btn fw-bold w-100">
                                     Proceder al pago
                                 </a>

@@ -83,7 +83,7 @@ class Usuario extends Authenticatable
         return $this->hasMany(Comentario::class, 'Id_Usuario', 'Id_Usuario');
     }
 
-    public function listadeseo(){
-        return $this->hasOne(ListaDeseo::class, 'Id_Usuario', 'Id_Usuario');
+    public function listadeseos(){
+        return $this->hasMany(ListaDeseo::class, 'Id_Usuario', 'Id_Usuario');
     }
 }

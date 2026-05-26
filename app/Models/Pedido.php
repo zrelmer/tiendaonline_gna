@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pedido extends Model
 {
     protected $table = 'tb_pedido';
-    protected $primarykey = 'Id_Pedido';
+    protected $primaryKey = 'Id_Pedido';
 
     protected $fillable = [
         'Id_Usuario',
@@ -41,5 +41,10 @@ class Pedido extends Model
     }
     public function envio(){
         return $this->hasOne(Envio::class,'Id_Pedido','Id_Pedido');
+    }
+
+    public function boletaPago()
+    {
+        return $this->hasOne(BoletaPago::class, 'Id_Pedido', 'Id_Pedido');
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Carrito extends Model
 {
     protected $table = 'tb_carrito';
-    protected $primarykey = 'Id_Carrito';
+    protected $primaryKey = 'Id_Carrito';
     // public $timestamps = false;
     // este protected $fillable define los campos que se pueden asignar masivamente, en este caso solo el Id_Usuario, ya que el carrito se crea automáticamente cuando un usuario se registra
     protected $fillable = [

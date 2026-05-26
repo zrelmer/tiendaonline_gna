@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Estatus extends Model
 {
     protected $table = 'tb_estatus';
-    protected $primarykey = 'Id_Estatus';
+    protected $primaryKey = 'Id_Estatus';
     public $timestamps = false;
 
     protected $fillable = [

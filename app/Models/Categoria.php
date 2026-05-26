@@ -14,6 +14,8 @@ class Categoria extends Model
         'Cate_Nombre',
         'Cate_Slug',
         'Cate_Descripcion',
+        // nueva columna para la imagen de la categoría
+        'Cate_Imagen'
     ];
 
     public function productos(){

@@ -235,6 +235,26 @@
     <!-- Bg overlay End -->
 
     @include('partials.js')
+    <script>
+        window.CART_CONFIG = {
+            isAuthenticated: @json(auth()->check()),
+            routes: {
+                items: @json(route('cart.items')),
+                sync: @json(route('cart.sync')),
+                store: @json(route('cart.items.store')),
+                itemBase: @json(url('/cart/items')),
+            },
+        };
+        window.WISHLIST_CONFIG = {
+            isAuthenticated: @json(auth()->check()),
+            routes: {
+                items: @json(route('listadeseo.items')),
+                sync: @json(route('listadeseo.sync')),
+                store: @json(route('listadeseo.items.store')),
+                itemBase: @json(url('/listadeseo/items')),
+            },
+        };
+    </script>
     <script src="{{asset('js/cart.js') }}"></script>
     @stack('scripts')
 </body>

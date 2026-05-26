@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ListaDeseo extends Model
 {
     protected $table = 'tb_listadeseo';
-    protected $primarykey = 'Id_ListaDeseo';
+    protected $primaryKey = 'Id_ListaDeseo';
     public $timestamps = false;
 
     protected $fillable = [

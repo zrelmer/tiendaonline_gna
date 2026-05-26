@@ -16,7 +16,7 @@ class PagoSeeder extends Seeder
         foreach ($pedidos as $pedido) {
             $data[] = [
                 'Id_Pedido' => $pedido->Id_Pedido,
-                'Id_MetodoPago' => rand(1, 5),
+                'Id_MetodoPago' => rand(1, 3),
                 'Transaccion_id' => uniqid('TXN-'),
                 'Transaccion_json' => json_encode(['estado' => 'pagado']),
                 'Id_Estatus' => 1,

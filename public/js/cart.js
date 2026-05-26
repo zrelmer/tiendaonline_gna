@@ -1,6 +1,121 @@
 // ===============================
-// 📦 CARRITO LOCALSTORAGE
+// 📦 CARRITO LOCALSTORAGE + API (usuario logueado)
 // ===============================
+
+function isCartServerEnabled() {
+    return window.CART_CONFIG
+        && window.CART_CONFIG.isAuthenticated === true;
+}
+
+function getCsrfToken() {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute('content') : '';
+}
+
+function cartItemUrl(idProducto) {
+    return window.CART_CONFIG.routes.itemBase + '/' + idProducto;
+}
+
+async function cartApiRequest(url, method, body) {
+    const options = {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'same-origin',
+    };
+
+    if (body !== undefined) {
+        options.body = JSON.stringify(body);
+    }
+
+    const response = await fetch(url, options);
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Error al actualizar el carrito');
+    }
+
+    return data;
+}
+
+/** Solo una vez por sesión: fusionar carrito de invitado (localStorage) con la BD. */
+const CART_MERGE_SESSION_KEY = 'tiendaonline_cart_guest_merged';
+const WISHLIST_MERGE_SESSION_KEY = 'tiendaonline_wishlist_guest_merged';
+
+/**
+ * Al cerrar sesión: evita que al volver a entrar se vuelva a sumar
+ * el mismo carrito que quedó copiado en localStorage.
+ */
+function clearClientShopStorage() {
+    localStorage.removeItem('carrito');
+    localStorage.removeItem('wishlist');
+    sessionStorage.removeItem(CART_MERGE_SESSION_KEY);
+    sessionStorage.removeItem(WISHLIST_MERGE_SESSION_KEY);
+}
+
+async function loadCartFromServer() {
+    const data = await cartApiRequest(
+        window.CART_CONFIG.routes.items,
+        'GET'
+    );
+
+    saveCart(data.items || []);
+}
+
+async function mergeGuestCartWithServer() {
+    const data = await cartApiRequest(
+        window.CART_CONFIG.routes.sync,
+        'POST',
+        { items: getCart() }
+    );
+
+    saveCart(data.items || []);
+}
+
+/**
+ * Logueado: la BD manda. Solo suma cantidades si el invitado tenía ítems
+ * y en BD aún no hay carrito (primer login tras comprar como invitado).
+ */
+async function syncCartWithServer() {
+    const alreadyMerged =
+        sessionStorage.getItem(CART_MERGE_SESSION_KEY) === '1';
+
+    if (alreadyMerged) {
+        await loadCartFromServer();
+        return;
+    }
+
+    const localItems = getCart();
+
+    if (localItems.length > 0) {
+        const serverData = await cartApiRequest(
+            window.CART_CONFIG.routes.items,
+            'GET'
+        );
+        const serverItems = serverData.items || [];
+
+        if (serverItems.length === 0) {
+            await mergeGuestCartWithServer();
+        } else {
+            saveCart(serverItems);
+        }
+    } else {
+        await loadCartFromServer();
+    }
+
+    sessionStorage.setItem(CART_MERGE_SESSION_KEY, '1');
+}
+
+function applyServerCartAndRefresh(items) {
+    saveCart(items || []);
+    updateCartCounter();
+    renderCart();
+    renderMiniCart();
+}
 
 function getCart() {
 
@@ -29,7 +144,7 @@ function saveCart(cart) {
 // ➕ AGREGAR AL CARRITO
 // ===============================
 
-function addToCart(id, imagen, url, precio, nombre) {
+async function addToCart(id, imagen, url, precio, nombre) {
 
     id = parseInt(id, 10);
 
@@ -40,44 +155,72 @@ function addToCart(id, imagen, url, precio, nombre) {
         return;
     }
 
-    let cart = getCart();
-
     const input = document.getElementById('qty-' + id);
 
     const cantidadSeleccionada =
         input ? parseInt(input.value, 10) || 1 : 1;
 
-    let existing = cart.find(
-        (item) => parseInt(item.id, 10) === id
-    );
+    if (isCartServerEnabled()) {
 
-    if (existing) {
+        try {
 
-        existing.cantidad += cantidadSeleccionada;
+            const data = await cartApiRequest(
+                window.CART_CONFIG.routes.store,
+                'POST',
+                {
+                    id_producto: id,
+                    cantidad: cantidadSeleccionada,
+                    precio: parseFloat(precio),
+                }
+            );
+
+            applyServerCartAndRefresh(data.items);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast('No se pudo guardar el producto en el carrito');
+
+            return;
+        }
 
     } else {
 
-        cart.push({
-            id: id,
-            nombre: nombre,
-            precio: parseFloat(precio),
-            imagen: imagen,
-            url: url,
-            cantidad: cantidadSeleccionada
-        });
-    }
+        let cart = getCart();
 
-    saveCart(cart);
+        let existing = cart.find(
+            (item) => parseInt(item.id, 10) === id
+        );
+
+        if (existing) {
+
+            existing.cantidad += cantidadSeleccionada;
+
+        } else {
+
+            cart.push({
+                id: id,
+                nombre: nombre,
+                precio: parseFloat(precio),
+                imagen: imagen,
+                url: url,
+                cantidad: cantidadSeleccionada
+            });
+        }
+
+        saveCart(cart);
+
+        updateCartCounter();
+
+        renderCart();
+
+        renderMiniCart();
+    }
 
     removeFromWishlist(id);
 
     showToast("Producto agregado al carrito 🛒");
-
-    updateCartCounter();
-
-    renderCart();
-
-    renderMiniCart();
 }
 
 // ===============================
@@ -120,25 +263,48 @@ function updateQuantity(id, action, event) {
 // 🗑️ ELIMINAR DEL CARRITO
 // ===============================
 
-function removeFromCart(id) {
+async function removeFromCart(id) {
 
     id = parseInt(id, 10);
 
     if (Number.isNaN(id)) return;
 
-    let cart = getCart();
+    if (isCartServerEnabled()) {
 
-    cart = cart.filter(
-        (item) => parseInt(item.id, 10) !== id
-    );
+        try {
 
-    saveCart(cart);
+            const data = await cartApiRequest(
+                cartItemUrl(id),
+                'DELETE'
+            );
 
-    renderCart();
+            applyServerCartAndRefresh(data.items);
 
-    renderMiniCart();
+        } catch (error) {
 
-    updateCartCounter();
+            console.error(error);
+
+            showToast('No se pudo eliminar el producto');
+
+            return;
+        }
+
+    } else {
+
+        let cart = getCart();
+
+        cart = cart.filter(
+            (item) => parseInt(item.id, 10) !== id
+        );
+
+        saveCart(cart);
+
+        renderCart();
+
+        renderMiniCart();
+
+        updateCartCounter();
+    }
 
     showToast("Producto eliminado 🗑️");
 }
@@ -147,7 +313,7 @@ function removeFromCart(id) {
 // 🔄 ACTUALIZAR CANTIDAD EN CARRITO
 // ===============================
 
-function changeQty(id, action) {
+async function changeQty(id, action) {
 
     id = parseInt(id, 10);
 
@@ -155,33 +321,64 @@ function changeQty(id, action) {
 
     let cart = getCart();
 
-    cart = cart.map(item => {
+    const item = cart.find(
+        (row) => parseInt(row.id, 10) === id
+    );
 
-        if (parseInt(item.id, 10) === id) {
+    if (!item) return;
 
-            if (action === 'plus') {
+    let nuevaCantidad = item.cantidad;
 
-                item.cantidad++;
+    if (action === 'plus') {
 
-            } else if (
-                action === 'minus' &&
-                item.cantidad > 1
-            ) {
+        nuevaCantidad++;
 
-                item.cantidad--;
-            }
+    } else if (action === 'minus' && item.cantidad > 1) {
+
+        nuevaCantidad--;
+    }
+
+    if (isCartServerEnabled()) {
+
+        try {
+
+            const data = await cartApiRequest(
+                cartItemUrl(id),
+                'PATCH',
+                { cantidad: nuevaCantidad }
+            );
+
+            applyServerCartAndRefresh(data.items);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast('No se pudo actualizar la cantidad');
+
+            return;
         }
 
-        return item;
-    });
+    } else {
 
-    saveCart(cart);
+        cart = cart.map((row) => {
 
-    renderCart();
+            if (parseInt(row.id, 10) === id) {
 
-    renderMiniCart();
+                row.cantidad = nuevaCantidad;
+            }
 
-    updateCartCounter();
+            return row;
+        });
+
+        saveCart(cart);
+
+        renderCart();
+
+        renderMiniCart();
+
+        updateCartCounter();
+    }
 }
 
 // ===============================
@@ -589,8 +786,75 @@ function renderMiniCart() {
 }
 
 // ===============================
-// ❤️ WISHLIST
+// ❤️ WISHLIST + API (usuario logueado)
 // ===============================
+
+function isWishlistServerEnabled() {
+    return window.WISHLIST_CONFIG
+        && window.WISHLIST_CONFIG.isAuthenticated === true;
+}
+
+function wishlistItemUrl(idProducto) {
+    return window.WISHLIST_CONFIG.routes.itemBase + '/' + idProducto;
+}
+
+async function loadWishlistFromServer() {
+    const data = await cartApiRequest(
+        window.WISHLIST_CONFIG.routes.items,
+        'GET'
+    );
+
+    saveWishlist(data.items || []);
+}
+
+async function mergeGuestWishlistWithServer() {
+    const data = await cartApiRequest(
+        window.WISHLIST_CONFIG.routes.sync,
+        'POST',
+        { items: getWishlist() }
+    );
+
+    saveWishlist(data.items || []);
+}
+
+async function syncWishlistWithServer() {
+    const alreadyMerged =
+        sessionStorage.getItem(WISHLIST_MERGE_SESSION_KEY) === '1';
+
+    if (alreadyMerged) {
+        await loadWishlistFromServer();
+        return;
+    }
+
+    const localItems = getWishlist();
+
+    if (localItems.length > 0) {
+        const serverData = await cartApiRequest(
+            window.WISHLIST_CONFIG.routes.items,
+            'GET'
+        );
+        const serverItems = serverData.items || [];
+
+        if (serverItems.length === 0) {
+            await mergeGuestWishlistWithServer();
+        } else {
+            saveWishlist(serverItems);
+        }
+    } else {
+        await loadWishlistFromServer();
+    }
+
+    sessionStorage.setItem(WISHLIST_MERGE_SESSION_KEY, '1');
+}
+
+function applyServerWishlistAndRefresh(items) {
+    saveWishlist(items || []);
+    updateWishlistCounter();
+
+    if (typeof window.refreshWishlistPage === 'function') {
+        window.refreshWishlistPage();
+    }
+}
 
 function getWishlist() {
 
@@ -619,27 +883,50 @@ function saveWishlist(list) {
     );
 }
 
-function removeFromWishlist(id) {
+async function removeFromWishlist(id) {
 
     const pid = parseInt(id, 10);
 
     if (Number.isNaN(pid)) return;
 
-    const list = getWishlist().filter(
-        (item) => parseInt(item.id, 10) !== pid
-    );
+    if (isWishlistServerEnabled()) {
 
-    saveWishlist(list);
+        try {
 
-    updateWishlistCounter();
+            const data = await cartApiRequest(
+                wishlistItemUrl(pid),
+                'DELETE'
+            );
 
-    if (typeof window.refreshWishlistPage === 'function') {
+            applyServerWishlistAndRefresh(data.items);
 
-        window.refreshWishlistPage();
+        } catch (error) {
+
+            console.error(error);
+
+            showToast('No se pudo quitar de favoritos');
+
+            return;
+        }
+
+    } else {
+
+        const list = getWishlist().filter(
+            (item) => parseInt(item.id, 10) !== pid
+        );
+
+        saveWishlist(list);
+
+        updateWishlistCounter();
+
+        if (typeof window.refreshWishlistPage === 'function') {
+
+            window.refreshWishlistPage();
+        }
     }
 }
 
-function addToWishlist(id, imagen, url, precio, nombre) {
+async function addToWishlist(id, imagen, url, precio, nombre) {
 
     id = parseInt(id, 10);
 
@@ -658,17 +945,41 @@ function addToWishlist(id, imagen, url, precio, nombre) {
         return;
     }
 
-    list.push({
-        id: id,
-        nombre: nombre,
-        precio: precio,
-        imagen: imagen,
-        url: url
-    });
+    if (isWishlistServerEnabled()) {
 
-    saveWishlist(list);
+        try {
 
-    updateWishlistCounter();
+            const data = await cartApiRequest(
+                window.WISHLIST_CONFIG.routes.store,
+                'POST',
+                { id_producto: id }
+            );
+
+            applyServerWishlistAndRefresh(data.items);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast('No se pudo agregar a favoritos');
+
+            return;
+        }
+
+    } else {
+
+        list.push({
+            id: id,
+            nombre: nombre,
+            precio: precio,
+            imagen: imagen,
+            url: url
+        });
+
+        saveWishlist(list);
+
+        updateWishlistCounter();
+    }
 
     showToast("Agregado a favoritos ❤️");
 }
@@ -703,7 +1014,41 @@ function showToast(message) {
 // 🚀 INIT
 // ===============================
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+
+    if (!isCartServerEnabled()) {
+        sessionStorage.removeItem(CART_MERGE_SESSION_KEY);
+        sessionStorage.removeItem(WISHLIST_MERGE_SESSION_KEY);
+    }
+
+    if (isCartServerEnabled()) {
+
+        try {
+
+            await syncCartWithServer();
+
+        } catch (error) {
+
+            console.warn('Sincronización de carrito fallida:', error);
+        }
+    }
+
+    if (isWishlistServerEnabled()) {
+
+        try {
+
+            await syncWishlistWithServer();
+
+            if (typeof window.refreshWishlistPage === 'function') {
+
+                window.refreshWishlistPage();
+            }
+
+        } catch (error) {
+
+            console.warn('Sincronización de lista de deseos fallida:', error);
+        }
+    }
 
     updateCartCounter();
 
@@ -728,3 +1073,4 @@ window.removeFromCart = removeFromCart;
 window.changeQty = changeQty;
 window.renderCart = renderCart;
 window.renderMiniCart = renderMiniCart;
+window.clearClientShopStorage = clearClientShopStorage;

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MetodoPago extends Model
 {
     protected $table = 'tb_metodopago';
-    protected $primarykey = 'Id_MetodoPago';
+    protected $primaryKey = 'Id_MetodoPago';
     public $timestamps = false;
 
     protected $fillable = [

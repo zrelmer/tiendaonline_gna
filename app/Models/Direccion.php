@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Direccion extends Model
 {
     protected $table = 'tb_direccion';
-    protected $primarykey = 'Id_Direccion';
+    protected $primaryKey = 'Id_Direccion';
     public $timestamps = false;
 
     protected $fillable = [
