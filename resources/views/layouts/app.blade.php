@@ -8,7 +8,7 @@
     @include('partials.head')
 </head>
 
-<body class="theme-color-2 bg-effect">
+<body class="theme-color-2">
 
     <!-- Loader Start -->
     @include('partials.loader')

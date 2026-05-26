@@ -23,3 +23,5 @@
 <link rel="stylesheet" href="{{ asset('assets/css/bulk-style.css') }}">
 <!-- Estilos principales -->
 <link id="color-link" rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<!-- Overrides del proyecto -->
+<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
