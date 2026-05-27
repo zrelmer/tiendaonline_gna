@@ -366,166 +366,66 @@
     </div>
 </section>
 <!-- Checkout section End -->
-
-<div class="modal fade"
-     id="modalNuevaDireccion"
-     tabindex="-1"
-     aria-labelledby="modalNuevaDireccionLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="{{ route('cart.checkout.direccion.store') }}" id="form-nueva-direccion">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalNuevaDireccionLabel">Registrar dirección</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-
-                <div class="modal-body">
-                    @if ($errors->direccion->any())
-                        <div class="alert alert-danger" role="alert">
-                            <ul class="mb-0 ps-3">
-                                @foreach ($errors->direccion->all() as $errorDireccion)
-                                    <li>{{ $errorDireccion }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <div class="mb-3">
-                        <label for="direccion-input" class="form-label">Dirección</label>
-                        <input type="text"
-                               class="form-control"
-                               id="direccion-input"
-                               name="direccion"
-                               maxlength="200"
-                               value="{{ old('direccion') }}"
-                               required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="departamento-select" class="form-label">Departamento</label>
-                        <select class="form-select"
-                                id="departamento-select"
-                                name="id_departamento"
-                                required>
-                            <option value="">Selecciona un departamento</option>
-                            @foreach ($departamentos as $departamento)
-                                <option value="{{ $departamento->Id_Departamento }}"
-                                        @selected((int) old('id_departamento') === (int) $departamento->Id_Departamento)>
-                                    {{ $departamento->Nom_Departamento }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="municipio-select" class="form-label">Municipio</label>
-                        <select class="form-select"
-                                id="municipio-select"
-                                name="id_municipio"
-                                required
-                                disabled>
-                            <option value="">Selecciona un municipio</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-md btn-outline" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn theme-bg-color text-white btn-md">Guardar dirección</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
+@include('modal.NuevaDireccion')
+@endsection
 @push('scripts')
+<script src="https://app.recurrente.com/assets/recurrente.js"></script>
+
 <script>
-    (function () {
-        var municipiosPorDepartamento = @json($municipiosPorDepartamento);
-        var departamentoSelect = document.getElementById('departamento-select');
-        var municipioSelect = document.getElementById('municipio-select');
-        var oldMunicipio = @json(old('id_municipio'));
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutForm = document.getElementById('checkout-form');
+        const cardErrors = document.getElementById('card-errors');
 
-        if (!departamentoSelect || !municipioSelect) {
-            return;
-        }
+        checkoutForm.addEventListener('submit', function (event) {
+            // Buscamos qué método de pago está seleccionado actualmente
+            const metodoSeleccionado = document.querySelector('input[name="id_metodo_pago"]:checked');
+            
+            // Reemplaza '3' por el ID exacto que le pertenezca a la Tarjeta de Crédito en tu base de datos
+            const ID_METODO_TARJETA = 3; 
 
-        function renderMunicipios() {
-            var departamentoId = departamentoSelect.value;
-            var municipios = municipiosPorDepartamento[departamentoId] || [];
-            municipioSelect.innerHTML = '<option value="">Selecciona un municipio</option>';
-
-            municipios.forEach(function (municipio) {
-                var option = document.createElement('option');
-                option.value = municipio.id;
-                option.textContent = municipio.nombre;
-
-                if (String(oldMunicipio) === String(municipio.id)) {
-                    option.selected = true;
+            if (metodoSeleccionado && parseInt(metodoSeleccionado.value) === ID_METODO_TARJETA) {
+                
+                // Si el token ya fue generado previamente por el script, dejamos continuar el formulario hacia Laravel
+                if (document.getElementById('recurrente_card_token').value) {
+                    return true;
                 }
 
-                municipioSelect.appendChild(option);
-            });
+                // Detener el envío temporalmente para procesar el token en Recurrente
+                event.preventDefault();
+                cardErrors.classList.add('d-none');
+                cardErrors.innerText = '';
 
-            municipioSelect.disabled = municipios.length === 0;
-        }
+                // Deshabilitar el botón de pagar para evitar doble clic
+                const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.disabled = true;
 
-        departamentoSelect.addEventListener('change', function () {
-            oldMunicipio = null;
-            renderMunicipios();
-        });
+                // Extraer la información de los campos del formulario parcial
+                const cardData = {
+                    card: {
+                        number: document.getElementById('cc-number').value.replace(/\s+/g, ''),
+                        exp_month: document.getElementById('cc-expiry-month').value,
+                        exp_year: document.getElementById('cc-expiry-year').value,
+                        cvv: document.getElementById('cc-cvv').value,
+                        name: document.getElementById('cc-name').value,
+                        email: document.getElementById('cc-email').value
+                    }
+                };
 
-        renderMunicipios();
-    })();
-</script>
-
-@if (session('abrir_modal_direccion') || $errors->direccion->any())
-<script>
-    (function () {
-        var modalElement = document.getElementById('modalNuevaDireccion');
-        if (!modalElement || typeof bootstrap === 'undefined') {
-            return;
-        }
-
-        var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-        modal.show();
-    })();
-</script>
-@endif
-
-@if (session('pedido_creado'))
-<script>
-    try {
-        localStorage.removeItem('carrito');
-    } catch (e) {}
-
-    (function () {
-        var metodoId = @json(session('abrir_metodo_pago'));
-        if (!metodoId) return;
-
-        var radio = document.getElementById('metodo-' + metodoId);
-        if (radio) {
-            radio.checked = true;
-        }
-
-        var collapse = document.getElementById('flush-collapse-' + metodoId);
-        if (collapse) {
-            collapse.classList.add('show');
-        }
-
-        var heading = document.getElementById('flush-heading-' + metodoId);
-        if (heading) {
-            var btn = heading.querySelector('.accordion-button');
-            if (btn) {
-                btn.classList.remove('collapsed');
-                btn.setAttribute('aria-expanded', 'true');
+                // Enviar los datos directamente a los servidores seguros de Recurrente
+                Recurrente.token.create(cardData, function (token, error) {
+                    if (error) {
+                        // Si Recurrente encuentra un error (datos inválidos, tarjeta rechazada, etc.)
+                        cardErrors.innerText = error.message || 'Ocurrió un problema validando la tarjeta.';
+                        cardErrors.classList.remove('d-none');
+                        if (submitBtn) submitBtn.disabled = false; // Reactivar el botón
+                    } else {
+                        // Si todo sale bien, inyectamos el token en el input oculto y hacemos submit real a Laravel
+                        document.getElementById('recurrente_card_token').value = token.id;
+                        checkoutForm.submit();
+                    }
+                });
             }
-        }
-    })();
+        });
+    });
 </script>
-@endif
 @endpush
-
-@endsection

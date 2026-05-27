@@ -1,35 +1,47 @@
-<div class="row g-2">
+<div class="row g-3">
     <div class="col-12">
-        <div class="payment-method">
-            <div class="form-floating mb-lg-3 mb-2 theme-form-floating">
-                <input type="text" class="form-control" id="credit-{{ $metodo->Id_MetodoPago }}" placeholder="Número de tarjeta" disabled>
-                <label for="credit-{{ $metodo->Id_MetodoPago }}">Número de tarjeta</label>
-            </div>
+        <div class="form-floating theme-form-floating">
+            <input type="text" class="form-control" id="cc-name" placeholder="Nombre como aparece en la tarjeta">
+            <label for="cc-name">Nombre en la tarjeta</label>
         </div>
     </div>
 
-    <div class="col-xxl-4">
-        <div class="form-floating mb-lg-3 mb-2 theme-form-floating">
-            <input type="text" class="form-control" id="expiry-{{ $metodo->Id_MetodoPago }}" placeholder="MM/AA" disabled>
-            <label for="expiry-{{ $metodo->Id_MetodoPago }}">Fecha de expiración</label>
+    <div class="col-12">
+        <div class="form-floating theme-form-floating">
+            <input type="email" class="form-control" id="cc-email" value="{{ auth()->user()->email ?? '' }}" placeholder="nombre@ejemplo.com">
+            <label for="cc-email">Correo Electrónico</label>
         </div>
     </div>
 
-    <div class="col-xxl-4">
-        <div class="form-floating mb-lg-3 mb-2 theme-form-floating">
-            <input type="text" class="form-control" id="cvv-{{ $metodo->Id_MetodoPago }}" placeholder="CVV" disabled>
-            <label for="cvv-{{ $metodo->Id_MetodoPago }}">CVV Código de seguridad</label>
+    <div class="col-12">
+        <div class="form-floating theme-form-floating">
+            <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+            <label for="cc-number">Número de Tarjeta</label>
         </div>
     </div>
 
-    <div class="button-group mt-0">
-        <ul>
-            <li>
-                <button type="button" class="btn btn-light shopping-button" disabled>Cancelar</button>
-            </li>
-            <li>
-                <button type="button" class="btn btn-animation" disabled>Usar esta tarjeta</button>
-            </li>
-        </ul>
+    <div class="col-sm-4 col-6">
+        <div class="form-floating theme-form-floating">
+            <input type="text" class="form-control" id="cc-expiry-month" placeholder="MM" maxlength="2">
+            <label for="cc-expiry-month">Mes (MM)</label>
+        </div>
     </div>
+
+    <div class="col-sm-4 col-6">
+        <div class="form-floating theme-form-floating">
+            <input type="text" class="form-control" id="cc-expiry-year" placeholder="AA" maxlength="2">
+            <label for="cc-expiry-year">Año (AA)</label>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-12">
+        <div class="form-floating theme-form-floating">
+            <input type="password" class="form-control" id="cc-cvv" placeholder="CVV" maxlength="4" autocomplete="cc-csc">
+            <label for="cc-cvv">CVV</label>
+        </div>
+    </div>
+
+    <input type="hidden" name="recurrente_card_token" id="recurrente_card_token">
 </div>
+
+<div id="card-errors" class="text-danger small mt-2 d-none" role="alert"></div>
