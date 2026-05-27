@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ListaDeseoController;
 use App\Http\Controllers\BoletaPagoController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\RecurrenteWebhookController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart/checkout', [CarritoController::class, 'checkout'])->name('cart.checkout');
     Route::post('/cart/checkout', [CarritoController::class, 'store'])->name('cart.checkout.store');
+    Route::get('/cart/checkout/recurrente/success/{pedido}', [CarritoController::class, 'recurrenteSuccess'])
+        ->whereNumber('pedido')
+        ->name('cart.checkout.recurrente.success');
+    Route::get('/cart/checkout/recurrente/cancel/{pedido}', [CarritoController::class, 'recurrenteCancel'])
+        ->whereNumber('pedido')
+        ->name('cart.checkout.recurrente.cancel');
     Route::post('/cart/checkout/direccion', [CarritoController::class, 'storeDireccion'])->name('cart.checkout.direccion.store');
     Route::post('/boleta-pago', [BoletaPagoController::class, 'store'])->name('boleta-pago.store');
 
@@ -53,6 +60,7 @@ Route::get('/{idproducto}/{slug_producto}', [ProductoController::class, 'details
     // Cambio: evita conflicto con rutas como /reset-password/{token}.
     ->whereNumber('idproducto')
     ->name('product.details');
+Route::post('/webhooks/recurrente', RecurrenteWebhookController::class)->name('webhooks.recurrente');
 require __DIR__.'/auth.php';
 Route::get('/cart', [CarritoController::class, 'index'])->name('cart.index');
 Route::get('/shop', [ProductoController::class, 'shop'])->name('shop.index');

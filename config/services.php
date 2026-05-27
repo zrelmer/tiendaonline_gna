@@ -38,6 +38,9 @@ return [
     // Agregamos Recurrente al final del arreglo
     'recurrente' => [
         'secret_key' => env('RECURRENTE_SECRET_KEY'),
+        'public_key' => env('RECURRENTE_PUBLIC_KEY'),
+        'base_url' => env('RECURRENTE_BASE_URL', 'https://app.recurrente.com/api'),
+        'currency' => env('RECURRENTE_CURRENCY', 'GTQ'),
     ],
 
 ];

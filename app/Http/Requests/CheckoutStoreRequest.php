@@ -28,6 +28,7 @@ class CheckoutStoreRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::in([
+                    PedidoService::METODO_TARJETA,
                     PedidoService::METODO_TRANSFERENCIA,
                     PedidoService::METODO_CONTRA_ENTREGA,
                 ]),
@@ -41,7 +42,7 @@ class CheckoutStoreRequest extends FormRequest
             'id_direccion.required' => 'Debes seleccionar una dirección de entrega.',
             'id_direccion.exists' => 'La dirección seleccionada no es válida.',
             'id_metodo_pago.required' => 'Debes seleccionar un método de pago.',
-            'id_metodo_pago.in' => 'Selecciona transferencia bancaria o pago contra entrega.',
+            'id_metodo_pago.in' => 'Selecciona un método de pago válido.',
         ];
     }
 }

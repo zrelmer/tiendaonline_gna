@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Models\Pedido;
 use App\Http\Requests\CheckoutStoreRequest;
 use App\Services\BoletaPagoService;
 use App\Services\CarritoService;
 use App\Services\CheckoutService;
+use App\Services\EnvioService;
 use App\Services\PedidoService;
+use App\Services\RecurrentePaymentService;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use RuntimeException;
 
 class CarritoController extends Controller
 {
@@ -19,7 +25,9 @@ class CarritoController extends Controller
         protected CarritoService $carritoService,
         protected CheckoutService $checkoutService,
         protected BoletaPagoService $boletaPagoService,
-        protected PedidoService $pedidoService
+        protected PedidoService $pedidoService,
+        protected RecurrentePaymentService $recurrentePaymentService,
+        protected EnvioService $envioService
     ) {}
 
     /**
@@ -53,7 +61,7 @@ class CarritoController extends Controller
         $subtotalCarrito = $lineasCarrito->sum(
             fn ($linea) => (float) $linea->Precio * (int) $linea->Cantidad
         );
-        $envioCarrito = $subtotalCarrito < 300 ? 35 : 0;
+        $envioCarrito = $this->envioService->calcularCosto($subtotalCarrito, $lineasCarrito);
         $totalCarrito = $subtotalCarrito + $envioCarrito;
 
         return view('cart.checkout', compact(
@@ -109,24 +117,98 @@ class CarritoController extends Controller
     public function store(CheckoutStoreRequest $request): RedirectResponse
     {
         $idMetodoPago = (int) $request->validated('id_metodo_pago');
+        $idUsuario = (int) Auth::user()->Id_Usuario;
+        $lockKey = "checkout:usuario:{$idUsuario}";
 
-        $pedido = $this->pedidoService->crearDesdeCheckout(
-            (int) $request->validated('id_direccion'),
-            $idMetodoPago
-        );
+        $lock = Cache::lock($lockKey, 10);
 
-        $mensaje = match ($idMetodoPago) {
-            PedidoService::METODO_TRANSFERENCIA => 'Pedido '.$pedido->Ped_Numero.' registrado. Realiza tu transferencia y sube el comprobante en la sección Transferencia bancaria.',
-            PedidoService::METODO_CONTRA_ENTREGA => 'Pedido '.$pedido->Ped_Numero.' registrado. Pagarás en efectivo al recibir tu compra.',
-            default => 'Pedido '.$pedido->Ped_Numero.' registrado correctamente.',
-        };
+        if (! $lock->get()) {
+            return redirect()
+                ->route('cart.checkout')
+                ->withErrors([
+                    'id_metodo_pago' => 'Ya estamos procesando tu compra. Espera unos segundos e intenta de nuevo.',
+                ]);
+        }
+
+        try {
+            $pedido = null;
+
+            if ($idMetodoPago === PedidoService::METODO_TARJETA) {
+                $pedidoPendiente = $this->pedidoService->pedidoTarjetaPendientePorUsuario($idUsuario);
+                $carritoConProductos = $this->carritoService->detallesCarrito($idUsuario)->isNotEmpty();
+
+                if ($pedidoPendiente) {
+                    if ($carritoConProductos) {
+                        // Carrito nuevo distinto al pedido abandonado: cancelar el viejo y crear uno nuevo.
+                        $this->pedidoService->cancelarPedidoTarjetaPendiente($pedidoPendiente, restaurarCarrito: false);
+                    } else {
+                        $pedido = $pedidoPendiente;
+                    }
+                }
+            }
+
+            if (! $pedido) {
+                $pedido = $this->pedidoService->crearDesdeCheckout(
+                    (int) $request->validated('id_direccion'),
+                    $idMetodoPago
+                );
+            }
+
+            if ($idMetodoPago === PedidoService::METODO_TARJETA) {
+                try {
+                    $checkoutUrl = $this->recurrentePaymentService->createCheckoutUrl($pedido);
+
+                    return redirect()->away($checkoutUrl);
+                } catch (RequestException|RuntimeException $exception) {
+                    return redirect()
+                        ->route('cart.checkout')
+                        ->withErrors([
+                            'id_metodo_pago' => 'No pudimos iniciar el checkout de tarjeta en Recurrente. Intenta de nuevo.',
+                        ])
+                        ->with('abrir_metodo_pago', $idMetodoPago);
+                }
+            }
+
+            $mensaje = match ($idMetodoPago) {
+                PedidoService::METODO_TRANSFERENCIA => 'Pedido '.$pedido->Ped_Numero.' registrado. Realiza tu transferencia y sube el comprobante en la sección Transferencia bancaria.',
+                PedidoService::METODO_CONTRA_ENTREGA => 'Pedido '.$pedido->Ped_Numero.' registrado. Pagarás en efectivo al recibir tu compra.',
+                default => 'Pedido '.$pedido->Ped_Numero.' registrado correctamente.',
+            };
+
+            return redirect()
+                ->route('cart.checkout')
+                ->with('pedido_creado', true)
+                ->with('pedido_numero', $pedido->Ped_Numero)
+                ->with('abrir_metodo_pago', $idMetodoPago)
+                ->with('success', $mensaje);
+        } finally {
+            optional($lock)->release();
+        }
+    }
+
+    public function recurrenteSuccess(int $pedido): RedirectResponse
+    {
+        return redirect()
+            ->route('cart.checkout')
+            ->with('success', 'Regresaste desde Recurrente. Estamos validando el estado del pago de tu pedido.')
+            ->with('pedido_referencia', $pedido);
+    }
+
+    public function recurrenteCancel(int $pedido): RedirectResponse
+    {
+        $pedidoModel = Pedido::query()
+            ->where('Id_Pedido', $pedido)
+            ->where('Id_Usuario', (int) Auth::user()->Id_Usuario)
+            ->first();
+
+        if ($pedidoModel) {
+            $this->pedidoService->cancelarPedidoTarjetaPendiente($pedidoModel, restaurarCarrito: true);
+        }
 
         return redirect()
             ->route('cart.checkout')
-            ->with('pedido_creado', true)
-            ->with('pedido_numero', $pedido->Ped_Numero)
-            ->with('abrir_metodo_pago', $idMetodoPago)
-            ->with('success', $mensaje);
+            ->with('success', 'Pago cancelado. Los productos de ese intento volvieron a tu carrito. Puedes editarlos y volver a pagar.')
+            ->with('abrir_metodo_pago', PedidoService::METODO_TARJETA);
     }
 
     /**

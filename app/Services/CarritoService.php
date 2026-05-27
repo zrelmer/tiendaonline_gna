@@ -36,7 +36,7 @@ class CarritoService
         $carrito = $this->obtenerOCrearCarrito($idUsuario);
 
         return $carrito->detallescarrito()
-            ->with(['producto.imagenes'])
+            ->with(['producto.imagenes', 'producto.categoria'])
             ->get();
     }
 
@@ -57,7 +57,7 @@ class CarritoService
         $carrito = $this->obtenerOCrearCarrito($idUsuario);
 
         $detalles = $carrito->detallescarrito()
-            ->with(['producto.imagenes'])
+            ->with(['producto.imagenes', 'producto.categoria'])
             ->get();
 
         return $this->formatearDetalles($detalles);

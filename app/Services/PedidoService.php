@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\PedidoGeneradoMail;
 use App\Models\DetallePedido;
 use App\Models\Direccion;
 use App\Models\Envio;
@@ -10,22 +11,39 @@ use App\Models\Pedido;
 use App\Models\PedidoHistorial;
 use App\Support\EstatusCatalog;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class PedidoService
 {
+    public const METODO_TARJETA = 1;
+
     public const METODO_TRANSFERENCIA = 2;
 
     public const METODO_CONTRA_ENTREGA = 3;
 
     public function __construct(
-        protected CarritoService $carritoService
+        protected CarritoService $carritoService,
+        protected EnvioService $envioService
     ) {}
 
-    public function crearDesdeCheckout(int $idDireccion, int $idMetodoPago, ?int $idUsuario = null): Pedido
+    public function crearDesdeCheckout(
+        int $idDireccion,
+        int $idMetodoPago,
+        ?int $idUsuario = null
+    ): Pedido
     {
         $configPago = match ($idMetodoPago) {
+            self::METODO_TARJETA => [
+                'id_estatus_pago' => EstatusCatalog::PAGO_PENDIENTE_VERIFICACION,
+                'transaccion' => [
+                    'tipo' => 'tarjeta',
+                    'estado' => 'checkout_pendiente',
+                    'gateway' => 'recurrente',
+                ],
+                'historial' => 'Pedido registrado. Redirigiendo a Recurrente para completar el pago.',
+            ],
             self::METODO_TRANSFERENCIA => [
                 'id_estatus_pago' => EstatusCatalog::PAGO_PENDIENTE_COMPROBANTE,
                 'transaccion' => [
@@ -50,6 +68,80 @@ class PedidoService
         return $this->crearPedido($idDireccion, $idMetodoPago, $configPago, $idUsuario);
     }
 
+    public function pedidoTarjetaPendientePorUsuario(int $idUsuario): ?Pedido
+    {
+        return Pedido::query()
+            ->where('Id_Usuario', $idUsuario)
+            ->where('Id_Estatus', EstatusCatalog::PEDIDO_PENDIENTE)
+            ->whereHas('pago', function ($query) {
+                $query->where('Id_MetodoPago', self::METODO_TARJETA)
+                    ->where('Id_Estatus', EstatusCatalog::PAGO_PENDIENTE_VERIFICACION);
+            })
+            ->latest('Id_Pedido')
+            ->first();
+    }
+
+    /**
+     * Cancela un pedido de tarjeta no pagado. Opcionalmente devuelve sus líneas al carrito.
+     */
+    public function cancelarPedidoTarjetaPendiente(Pedido $pedido, bool $restaurarCarrito = true): void
+    {
+        if ((int) $pedido->Id_Estatus === EstatusCatalog::PEDIDO_CANCELADO) {
+            return;
+        }
+
+        DB::transaction(function () use ($pedido, $restaurarCarrito) {
+            $pedido->loadMissing(['pago', 'detalle']);
+
+            if ($pedido->pago) {
+                $transaccion = is_array($pedido->pago->Transaccion_Json)
+                    ? $pedido->pago->Transaccion_Json
+                    : [];
+
+                $pedido->pago->update([
+                    'Id_Estatus' => EstatusCatalog::PAGO_RECHAZADO,
+                    'Transaccion_Json' => [
+                        ...$transaccion,
+                        'estado' => 'cancelado',
+                        'cancelado_en' => now()->toIso8601String(),
+                    ],
+                ]);
+            }
+
+            $pedido->update([
+                'Id_Estatus' => EstatusCatalog::PEDIDO_CANCELADO,
+            ]);
+
+            PedidoHistorial::create([
+                'Id_Pedido' => $pedido->Id_Pedido,
+                'Id_Estatus' => EstatusCatalog::PEDIDO_CANCELADO,
+                'Comentario' => $restaurarCarrito
+                    ? 'Pago con tarjeta cancelado. Productos devueltos al carrito.'
+                    : 'Pago con tarjeta cancelado. El cliente inició una nueva compra.',
+                'Fecha_Cambio' => now(),
+            ]);
+
+            if ($restaurarCarrito) {
+                $this->restaurarCarritoDesdePedido($pedido);
+            }
+        });
+    }
+
+    public function restaurarCarritoDesdePedido(Pedido $pedido, ?int $idUsuario = null): void
+    {
+        $idUsuario ??= (int) $pedido->Id_Usuario;
+        $pedido->loadMissing('detalle');
+
+        foreach ($pedido->detalle as $linea) {
+            $this->carritoService->agregarProducto(
+                (int) $linea->Id_Producto,
+                (int) $linea->DetaPed_Cantidad,
+                (float) $linea->DetaPed_Precio,
+                $idUsuario
+            );
+        }
+    }
+
     protected function crearPedido(
         int $idDireccion,
         int $idMetodoPago,
@@ -58,7 +150,7 @@ class PedidoService
     ): Pedido {
         $idUsuario ??= $this->carritoService->idUsuarioAutenticado();
 
-        return DB::transaction(function () use ($idDireccion, $idMetodoPago, $configPago, $idUsuario) {
+        $pedido = DB::transaction(function () use ($idDireccion, $idMetodoPago, $configPago, $idUsuario) {
             $detalles = $this->carritoService->detallesCarrito($idUsuario);
 
             if ($detalles->isEmpty()) {
@@ -76,7 +168,7 @@ class PedidoService
             $subtotal = $detalles->sum(
                 fn ($linea) => (float) $linea->Precio * (int) $linea->Cantidad
             );
-            $envio = $this->costoEnvio($subtotal);
+            $envio = $this->envioService->calcularCosto($subtotal, $detalles);
             $total = round($subtotal + $envio, 2);
 
             $pedido = Pedido::create([
@@ -100,12 +192,17 @@ class PedidoService
                 ]);
             }
 
+            $transaccionId = null;
+            $transaccionJson = $configPago['transaccion'];
+            $idEstatusPago = $configPago['id_estatus_pago'];
+            $comentarioHistorial = $configPago['historial'];
+
             Pago::create([
                 'Id_Pedido' => $pedido->Id_Pedido,
                 'Id_MetodoPago' => $idMetodoPago,
-                'Transaccion_Id' => null,
-                'Transaccion_Json' => $configPago['transaccion'],
-                'Id_Estatus' => $configPago['id_estatus_pago'],
+                'Transaccion_Id' => $transaccionId,
+                'Transaccion_Json' => $transaccionJson,
+                'Id_Estatus' => $idEstatusPago,
             ]);
 
             Envio::create([
@@ -121,7 +218,7 @@ class PedidoService
             PedidoHistorial::create([
                 'Id_Pedido' => $pedido->Id_Pedido,
                 'Id_Estatus' => EstatusCatalog::PEDIDO_PENDIENTE,
-                'Comentario' => $configPago['historial'],
+                'Comentario' => $comentarioHistorial,
                 'Fecha_Cambio' => now(),
             ]);
 
@@ -129,11 +226,11 @@ class PedidoService
 
             return $pedido->load(['detalle.producto', 'pago', 'envio']);
         });
-    }
 
-    protected function costoEnvio(float $subtotal): float
-    {
-        return $subtotal < 300 ? 35.0 : 0.0;
+        $pedido->loadMissing(['usuario', 'pago.metodoPago', 'detalle.producto']);
+        $this->enviarCorreoPedido($pedido);
+
+        return $pedido;
     }
 
     protected function generarNumeroPedido(): string
@@ -154,5 +251,17 @@ class PedidoService
         ]);
 
         return Str::limit(implode(', ', $partes), 200, '');
+    }
+
+    public function enviarCorreoPedido(Pedido $pedido, bool $pagoConfirmado = false): void
+    {
+        $pedido->loadMissing(['usuario', 'pago.metodoPago', 'detalle.producto']);
+        $correo = $pedido->usuario?->Usu_Correo;
+
+        if (! $correo) {
+            return;
+        }
+
+        Mail::to($correo)->send(new PedidoGeneradoMail($pedido, $pagoConfirmado));
     }
 }

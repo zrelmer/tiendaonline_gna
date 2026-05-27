@@ -369,62 +369,20 @@
 @include('modal.NuevaDireccion')
 @endsection
 @push('scripts')
-<script src="https://app.recurrente.com/assets/recurrente.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const checkoutForm = document.getElementById('checkout-form');
-        const cardErrors = document.getElementById('card-errors');
+        const tarjetaId = Number(@json(optional($metodosPago->firstWhere('plantilla', 'tarjeta'))->Id_MetodoPago));
 
-        checkoutForm.addEventListener('submit', function (event) {
-            // Buscamos qué método de pago está seleccionado actualmente
-            const metodoSeleccionado = document.querySelector('input[name="id_metodo_pago"]:checked');
-            
-            // Reemplaza '3' por el ID exacto que le pertenezca a la Tarjeta de Crédito en tu base de datos
-            const ID_METODO_TARJETA = 3; 
+        if (!checkoutForm || !Number.isFinite(tarjetaId) || tarjetaId < 1) {
+            return;
+        }
 
-            if (metodoSeleccionado && parseInt(metodoSeleccionado.value) === ID_METODO_TARJETA) {
-                
-                // Si el token ya fue generado previamente por el script, dejamos continuar el formulario hacia Laravel
-                if (document.getElementById('recurrente_card_token').value) {
-                    return true;
-                }
+        checkoutForm.addEventListener('submit', function () {
+            const metodo = document.querySelector('input[name="id_metodo_pago"]:checked');
+            const esTarjeta = metodo && Number(metodo.value) === tarjetaId;
 
-                // Detener el envío temporalmente para procesar el token en Recurrente
-                event.preventDefault();
-                cardErrors.classList.add('d-none');
-                cardErrors.innerText = '';
-
-                // Deshabilitar el botón de pagar para evitar doble clic
-                const submitBtn = checkoutForm.querySelector('button[type="submit"]');
-                if (submitBtn) submitBtn.disabled = true;
-
-                // Extraer la información de los campos del formulario parcial
-                const cardData = {
-                    card: {
-                        number: document.getElementById('cc-number').value.replace(/\s+/g, ''),
-                        exp_month: document.getElementById('cc-expiry-month').value,
-                        exp_year: document.getElementById('cc-expiry-year').value,
-                        cvv: document.getElementById('cc-cvv').value,
-                        name: document.getElementById('cc-name').value,
-                        email: document.getElementById('cc-email').value
-                    }
-                };
-
-                // Enviar los datos directamente a los servidores seguros de Recurrente
-                Recurrente.token.create(cardData, function (token, error) {
-                    if (error) {
-                        // Si Recurrente encuentra un error (datos inválidos, tarjeta rechazada, etc.)
-                        cardErrors.innerText = error.message || 'Ocurrió un problema validando la tarjeta.';
-                        cardErrors.classList.remove('d-none');
-                        if (submitBtn) submitBtn.disabled = false; // Reactivar el botón
-                    } else {
-                        // Si todo sale bien, inyectamos el token en el input oculto y hacemos submit real a Laravel
-                        document.getElementById('recurrente_card_token').value = token.id;
-                        checkoutForm.submit();
-                    }
-                });
-            }
+            checkoutForm.target = esTarjeta ? '_blank' : '_self';
         });
     });
 </script>
