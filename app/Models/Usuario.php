@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // Cambiamos Model por Authenticatable para que sirva para iniciar sesión
+use App\Services\WhatsAppService;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -40,6 +42,13 @@ class Usuario extends Authenticatable
     public function getEmailForPasswordReset()
     {
         return $this->Usu_Correo;
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPassword($token));
+
+        app(WhatsAppService::class)->sendPasswordReset($this, $token);
     }
 
     public function getAuthIdentifierName()

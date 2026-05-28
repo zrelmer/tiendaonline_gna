@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BienvenidaUsuario;
 use App\Http\Controllers\Controller;
+use App\Services\WhatsAppService;
 use App\Models\Carrito;
 use App\Models\Usuario;
 use Illuminate\Auth\Events\Registered;
@@ -57,6 +58,7 @@ class RegisteredUserController extends Controller
         // LOGIN AUTOMÁTICO
         Auth::login($user);
         Mail::to($user->Usu_Correo)->send(new BienvenidaUsuario($user));
+        app(WhatsAppService::class)->sendBienvenida($user);
         // REDIRECCIÓN
         return redirect()->route('dashboard');
     }

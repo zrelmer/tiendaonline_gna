@@ -25,7 +25,8 @@ class PedidoService
 
     public function __construct(
         protected CarritoService $carritoService,
-        protected EnvioService $envioService
+        protected EnvioService $envioService,
+        protected WhatsAppService $whatsAppService
     ) {}
 
     public function crearDesdeCheckout(
@@ -228,7 +229,11 @@ class PedidoService
         });
 
         $pedido->loadMissing(['usuario', 'pago.metodoPago', 'detalle.producto']);
-        $this->enviarCorreoPedido($pedido);
+
+        // Tarjeta: notificación solo cuando Recurrente confirma el pago (webhook).
+        if ($idMetodoPago !== self::METODO_TARJETA) {
+            $this->enviarNotificacionesPedido($pedido);
+        }
 
         return $pedido;
     }
@@ -251,6 +256,12 @@ class PedidoService
         ]);
 
         return Str::limit(implode(', ', $partes), 200, '');
+    }
+
+    public function enviarNotificacionesPedido(Pedido $pedido, bool $pagoConfirmado = false): void
+    {
+        $this->enviarCorreoPedido($pedido, $pagoConfirmado);
+        $this->whatsAppService->sendPedido($pedido, $pagoConfirmado);
     }
 
     public function enviarCorreoPedido(Pedido $pedido, bool $pagoConfirmado = false): void

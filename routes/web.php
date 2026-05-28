@@ -8,6 +8,7 @@ use App\Http\Controllers\ListaDeseoController;
 use App\Http\Controllers\BoletaPagoController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\RecurrenteWebhookController;
+use App\Http\Controllers\WhatsAppController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -64,3 +65,5 @@ Route::post('/webhooks/recurrente', RecurrenteWebhookController::class)->name('w
 require __DIR__.'/auth.php';
 Route::get('/cart', [CarritoController::class, 'index'])->name('cart.index');
 Route::get('/shop', [ProductoController::class, 'shop'])->name('shop.index');
+
+Route::get('/test-whatsapp', [WhatsAppController::class, 'sendNotification']);

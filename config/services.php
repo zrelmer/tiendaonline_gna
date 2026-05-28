@@ -43,4 +43,12 @@ return [
         'currency' => env('RECURRENTE_CURRENCY', 'GTQ'),
     ],
 
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'whatsapp_from' => env('TWILIO_WHATSAPP_NUMBER'),
+        'enabled' => env('TWILIO_WHATSAPP_ENABLED', false),
+        'country_code' => env('TWILIO_WHATSAPP_COUNTRY_CODE', '502'),
+    ],
+
 ];

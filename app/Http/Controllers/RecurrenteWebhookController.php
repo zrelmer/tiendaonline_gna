@@ -70,7 +70,7 @@ class RecurrenteWebhookController extends Controller
         });
 
         if ($idEstatusPago === EstatusCatalog::PAGO_PAGADO) {
-            $this->pedidoService->enviarCorreoPedido($pedido->fresh(), true);
+            $this->pedidoService->enviarNotificacionesPedido($pedido->fresh(), true);
         }
 
         return response()->json(['ok' => true]);

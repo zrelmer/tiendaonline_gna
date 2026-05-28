@@ -13,6 +13,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use App\Notifications\PasswordChangedNotification;
+use App\Services\WhatsAppService;
 
 class NewPasswordController extends Controller
 {
@@ -53,6 +54,7 @@ class NewPasswordController extends Controller
                 ])->save();
 
                 $user->notify(new PasswordChangedNotification());
+                app(WhatsAppService::class)->sendPasswordChanged($user);
 
                 event(new PasswordReset($user));
             }
