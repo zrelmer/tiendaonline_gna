@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardPedidoController;
+use App\Http\Controllers\DashboardDireccionController;
+use App\Http\Controllers\DashboardProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ListaDeseoController;
@@ -14,14 +18,32 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/listadeseo', [ListaDeseoController::class, 'index'])->name('listadeseo.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/dashboard/pedidos/{pedido}', [DashboardPedidoController::class, 'update'])
+        ->whereNumber('pedido')
+        ->name('dashboard.pedidos.update');
+    Route::post('/dashboard/pedidos/{pedido}/cancel', [DashboardPedidoController::class, 'cancel'])
+        ->whereNumber('pedido')
+        ->name('dashboard.pedidos.cancel');
+    Route::post('/dashboard/direcciones', [DashboardDireccionController::class, 'store'])
+        ->name('dashboard.direcciones.store');
+    Route::patch('/dashboard/direcciones/{direccion}', [DashboardDireccionController::class, 'update'])
+        ->whereNumber('direccion')
+        ->name('dashboard.direcciones.update');
+    Route::delete('/dashboard/direcciones/{direccion}', [DashboardDireccionController::class, 'destroy'])
+        ->whereNumber('direccion')
+        ->name('dashboard.direcciones.destroy');
+    Route::patch('/dashboard/profile', [DashboardProfileController::class, 'update'])
+        ->name('dashboard.profile.update');
+    Route::put('/dashboard/profile/password', [DashboardProfileController::class, 'updatePassword'])
+        ->name('dashboard.profile.password');
     Route::post('/producto/{idproducto}/resena', [ProductoController::class, 'saveReview'])
         ->whereNumber('idproducto')
         ->name('product.review.save');

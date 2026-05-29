@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Departamento;
 use App\Models\Pedido;
 use App\Http\Requests\CheckoutStoreRequest;
+use App\Http\Requests\DireccionStoreRequest;
 use App\Services\BoletaPagoService;
 use App\Services\CarritoService;
 use App\Services\CheckoutService;
+use App\Services\DireccionService;
 use App\Services\EnvioService;
 use App\Services\PedidoService;
 use App\Services\RecurrentePaymentService;
@@ -27,7 +29,8 @@ class CarritoController extends Controller
         protected BoletaPagoService $boletaPagoService,
         protected PedidoService $pedidoService,
         protected RecurrentePaymentService $recurrentePaymentService,
-        protected EnvioService $envioService
+        protected EnvioService $envioService,
+        protected DireccionService $direccionService
     ) {}
 
     /**
@@ -78,35 +81,21 @@ class CarritoController extends Controller
         ));
     }
 
-    public function storeDireccion(Request $request): RedirectResponse
+    public function storeDireccion(DireccionStoreRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'direccion' => ['required', 'string', 'max:200'],
-            'id_departamento' => ['required', 'integer', 'exists:tb_departamento,Id_Departamento'],
-            'id_municipio' => ['required', 'integer', 'exists:tb_municipio,Id_Municipio'],
-        ]);
-
-        $departamento = Departamento::query()
-            ->with('municipios')
-            ->findOrFail((int) $validated['id_departamento']);
-
-        $idMunicipio = (int) $validated['id_municipio'];
-        $municipioPertenece = $departamento->municipios
-            ->contains(fn ($municipio) => (int) $municipio->Id_Municipio === $idMunicipio);
-
-        if (! $municipioPertenece) {
+        try {
+            $direccion = $this->direccionService->crearParaUsuario(
+                $request->user(),
+                $request->validated('direccion'),
+                (int) $request->validated('id_departamento'),
+                (int) $request->validated('id_municipio'),
+            );
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return back()
-                ->withErrors([
-                    'id_municipio' => 'El municipio seleccionado no pertenece al departamento.',
-                ], 'direccion')
+                ->withErrors($e->errors(), 'direccion')
                 ->withInput()
                 ->with('abrir_modal_direccion', true);
         }
-
-        $direccion = Auth::user()->direcciones()->create([
-            'Direccion' => $validated['direccion'],
-            'Id_Municipio' => $idMunicipio,
-        ]);
 
         return redirect()
             ->route('cart.checkout')

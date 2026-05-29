@@ -87,8 +87,37 @@ class PedidoService
      */
     public function cancelarPedidoTarjetaPendiente(Pedido $pedido, bool $restaurarCarrito = true): void
     {
+        $this->cancelarPedidoPendienteCliente($pedido, $restaurarCarrito);
+    }
+
+    public function esGestionablePorCliente(Pedido $pedido): bool
+    {
+        $pedido->loadMissing('pago');
+
+        if ((int) $pedido->Id_Estatus !== EstatusCatalog::PEDIDO_PENDIENTE) {
+            return false;
+        }
+
+        if ($pedido->pago && (int) $pedido->pago->Id_Estatus === EstatusCatalog::PAGO_PAGADO) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Cancela un pedido pendiente de confirmación iniciado por el cliente.
+     */
+    public function cancelarPedidoPendienteCliente(Pedido $pedido, bool $restaurarCarrito = true): void
+    {
         if ((int) $pedido->Id_Estatus === EstatusCatalog::PEDIDO_CANCELADO) {
             return;
+        }
+
+        if (! $this->esGestionablePorCliente($pedido)) {
+            throw ValidationException::withMessages([
+                'pedido' => 'Solo puedes cancelar pedidos pendientes de confirmación.',
+            ]);
         }
 
         DB::transaction(function () use ($pedido, $restaurarCarrito) {
@@ -117,14 +146,102 @@ class PedidoService
                 'Id_Pedido' => $pedido->Id_Pedido,
                 'Id_Estatus' => EstatusCatalog::PEDIDO_CANCELADO,
                 'Comentario' => $restaurarCarrito
-                    ? 'Pago con tarjeta cancelado. Productos devueltos al carrito.'
-                    : 'Pago con tarjeta cancelado. El cliente inició una nueva compra.',
+                    ? 'Pedido cancelado por el cliente. Productos devueltos al carrito.'
+                    : 'Pedido cancelado por el cliente.',
                 'Fecha_Cambio' => now(),
             ]);
 
             if ($restaurarCarrito) {
                 $this->restaurarCarritoDesdePedido($pedido);
             }
+        });
+    }
+
+    /**
+     * @param  array<int, array{id_detalle: int, cantidad: int}>  $items
+     */
+    public function actualizarPedidoPendiente(Pedido $pedido, int $idDireccion, array $items): Pedido
+    {
+        if (! $this->esGestionablePorCliente($pedido)) {
+            throw ValidationException::withMessages([
+                'pedido' => 'Solo puedes editar pedidos pendientes de confirmación.',
+            ]);
+        }
+
+        $idUsuario = (int) $pedido->Id_Usuario;
+
+        $direccion = Direccion::query()
+            ->where('Id_Direccion', $idDireccion)
+            ->where('Id_Usuario', $idUsuario)
+            ->with(['municipio.departamento'])
+            ->firstOrFail();
+
+        return DB::transaction(function () use ($pedido, $direccion, $items) {
+            $pedido->loadMissing(['detalle.producto.categoria', 'envio']);
+
+            $detallesPorId = $pedido->detalle->keyBy('Id_DetallePedido');
+
+            foreach ($items as $item) {
+                $idDetalle = (int) $item['id_detalle'];
+                $cantidad = (int) $item['cantidad'];
+                $detalle = $detallesPorId->get($idDetalle);
+
+                if (! $detalle) {
+                    continue;
+                }
+
+                if ($cantidad <= 0) {
+                    $detalle->delete();
+
+                    continue;
+                }
+
+                $precio = (float) $detalle->DetaPed_Precio;
+                $detalle->update([
+                    'DetaPed_Cantidad' => $cantidad,
+                    'DetaPed_SubTotal' => round($precio * $cantidad, 2),
+                ]);
+            }
+
+            $pedido->load('detalle.producto.categoria');
+
+            if ($pedido->detalle->isEmpty()) {
+                throw ValidationException::withMessages([
+                    'items' => 'El pedido debe incluir al menos un producto.',
+                ]);
+            }
+
+            $subtotal = $pedido->detalle->sum(
+                fn ($linea) => (float) $linea->DetaPed_SubTotal
+            );
+            $envio = $this->envioService->calcularCosto($subtotal, $pedido->detalle);
+            $total = round($subtotal + $envio, 2);
+
+            $pedido->update([
+                'Id_Direccion' => $direccion->Id_Direccion,
+                'Ped_TotalPrecio' => $total,
+            ]);
+
+            if ($pedido->envio) {
+                $pedido->envio->update([
+                    'Direccion_Envio' => $this->textoDireccionEnvio($direccion),
+                ]);
+            }
+
+            PedidoHistorial::create([
+                'Id_Pedido' => $pedido->Id_Pedido,
+                'Id_Estatus' => EstatusCatalog::PEDIDO_PENDIENTE,
+                'Comentario' => 'Pedido actualizado por el cliente (dirección e ítems).',
+                'Fecha_Cambio' => now(),
+            ]);
+
+            return $pedido->fresh([
+                'estatus',
+                'pago.metodoPago',
+                'detalle.producto.imagenes',
+                'direccion.municipio.departamento',
+                'envio',
+            ]);
         });
     }
 

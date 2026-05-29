@@ -161,7 +161,7 @@
                                         @auth
                                             <!-- Si el usuario está autenticado -->
                                             <li class="product-box-contain">
-                                                <a href="#">Mi Perfil</a>
+                                                <a href="{{ route('dashboard') }}">Mi Panel</a>
                                             </li>
 
                                             <li class="product-box-contain">

@@ -6,3 +6,243 @@ body.bg-effect,
     background-image: none !important;
 }
 
+/* Dashboard — pestaña Órdenes */
+.user-dashboard-section .dashboard-order .order-contain {
+    flex-direction: column;
+}
+
+.user-dashboard-section .dashboard-order .order-contain .order-box.dashboard-order-item {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-header {
+    align-items: flex-start;
+    width: 100%;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-header .order-detail {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .order-container .order-detail h4.dashboard-order-title {
+    flex-wrap: wrap;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .order-container .order-detail h4 .dashboard-order-badge {
+    margin-left: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-number {
+    word-break: break-all;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(-90deg, #ff6b6b 0%, #ff4f4f 100%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge.success-bg {
+    background: var(--theme-color2);
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge.danger {
+    background: #dc3545;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-meta,
+.user-dashboard-section .dashboard-order .dashboard-order-address {
+    word-break: break-word;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-address i {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-actions form {
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-note {
+    flex: 0 0 auto;
+    max-width: 220px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product {
+    align-items: flex-start;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail.dashboard-order-product {
+    display: flex !important;
+    flex-wrap: nowrap;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-thumb {
+    flex: 0 0 88px;
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-thumb img,
+.user-dashboard-section .dashboard-order .dashboard-order-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product:hover .dashboard-order-thumb img {
+    transform: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-info {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-info h3 {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+    font-size: calc(15px + 2 * (100vw - 320px) / 1600);
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-meta {
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail .order-wrap .product-size.dashboard-order-product-meta li {
+    width: auto;
+    flex: 1 1 calc(33.333% - 8px);
+    min-width: 120px;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail:hover .order-image img {
+    transform: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-summary {
+    margin-top: 16px;
+    padding: 12px 16px 4px;
+    border-top: 1px solid #ececec;
+    word-break: break-word;
+}
+
+.user-dashboard-section .dashboard-right-sidebar {
+    overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+    .user-dashboard-section .dashboard-order .dashboard-order-header {
+        flex-direction: column;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-actions {
+        width: 100%;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-actions .btn {
+        flex: 1 1 auto;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-product {
+        flex-direction: row;
+    }
+
+    .user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail .order-wrap .product-size.dashboard-order-product-meta li {
+        flex: 1 1 100%;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-note {
+        max-width: 100%;
+    }
+}
+
+/* Dashboard — pestaña Direcciones */
+.user-dashboard-section .dashboard-address .dashboard-address-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card > div:first-child {
+    flex: 1 1 auto;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card .address-table td p {
+    word-break: break-word;
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card .button-group form {
+    margin: 0;
+}
+
+/* Dashboard — pestaña Perfil */
+.user-dashboard-section .dashboard-profile .dashboard-profile-summary .location-profile h6 {
+    word-break: break-word;
+    line-height: 1.45;
+}
+
+.user-dashboard-section .dashboard-profile .dashboard-profile-illustration {
+    max-width: 280px;
+}
+
+.user-dashboard-section .dashboard-profile .dashboard-profile-form,
+.user-dashboard-section .dashboard-profile .dashboard-password-form {
+    max-width: 480px;
+}
+
+@media (max-width: 575px) {
+    .user-dashboard-section .dashboard-order .dashboard-order-thumb {
+        flex: 0 0 72px;
+        width: 72px;
+        height: 72px;
+        min-width: 72px;
+    }
+}
