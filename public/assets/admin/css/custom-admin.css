@@ -1,0 +1,117 @@
+/* Sin botón RTL (no se carga customizer.js) */
+.customizer-links,
+.rtl-btn,
+.rtl-ltr-btn {
+    display: none !important;
+}
+
+/* Sidebar: separación entre logo y Dashboard */
+.page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .logo-wrapper.logo-wrapper-center {
+    padding-bottom: 22px;
+    margin-bottom: 6px;
+}
+
+.page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper #sidebar-menu {
+    padding-top: 10px;
+}
+
+.page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-links > li.back-btn + li.sidebar-list {
+    margin-top: 6px;
+}
+
+/* Overrides GNA: categorías del dashboard admin (círculos con iconos) */
+.dashboard-category.dashboard-category-round {
+    text-align: center;
+}
+
+.dashboard-category.dashboard-category-round .category-image {
+    width: 100px !important;
+    height: 100px !important;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    display: block !important;
+    position: relative !important;
+    background: linear-gradient(145deg, #f0faf8 0%, #ffffff 55%);
+    border: 2px solid #e8f5f2;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.dashboard-category.dashboard-category-round .category-image::before {
+    display: none !important;
+    content: none !important;
+}
+
+.dashboard-category.dashboard-category-round .category-image .category-image-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.dashboard-category.dashboard-category-round .category-image .category-remix-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    color: #0da487;
+    display: block;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.dashboard-category.dashboard-category-round .category-image:hover {
+    background: linear-gradient(145deg, #e8f8f4 0%, #ffffff 60%) !important;
+    border-color: #0da487;
+    box-shadow: 0 4px 14px rgba(13, 164, 135, 0.22);
+}
+
+.dashboard-category.dashboard-category-round .category-image:hover .category-remix-icon {
+    color: #088d76;
+    transform: scale(1.06);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.dashboard-category.dashboard-category-round .category-name {
+    width: 100%;
+    max-width: 130px;
+    margin: 10px auto 0;
+    display: block;
+    text-align: center;
+}
+
+.dashboard-category.dashboard-category-round .category-name h6 {
+    margin-bottom: 0;
+}
+
+.dashboard-category.dashboard-category-round .category-name .small {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.75rem;
+}
+
+body.dark-only .dashboard-category.dashboard-category-round .category-image {
+    background: linear-gradient(145deg, #1d2422 0%, #262932 55%);
+    border-color: #3a3b45;
+}
+
+body.dark-only .dashboard-category.dashboard-category-round .category-image .category-remix-icon {
+    color: #3dd9bd;
+}
+
+body.dark-only .dashboard-category.dashboard-category-round .category-image:hover {
+    background: linear-gradient(145deg, #1a2e28 0%, #262932 60%) !important;
+    border-color: #0da487;
+}
+
+body.dark-only .dashboard-category.dashboard-category-round .category-image:hover .category-remix-icon {
+    color: #5ee8cf;
+}

@@ -95,4 +95,18 @@ class Usuario extends Authenticatable
     public function listadeseos(){
         return $this->hasMany(ListaDeseo::class, 'Id_Usuario', 'Id_Usuario');
     }
+
+    public function cotizaciones()
+    {
+        return $this->hasMany(Cotizacion::class, 'Id_Usuario', 'Id_Usuario');
+    }
+
+    public const ROL_ADMIN = 1;
+
+    public const ROL_USUARIO = 2;
+
+    public function esAdministrador(): bool
+    {
+        return (int) $this->Id_Rol === self::ROL_ADMIN;
+    }
 }

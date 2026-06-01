@@ -61,10 +61,10 @@
                     <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#pills-dashboard" type="button"><i data-feather="home"></i>
-                                Mi DashBoard</button>
+                                Mi Panel</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill" data-bs-target="#pills-order" type="button"><i data-feather="shopping-bag"></i>Ordenes</button>
+                            <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill" data-bs-target="#pills-order" type="button"><i data-feather="shopping-bag"></i>Mis Pedidos</button>
                         </li>
 
                         <li class="nav-item" role="presentation">
@@ -76,11 +76,15 @@
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button" role="tab"><i data-feather="truck"></i>
+                            <button class="nav-link" id="pills-tracking-tab" data-bs-toggle="pill" data-bs-target="#pills-tracking" type="button" role="tab"><i data-feather="truck"></i>
                                 Seguimiento de Ordenes</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button" role="tab"><i data-feather="shield"></i>
+                            <button class="nav-link" id="pills-quotes-tab" data-bs-toggle="pill" data-bs-target="#pills-quotes" type="button" role="tab"><i data-feather="clipboard"></i>
+                                Cotizaciones</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-privacy-tab" data-bs-toggle="pill" data-bs-target="#pills-privacy" type="button" role="tab"><i data-feather="shield"></i>
                                 Privacidad</button>
                         </li>
                     </ul>
@@ -165,75 +169,16 @@
                             @include('dashboard.partials.perfil')
                         </div>
 
-                        <div class="tab-pane fade" id="pills-security" role="tabpanel">
-                            <div class="dashboard-privacy">
-                                <div class="dashboard-bg-box">
-                                    <div class="dashboard-title mb-4">
-                                        <h3>Privacy</h3>
-                                    </div>
+                        <div class="tab-pane fade" id="pills-tracking" role="tabpanel">
+                            @include('dashboard.partials.seguimiento')
+                        </div>
 
-                                    <div class="privacy-box">
-                                        <div class="d-flex align-items-start">
-                                            <h6>Allows others to see my profile</h6>
-                                            <div class="form-check form-switch switch-radio ms-auto">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="redio">
-                                                <label class="form-check-label" for="redio"></label>
-                                            </div>
-                                        </div>
+                        <div class="tab-pane fade" id="pills-quotes" role="tabpanel">
+                            @include('dashboard.partials.cotizaciones')
+                        </div>
 
-                                        <p class="text-content">all peoples will be able to see my profile</p>
-                                    </div>
-
-                                    <div class="privacy-box">
-                                        <div class="d-flex align-items-start">
-                                            <h6>who has save this profile only that people see my profile</h6>
-                                            <div class="form-check form-switch switch-radio ms-auto">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="redio2">
-                                                <label class="form-check-label" for="redio2"></label>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-content">all peoples will not be able to see my profile</p>
-                                    </div>
-
-                                    <button class="btn theme-bg-color btn-md fw-bold mt-4 text-white">Save
-                                        Changes</button>
-                                </div>
-
-                                <div class="dashboard-bg-box mt-4">
-                                    <div class="dashboard-title mb-4">
-                                        <h3>Account settings</h3>
-                                    </div>
-
-                                    <div class="privacy-box">
-                                        <div class="d-flex align-items-start">
-                                            <h6>Deleting Your Account Will Permanently</h6>
-                                            <div class="form-check form-switch switch-radio ms-auto">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="redio3">
-                                                <label class="form-check-label" for="redio3"></label>
-                                            </div>
-                                        </div>
-                                        <p class="text-content">Once your account is deleted, you will be logged out
-                                            and will be unable to log in back.</p>
-                                    </div>
-
-                                    <div class="privacy-box">
-                                        <div class="d-flex align-items-start">
-                                            <h6>Deleting Your Account Will Temporary</h6>
-                                            <div class="form-check form-switch switch-radio ms-auto">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="redio4">
-                                                <label class="form-check-label" for="redio4"></label>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-content">Once your account is deleted, you will be logged out
-                                            and you will be create new account</p>
-                                    </div>
-
-                                    <button class="btn theme-bg-color btn-md fw-bold mt-4 text-white">Delete My
-                                        Account</button>
-                                </div>
-                            </div>
+                        <div class="tab-pane fade" id="pills-privacy" role="tabpanel">
+                            @include('dashboard.partials.privacidad')
                         </div>
                     </div>
                 </div>
@@ -252,6 +197,8 @@
                     orders: 'pills-order-tab',
                     addresses: 'pills-address-tab',
                     profile: 'pills-profile-tab',
+                    tracking: 'pills-tracking-tab',
+                    quotes: 'pills-quotes-tab',
                 };
                 var activeTab = @json(session('tab'));
                 var tabButton = activeTab ? document.getElementById(tabMap[activeTab] || '') : null;

@@ -159,10 +159,23 @@
                                     <div class="onhover-div onhover-div-login">
                                     <ul class="user-box-name">
                                         @auth
+                                            @php
+                                                $usuarioAuth = auth()->user();
+                                                $esAdministrador = $usuarioAuth instanceof \App\Models\Usuario
+                                                    && (int) $usuarioAuth->Id_Rol === \App\Models\Usuario::ROL_ADMIN;
+                                            @endphp
                                             <!-- Si el usuario está autenticado -->
                                             <li class="product-box-contain">
                                                 <a href="{{ route('dashboard') }}">Mi Panel</a>
                                             </li>
+
+                                            @if ($esAdministrador)
+                                                <li class="product-box-contain">
+                                                    <a href="{{ route('admin.dashboard') }}" class="fw-bold theme-color">
+                                                        Panel Admin
+                                                    </a>
+                                                </li>
+                                            @endif
 
                                             <li class="product-box-contain">
                                                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -195,4 +208,4 @@
         </div>
     </div>
 </div>
-    </header>
+</header>

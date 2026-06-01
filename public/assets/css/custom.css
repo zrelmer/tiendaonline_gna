@@ -246,3 +246,443 @@ body.bg-effect,
         min-width: 72px;
     }
 }
+
+/* Dashboard — pestaña Seguimiento de órdenes */
+.user-dashboard-section .dashboard-tracking-card {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-tracking-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-tracking-order {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f3f3f3;
+    color: #555;
+    white-space: nowrap;
+}
+
+.user-dashboard-section .dashboard-tracking-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.user-dashboard-section .dashboard-tracking-step {
+    flex: 1 1 0;
+    min-width: 72px;
+    text-align: center;
+    position: relative;
+}
+
+.user-dashboard-section .dashboard-tracking-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: calc(50% + 18px);
+    width: calc(100% - 36px);
+    height: 2px;
+    background: #ddd;
+    z-index: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-done:not(:last-child)::after,
+.user-dashboard-section .dashboard-tracking-step.is-active:not(:last-child)::after {
+    background: #0baf9a;
+}
+
+.user-dashboard-section .dashboard-tracking-step-icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f3f3;
+    color: #888;
+    position: relative;
+    z-index: 1;
+}
+
+.user-dashboard-section .dashboard-tracking-step-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-done .dashboard-tracking-step-icon,
+.user-dashboard-section .dashboard-tracking-step.is-active .dashboard-tracking-step-icon {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-step-label {
+    display: block;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: #777;
+    font-weight: 600;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-active .dashboard-tracking-step-label,
+.user-dashboard-section .dashboard-tracking-step.is-done .dashboard-tracking-step-label {
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping {
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: #f8f8f8;
+    border: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list li {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list li:last-child {
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 24px;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ccc 0,
+        #ccc 4px,
+        transparent 4px,
+        transparent 8px
+    );
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-marker {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffc107;
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-marker svg {
+    width: 18px;
+    height: 18px;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item.is-current .dashboard-tracking-timeline-marker {
+    background: #0baf9a;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(11, 175, 154, 0.2);
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Dashboard — pestaña Cotizaciones */
+.user-dashboard-section .dashboard-quote-form-box {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-quote-card {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-quote-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-quote-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f3f3f3;
+    color: #555;
+    white-space: nowrap;
+}
+
+.user-dashboard-section .dashboard-quote-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-quote-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-quote-terms {
+    padding: 12px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    border: 1px solid #ececec;
+}
+
+/* Panel de administración */
+body.admin-layout {
+    background: #f4f6f8;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: #1e2a3a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+}
+
+.admin-sidebar-brand {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.admin-sidebar-logo {
+    max-width: 120px;
+    filter: brightness(0) invert(1);
+}
+
+.admin-sidebar-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #0baf9a;
+    border-radius: 4px;
+}
+
+.admin-sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+    overflow-y: auto;
+}
+
+.admin-sidebar-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.admin-sidebar-nav a:hover,
+.admin-sidebar-nav a.active {
+    background: rgba(11, 175, 154, 0.2);
+    color: #fff;
+}
+
+.admin-sidebar-nav a svg {
+    width: 18px;
+    height: 18px;
+}
+
+.admin-nav-divider {
+    height: 1px;
+    margin: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.admin-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.admin-topbar-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.admin-topbar-end {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.admin-stat-card {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 1.25rem;
+    height: 100%;
+}
+
+.admin-stat-card h6 {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 0.5rem;
+}
+
+.admin-stat-card h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: #222;
+}
+
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        position: fixed;
+        left: -280px;
+        transition: left 0.3s ease;
+    }
+
+    .admin-sidebar.is-open {
+        left: 0;
+    }
+
+    .admin-sidebar-toggle {
+        display: inline-flex !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .admin-sidebar-toggle {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .user-dashboard-section .dashboard-tracking-progress {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        min-width: 0;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step:not(:last-child)::after {
+        display: none;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step-icon {
+        margin: 0;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step-label {
+        font-size: 0.85rem;
+    }
+}

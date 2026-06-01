@@ -35,6 +35,14 @@ class EstatusSeeder extends Seeder
             ['Id_Estatus' => 30, 'Nom_Estatus' => 'Envío pendiente'],
             ['Id_Estatus' => 31, 'Nom_Estatus' => 'En tránsito'],
             ['Id_Estatus' => 32, 'Nom_Estatus' => 'Envío entregado'],
+
+            // Cotización (tb_cotizacion)
+            ['Id_Estatus' => 40, 'Nom_Estatus' => 'Solicitud recibida'],
+            ['Id_Estatus' => 41, 'Nom_Estatus' => 'En revisión'],
+            ['Id_Estatus' => 42, 'Nom_Estatus' => 'Cotización emitida'],
+            ['Id_Estatus' => 43, 'Nom_Estatus' => 'Aceptada'],
+            ['Id_Estatus' => 44, 'Nom_Estatus' => 'Rechazada'],
+            ['Id_Estatus' => 45, 'Nom_Estatus' => 'Vencida'],
         ];
 
         foreach ($estatus as $fila) {

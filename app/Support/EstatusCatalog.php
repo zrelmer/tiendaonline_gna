@@ -46,4 +46,17 @@ final class EstatusCatalog
     public const ENVIO_EN_TRANSITO = 31;
 
     public const ENVIO_ENTREGADO = 32;
+
+    // Cotización (tb_cotizacion)
+    public const COTIZACION_SOLICITUD_RECIBIDA = 40;
+
+    public const COTIZACION_EN_REVISION = 41;
+
+    public const COTIZACION_EMITIDA = 42;
+
+    public const COTIZACION_ACEPTADA = 43;
+
+    public const COTIZACION_RECHAZADA = 44;
+
+    public const COTIZACION_VENCIDA = 45;
 }

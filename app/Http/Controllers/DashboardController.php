@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Models\Producto;
 use App\Models\Usuario;
 use App\Services\PedidoService;
 use App\Support\EstatusCatalog;
@@ -37,9 +38,11 @@ class DashboardController extends Controller
             ->with([
                 'estatus',
                 'pago.metodoPago',
+                'pago.estatus',
                 'detalle.producto.imagenes',
                 'direccion.municipio.departamento',
-                'envio',
+                'envio.estatus',
+                'historial.estatus',
             ])
             ->latest('Id_Pedido')
             ->get();
@@ -61,6 +64,18 @@ class DashboardController extends Controller
             ])->values(),
         ]);
 
+        $cotizaciones = $usuario->cotizaciones()
+            ->with(['estatus', 'detalle.producto', 'historial.estatus'])
+            ->latest('Id_Cotizacion')
+            ->get();
+
+        $productosCotizacion = Producto::query()
+            ->where('Prod_Activo', 1)
+            ->orderBy('Prod_Nombre')
+            ->get(['Id_Producto', 'Prod_Nombre', 'Prod_Precio']);
+
+        $direccionPrincipal = $direcciones->first();
+
         return view('dashboard', compact(
             'usuario',
             'totalPedidos',
@@ -70,6 +85,9 @@ class DashboardController extends Controller
             'direcciones',
             'departamentos',
             'municipiosPorDepartamento',
+            'cotizaciones',
+            'productosCotizacion',
+            'direccionPrincipal',
         ));
     }
 }

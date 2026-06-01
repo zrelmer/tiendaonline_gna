@@ -9,6 +9,12 @@ class Producto extends Model
     protected $table = 'tb_producto';
     // protected $primarykey = 'Id_Producto';
     protected $primaryKey = 'Id_Producto';
+
+    public function getRouteKeyName(): string
+    {
+        return 'Id_Producto';
+    }
+
     // public $timestamps = false;
 
     protected $fillable = [

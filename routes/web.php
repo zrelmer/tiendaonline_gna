@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPedidoController;
 use App\Http\Controllers\DashboardDireccionController;
 use App\Http\Controllers\DashboardProfileController;
+use App\Http\Controllers\DashboardCotizacionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ListaDeseoController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\BoletaPagoController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\RecurrenteWebhookController;
 use App\Http\Controllers\WhatsAppController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProductoController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -21,6 +24,20 @@ Route::get('/listadeseo', [ListaDeseoController::class, 'index'])->name('listade
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'verified', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/productos', [AdminProductoController::class, 'index'])->name('productos.index');
+        Route::get('/productos/export/{format}', [AdminProductoController::class, 'export'])
+            ->whereIn('format', ['xlsx', 'csv'])
+            ->name('productos.export');
+        Route::get('/productos/{producto}/edit', [AdminProductoController::class, 'edit'])->name('productos.edit');
+        Route::delete('/productos/{producto}', [AdminProductoController::class, 'destroy'])->name('productos.destroy');
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,6 +61,11 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard.profile.update');
     Route::put('/dashboard/profile/password', [DashboardProfileController::class, 'updatePassword'])
         ->name('dashboard.profile.password');
+    Route::post('/dashboard/cotizaciones', [DashboardCotizacionController::class, 'store'])
+        ->name('dashboard.cotizaciones.store');
+    Route::get('/dashboard/cotizaciones/{cotizacion}/archivo', [DashboardCotizacionController::class, 'download'])
+        ->whereNumber('cotizacion')
+        ->name('dashboard.cotizaciones.download');
     Route::post('/producto/{idproducto}/resena', [ProductoController::class, 'saveReview'])
         ->whereNumber('idproducto')
         ->name('product.review.save');

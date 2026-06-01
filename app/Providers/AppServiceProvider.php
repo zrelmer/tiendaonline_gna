@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\View\Composers\AdminLayoutComposer;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,5 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Pagination\Paginator::defaultView('vendor.pagination.custom');
+
+        View::composer('layouts.appadmin', AdminLayoutComposer::class);
     }
 }
