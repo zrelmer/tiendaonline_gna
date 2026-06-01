@@ -1,6 +1,6 @@
 @extends('layouts.appadmin')
 
-@section('title', 'Editar producto')
+@section('title', 'Editar rol de usuario')
 
 @section('content')
     @if (session('success'))
@@ -17,13 +17,11 @@
         </div>
     @endif
 
-    @include('admin.productos._form', [
-        'producto' => $producto,
-        'categorias' => $categorias,
-        'marcas' => $marcas,
-        'estatusProducto' => $estatusProducto,
-        'formAction' => route('admin.productos.update', $producto),
+    @include('admin.usuarios._form', [
+        'usuario' => $usuario,
+        'roles' => $roles,
+        'formAction' => route('admin.usuarios.update', $usuario),
         'formMethod' => 'PUT',
-        'submitLabel' => 'Actualizar producto',
+        'submitLabel' => 'Actualizar rol',
     ])
 @endsection

@@ -109,4 +109,57 @@ class Usuario extends Authenticatable
     {
         return (int) $this->Id_Rol === self::ROL_ADMIN;
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'Id_Usuario';
+    }
+
+    public function scopeBuscarAdmin($query, string $termino)
+    {
+        $termino = trim($termino);
+
+        if ($termino === '') {
+            return $query;
+        }
+
+        $like = '%'.$termino.'%';
+
+        return $query->where(function ($q) use ($termino, $like) {
+            $q->where('Usu_Nombre', 'like', $like)
+                ->orWhere('Usu_Correo', 'like', $like)
+                ->orWhere('Usu_Telefono', 'like', $like)
+                ->orWhereHas('roles', fn ($rol) => $rol->where('Rol_Nombre', 'like', $like))
+                ->orWhereHas('direcciones', function ($dir) use ($like) {
+                    $dir->where('Direccion', 'like', $like)
+                        ->orWhereHas('municipio', fn ($mun) => $mun->where('Nom_Municipio', 'like', $like)
+                            ->orWhereHas('departamento', fn ($dep) => $dep->where('Nom_Departamento', 'like', $like)));
+                });
+
+            if (ctype_digit($termino)) {
+                $q->orWhere('Id_Usuario', (int) $termino);
+            }
+        });
+    }
+
+    public function textoDireccionPrincipal(): string
+    {
+        $direccion = $this->relationLoaded('direcciones')
+            ? $this->direcciones->first()
+            : $this->direcciones()->with('municipio.departamento')->first();
+
+        if ($direccion === null) {
+            return '—';
+        }
+
+        if (! $direccion->relationLoaded('municipio')) {
+            $direccion->load('municipio.departamento');
+        }
+
+        return collect([
+            $direccion->Direccion,
+            $direccion->municipio?->Nom_Municipio,
+            $direccion->municipio?->departamento?->Nom_Departamento,
+        ])->filter(fn ($parte) => $parte !== null && $parte !== '')->implode(', ');
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\RichText;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
@@ -65,5 +67,42 @@ class Producto extends Model
 
     public function detallepedidos(){
         return $this->hasMany(DetallePedido::class, 'Id_Producto', 'Id_Producto');
+    }
+
+    public function scopeBuscarAdmin($query, string $termino)
+    {
+        $termino = trim($termino);
+
+        if ($termino === '') {
+            return $query;
+        }
+
+        $like = '%'.$termino.'%';
+
+        return $query->where(function ($q) use ($termino, $like) {
+            $q->where('Prod_Nombre', 'like', $like)
+                ->orWhere('Prod_Slug', 'like', $like)
+                ->orWhereHas('categoria', fn ($c) => $c->where('Cate_Nombre', 'like', $like))
+                ->orWhereHas('marca', fn ($m) => $m->where('Nom_Marca', 'like', $like))
+                ->orWhereHas('estatus', fn ($e) => $e->where('Nom_Estatus', 'like', $like));
+
+            if (ctype_digit($termino)) {
+                $q->orWhere('Id_Producto', (int) $termino);
+            }
+        });
+    }
+
+    protected function descripcionSegura(): Attribute
+    {
+        return Attribute::get(
+            fn () => RichText::forDisplay($this->Prod_Descripcion)
+        );
+    }
+
+    protected function descripcionResumen(): Attribute
+    {
+        return Attribute::get(
+            fn () => RichText::toPlainText($this->Prod_Descripcion)
+        );
     }
 }

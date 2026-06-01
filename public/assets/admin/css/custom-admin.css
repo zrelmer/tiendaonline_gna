@@ -115,3 +115,164 @@ body.dark-only .dashboard-category.dashboard-category-round .category-image:hove
 body.dark-only .dashboard-category.dashboard-category-round .category-image:hover .category-remix-icon {
     color: #5ee8cf;
 }
+
+/* Solo listado /admin/productos: miniaturas pequeñas sin romper la tabla */
+.admin-productos-table-wrap .table-product thead th {
+    background-color: #f9f9f6;
+    color: #212529;
+    vertical-align: middle;
+}
+
+.admin-productos-table-wrap .table-product tbody td {
+    vertical-align: middle;
+}
+
+.admin-productos-table-wrap .table-product tbody td:first-child {
+    width: 56px;
+    max-width: 56px;
+}
+
+.admin-productos-table-wrap .table-product .product-list-thumb {
+    width: 48px;
+    height: 48px;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.admin-productos-table-wrap .table-product .product-list-thumb img {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.admin-productos-table-wrap .theme-table tbody tr td:last-child ul li a {
+    display: block;
+    cursor: pointer;
+}
+
+.admin-productos-table-wrap .theme-table tbody tr td:last-child ul li a .ri-delete-bin-line {
+    color: #ef3f3e;
+}
+
+/* Paginación admin: mismo estilo que shop/index (vendor.pagination.custom) */
+.custom-pagination {
+    margin-top: 0;
+}
+
+.custom-pagination .pagination {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.custom-pagination .pagination .page-item {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.custom-pagination .pagination .page-item:not(:first-child) .page-link {
+    margin: 0;
+}
+
+.custom-pagination .pagination .page-item.active .page-link {
+    background-color: var(--theme-color);
+    border-color: var(--theme-color);
+    color: #fff;
+}
+
+.custom-pagination .pagination .page-item .page-link {
+    color: #4a5568;
+    border: 1px solid transparent;
+    min-width: 38px;
+    text-align: center;
+}
+
+.custom-pagination .pagination .page-item .page-link:hover {
+    border-radius: 5px;
+    border: 1px solid var(--theme-color);
+    background-color: unset;
+    color: #4a5568;
+}
+
+.custom-pagination .pagination .page-item .page-link:focus {
+    color: var(--theme-color);
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.custom-pagination .pagination .page-item.disabled .page-link {
+    opacity: 0.55;
+}
+
+.custom-pagination .fa-solid {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.custom-pagination .fa-angles-left::before {
+    content: '\f100';
+}
+
+.custom-pagination .fa-angles-right::before {
+    content: '\f101';
+}
+
+.admin-productos-search-form .input-group-text {
+    background-color: #fff;
+    color: #0da487;
+}
+
+.admin-productos-search-form .form-control:focus {
+    border-color: #0da487;
+    box-shadow: none;
+}
+
+.admin-productos-search-summary {
+    padding-top: 0.35rem;
+}
+
+.admin-boleta-preview-thumb {
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.admin-boleta-format-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.admin-boleta-download-box {
+    padding: 1.5rem;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.admin-boleta-download-icon i {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.admin-boleta-meta dt {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+}
+
+.admin-boleta-meta dd {
+    margin-bottom: 1rem;
+    color: #1e293b;
+}

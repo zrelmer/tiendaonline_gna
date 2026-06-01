@@ -104,7 +104,11 @@
                             </div>
 
                             <div class="product-contain">
-                                <p class="w-100">{{ $producto->Prod_Descripcion ?: 'Sin descripcion disponible.' }}</p>
+                                @if ($producto->descripcion_resumen !== '')
+                                    <p class="w-100">{{ $producto->descripcion_resumen }}</p>
+                                @else
+                                    <p class="w-100">Sin descripcion disponible.</p>
+                                @endif
                             </div>
 
                             <div class="note-box product-package">
@@ -218,8 +222,12 @@
                     <div class="tab-content custom-tab" id="myTabContent">
                         <div class="tab-pane fade show active" id="description" role="tabpanel">
                             <div class="product-description">
-                                <div class="nav-desh">
-                                    <p class="w-100">{{ $producto->Prod_Descripcion ?: 'Sin descripcion disponible.' }}</p>
+                                <div class="nav-desh ckeditor-content">
+                                    @if ($producto->descripcion_segura !== '')
+                                        {!! $producto->descripcion_segura !!}
+                                    @else
+                                        <p class="w-100">Sin descripcion disponible.</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

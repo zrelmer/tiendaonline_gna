@@ -131,7 +131,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#">Agregar Producto</a>
+                                            <a href="{{ route('admin.productos.create') }}">Agregar Producto</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -143,11 +143,11 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="#">Listado de Categorias</a>
+                                            <a href="{{ route('admin.categorias.index') }}">Listado de Categorias</a>
                                         </li>
 
                                         <li>
-                                            <a href="#">Agregar Categoria</a>
+                                            <a href="{{ route('admin.categorias.create') }}">Agregar Categoria</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -159,11 +159,11 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="#">Listado de Departamentos</a>
+                                            <a href="{{ route('admin.departamentos.index') }}">Listado de Departamentos</a>
                                         </li>
 
                                         <li>
-                                            <a href="#">Agregar Departamento</a>
+                                            <a href="{{ route('admin.departamentos.create') }}">Agregar Departamento</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -176,11 +176,11 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="#">Listado de Municipios</a>
+                                            <a href="{{ route('admin.municipios.index') }}">Listado de Municipios</a>
                                         </li>
 
                                         <li>
-                                            <a href="#">Agregar Municipio</a>
+                                            <a href="{{ route('admin.municipios.create') }}">Agregar Municipio</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -192,32 +192,13 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="#">Listado de Usuarios</a>
-                                        </li>
-                                        <li>
-                                            <a href="add-new-user.html">Add new user</a>
+                                            <a href="{{ route('admin.usuarios.index') }}">Listado de Usuarios</a>
                                         </li>
                                     </ul>
                                 </li>
-                                {{-- aca controlaremos los roles el crud de Roles --}}
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
-                                        <i class="ri-user-3-line"></i>
-                                        <span>Roles</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <a href="#">Listado de Roles</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Agregar Rol</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
                                 {{-- boletas de pago aca veremos el listado de boletas de pago y el detalle de una boleta de pago --}}
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" href="media.html">
+                                    <a class="sidebar-link sidebar-title link-nav" href="{{ route('admin.boletas.index') }}">
                                         <i class="ri-price-tag-3-line"></i>
                                         <span>Boletas de Pago</span>
                                     </a>

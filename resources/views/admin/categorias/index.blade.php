@@ -1,6 +1,6 @@
 @extends('layouts.appadmin')
 
-@section('title', 'Listado de productos')
+@section('title', 'Listado de categorías')
 
 @section('content')
     @if (session('success'))
@@ -15,22 +15,11 @@
          Pega aquí el bloque de tu plantilla Fastkart
     ============================================================ --}}
     <div class="title-header option-title d-sm-flex d-block">
-        <h5>Listado de productos</h5>
+        <h5>Listado de categorías</h5>
         <div class="right-options">
             <ul>
                 <li>
-                    @php
-                        $urlExportar = route('admin.productos.export', ['format' => 'csv']);
-                        if ($terminoBusqueda !== '') {
-                            $urlExportar .= '?q='.urlencode($terminoBusqueda);
-                        }
-                    @endphp
-                    <a href="{{ $urlExportar }}" title="Descargar listado en CSV">
-                        Exportar
-                    </a>
-                </li>
-                <li>
-                    <a class="btn btn-solid" href="{{ route('admin.productos.create') }}">+ Agregar producto</a>
+                    <a class="btn btn-solid" href="{{ route('admin.categorias.create') }}">+ Agregar categoría</a>
                 </li>
             </ul>
         </div>
@@ -47,25 +36,25 @@
                     {{-- ZONA 2a: Barra superior (búsqueda) --}}
                     <div class="table-header row align-items-center g-3 mb-3">
                         <div class="col-lg-7 col-md-8">
-                            <form action="{{ route('admin.productos.index') }}"
+                            <form action="{{ route('admin.categorias.index') }}"
                                   method="GET"
-                                  class="admin-productos-search-form"
+                                  class="admin-productos-search-form admin-categorias-search-form"
                                   role="search">
                                 <div class="input-group">
-                                    <span class="input-group-text" id="admin-productos-search-label">
+                                    <span class="input-group-text" id="admin-categorias-search-label">
                                         <i class="ri-search-line"></i>
                                     </span>
                                     <input type="search"
-                                           id="admin-productos-q"
+                                           id="admin-categorias-q"
                                            name="q"
                                            value="{{ $terminoBusqueda }}"
                                            class="form-control"
-                                           placeholder="Buscar por ID, nombre, slug, categoría o marca…"
-                                           aria-label="Buscar productos"
-                                           aria-describedby="admin-productos-search-label">
+                                           placeholder="Buscar por ID, nombre, slug o descripción…"
+                                           aria-label="Buscar categorías"
+                                           aria-describedby="admin-categorias-search-label">
                                     <button type="submit" class="btn btn-primary">Buscar</button>
                                     @if ($terminoBusqueda !== '')
-                                        <a href="{{ route('admin.productos.index') }}"
+                                        <a href="{{ route('admin.categorias.index') }}"
                                            class="btn btn-outline-secondary">
                                             Limpiar
                                         </a>
@@ -77,35 +66,31 @@
                         @if ($terminoBusqueda !== '')
                             <div class="col-lg-5 col-md-4 text-md-end">
                                 <p class="mb-0 text-muted small admin-productos-search-summary">
-                                    {{ $productos->total() }} resultado{{ $productos->total() === 1 ? '' : 's' }}
+                                    {{ $categorias->total() }} resultado{{ $categorias->total() === 1 ? '' : 's' }}
                                     para «{{ $terminoBusqueda }}»
                                 </p>
                             </div>
                         @endif
                     </div>
 
-                    {{-- ZONA 2b: Tabla de productos --}}
+                    {{-- ZONA 2b: Tabla de categorías --}}
                     <div class="table-responsive admin-productos-table-wrap">
-                        <table class="table theme-table table-product">
+                        <table class="table theme-table table-categoria">
                             <thead>
                                 <tr>
-                                    <th>Imagen producto</th>
-                                    <th>Nombre producto</th>
-                                    <th>Categoría</th>
-                                    <th>Cantidad actual</th>
-                                    <th>Precio</th>
-                                    <th>Estatus</th>
+                                    <th>Imagen Categoría</th>
+                                    <th>Nombre Categoría</th>
+                                    <th>Slug Categoría</th>
+                                    <th>Descripción Categoría</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($productos as $producto)
+                                @forelse ($categorias as $categoria)
                                     @php
-                                        $imagen = $producto->imagenes->sortBy('orden')->first();
-                                        $imagenUrl = $imagen
-                                            ? asset($imagen->url)
-                                            : asset('storage/products/default.png');
-                                        $stock = $producto->inventario?->Stock ?? 0;
+                                        $imagenUrl = $categoria->Cate_Imagen
+                                            ? asset($categoria->Cate_Imagen)
+                                            : asset('storage/products/p1.png');
                                     @endphp
                                     <tr>
                                         <td>
@@ -113,26 +98,20 @@
                                                 <img src="{{ $imagenUrl }}"
                                                      width="48"
                                                      height="48"
-                                                     alt="{{ $producto->Prod_Nombre }}">
+                                                     alt="{{ $categoria->Cate_Nombre }}">
                                             </div>
                                         </td>
 
-                                        <td>{{ $producto->Prod_Nombre }}</td>
+                                        <td>{{ $categoria->Cate_Nombre }}</td>
 
-                                        <td>{{ $producto->categoria?->Cate_Nombre ?? '—' }}</td>
+                                        <td>{{ $categoria->Cate_Slug }}</td>
 
-                                        <td>{{ $stock }}</td>
-
-                                        <td class="td-price">Q {{ number_format($producto->Prod_Precio, 2) }}</td>
-
-                                        <td class="{{ $producto->Prod_Activo ? 'status-success' : 'status-danger' }}">
-                                            <span>{{ $producto->Prod_Activo ? 'Activo' : 'Inactivo' }}</span>
-                                        </td>
+                                        <td>{{ $categoria->Cate_Descripcion }}</td>
 
                                         <td>
                                             <ul>
                                                 <li>
-                                                    <a href="{{ route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug]) }}"
+                                                    <a href="{{ route('shop.index', ['category' => $categoria->Id_Categoria]) }}"
                                                        target="_blank"
                                                        rel="noopener"
                                                        title="Ver en tienda">
@@ -141,7 +120,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a href="{{ route('admin.productos.edit', $producto) }}"
+                                                    <a href="{{ route('admin.categorias.edit', $categoria) }}"
                                                        title="Editar">
                                                         <i class="ri-pencil-line"></i>
                                                     </a>
@@ -151,11 +130,11 @@
                                                     <a href="javascript:void(0)"
                                                        title="Eliminar"
                                                        role="button"
-                                                       onclick="if (confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) { document.getElementById('delete-producto-{{ $producto->Id_Producto }}').submit(); }">
+                                                       onclick="if (confirm('¿Eliminar esta categoría? Esta acción no se puede deshacer.')) { document.getElementById('delete-categoria-{{ $categoria->Id_Categoria }}').submit(); }">
                                                         <i class="ri-delete-bin-line"></i>
                                                     </a>
-                                                    <form id="delete-producto-{{ $producto->Id_Producto }}"
-                                                          action="{{ route('admin.productos.destroy', $producto) }}"
+                                                    <form id="delete-categoria-{{ $categoria->Id_Categoria }}"
+                                                          action="{{ route('admin.categorias.destroy', $categoria) }}"
                                                           method="POST"
                                                           class="d-none">
                                                         @csrf
@@ -167,11 +146,11 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
+                                        <td colspan="5" class="text-center text-muted py-4">
                                             @if ($terminoBusqueda !== '')
-                                                No hay productos que coincidan con «{{ $terminoBusqueda }}».
+                                                No hay categorías que coincidan con «{{ $terminoBusqueda }}».
                                             @else
-                                                No hay productos registrados. Ejecuta los seeders o agrega el primero.
+                                                No hay categorías registradas.
                                             @endif
                                         </td>
                                     </tr>
@@ -181,9 +160,9 @@
                     </div>
 
                     {{-- ZONA 2c: Paginación (mismo diseño que shop/index) --}}
-                    @if ($productos->hasPages())
+                    @if ($categorias->hasPages())
                         <div class="mt-4 d-flex justify-content-center">
-                            {{ $productos->withQueryString()->links() }}
+                            {{ $categorias->withQueryString()->links() }}
                         </div>
                     @endif
 

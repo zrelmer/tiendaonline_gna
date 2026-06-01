@@ -1,12 +1,8 @@
 @extends('layouts.appadmin')
 
-@section('title', 'Editar producto')
+@section('title', 'Agregar producto')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0 ps-3">
@@ -18,12 +14,12 @@
     @endif
 
     @include('admin.productos._form', [
-        'producto' => $producto,
+        'producto' => null,
         'categorias' => $categorias,
         'marcas' => $marcas,
         'estatusProducto' => $estatusProducto,
-        'formAction' => route('admin.productos.update', $producto),
-        'formMethod' => 'PUT',
-        'submitLabel' => 'Actualizar producto',
+        'formAction' => route('admin.productos.store'),
+        'formMethod' => 'POST',
+        'submitLabel' => 'Guardar producto',
     ])
 @endsection

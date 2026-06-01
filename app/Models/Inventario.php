@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Inventario extends Model
 {
     protected $table = 'tb_inventario';
-    protected $primarykey = 'Id_Inventario';
+
+    protected $primaryKey = 'Id_Inventario';
+
+    public $timestamps = false;
 
     protected $fillable =[
         'Id_Producto',

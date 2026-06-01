@@ -15,7 +15,12 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\RecurrenteWebhookController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminCategoriaController;
+use App\Http\Controllers\Admin\AdminDepartamentoController;
+use App\Http\Controllers\Admin\AdminMunicipioController;
 use App\Http\Controllers\Admin\AdminProductoController;
+use App\Http\Controllers\Admin\AdminBoletaPagoController;
+use App\Http\Controllers\Admin\AdminUsuarioController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -32,11 +37,43 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/productos', [AdminProductoController::class, 'index'])->name('productos.index');
+        Route::get('/productos/create', [AdminProductoController::class, 'create'])->name('productos.create');
+        Route::post('/productos', [AdminProductoController::class, 'store'])->name('productos.store');
         Route::get('/productos/export/{format}', [AdminProductoController::class, 'export'])
             ->whereIn('format', ['xlsx', 'csv'])
             ->name('productos.export');
         Route::get('/productos/{producto}/edit', [AdminProductoController::class, 'edit'])->name('productos.edit');
+        Route::put('/productos/{producto}', [AdminProductoController::class, 'update'])->name('productos.update');
         Route::delete('/productos/{producto}', [AdminProductoController::class, 'destroy'])->name('productos.destroy');
+
+        Route::get('/categorias', [AdminCategoriaController::class, 'index'])->name('categorias.index');
+        Route::get('/categorias/create', [AdminCategoriaController::class, 'create'])->name('categorias.create');
+        Route::post('/categorias', [AdminCategoriaController::class, 'store'])->name('categorias.store');
+        Route::get('/categorias/{categoria}/edit', [AdminCategoriaController::class, 'edit'])->name('categorias.edit');
+        Route::put('/categorias/{categoria}', [AdminCategoriaController::class, 'update'])->name('categorias.update');
+        Route::delete('/categorias/{categoria}', [AdminCategoriaController::class, 'destroy'])->name('categorias.destroy');
+
+        Route::get('/departamentos', [AdminDepartamentoController::class, 'index'])->name('departamentos.index');
+        Route::get('/departamentos/create', [AdminDepartamentoController::class, 'create'])->name('departamentos.create');
+        Route::post('/departamentos', [AdminDepartamentoController::class, 'store'])->name('departamentos.store');
+        Route::get('/departamentos/{departamento}/edit', [AdminDepartamentoController::class, 'edit'])->name('departamentos.edit');
+        Route::put('/departamentos/{departamento}', [AdminDepartamentoController::class, 'update'])->name('departamentos.update');
+        Route::delete('/departamentos/{departamento}', [AdminDepartamentoController::class, 'destroy'])->name('departamentos.destroy');
+
+        Route::get('/municipios', [AdminMunicipioController::class, 'index'])->name('municipios.index');
+        Route::get('/municipios/create', [AdminMunicipioController::class, 'create'])->name('municipios.create');
+        Route::post('/municipios', [AdminMunicipioController::class, 'store'])->name('municipios.store');
+        Route::get('/municipios/{municipio}/edit', [AdminMunicipioController::class, 'edit'])->name('municipios.edit');
+        Route::put('/municipios/{municipio}', [AdminMunicipioController::class, 'update'])->name('municipios.update');
+        Route::delete('/municipios/{municipio}', [AdminMunicipioController::class, 'destroy'])->name('municipios.destroy');
+
+        Route::get('/usuarios', [AdminUsuarioController::class, 'index'])->name('usuarios.index');
+        Route::get('/usuarios/{usuario}/edit', [AdminUsuarioController::class, 'edit'])->name('usuarios.edit');
+        Route::put('/usuarios/{usuario}', [AdminUsuarioController::class, 'update'])->name('usuarios.update');
+
+        Route::get('/boletas', [AdminBoletaPagoController::class, 'index'])->name('boletas.index');
+        Route::get('/boletas/{boleta}/download', [AdminBoletaPagoController::class, 'download'])->name('boletas.download');
+        Route::get('/boletas/{boleta}', [AdminBoletaPagoController::class, 'show'])->name('boletas.show');
     });
 
 Route::middleware('auth')->group(function () {

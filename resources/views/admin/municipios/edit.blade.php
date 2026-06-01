@@ -1,6 +1,6 @@
 @extends('layouts.appadmin')
 
-@section('title', 'Editar producto')
+@section('title', 'Editar municipio')
 
 @section('content')
     @if (session('success'))
@@ -17,13 +17,11 @@
         </div>
     @endif
 
-    @include('admin.productos._form', [
-        'producto' => $producto,
-        'categorias' => $categorias,
-        'marcas' => $marcas,
-        'estatusProducto' => $estatusProducto,
-        'formAction' => route('admin.productos.update', $producto),
+    @include('admin.municipios._form', [
+        'municipio' => $municipio,
+        'departamentos' => $departamentos,
+        'formAction' => route('admin.municipios.update', $municipio),
         'formMethod' => 'PUT',
-        'submitLabel' => 'Actualizar producto',
+        'submitLabel' => 'Actualizar municipio',
     ])
 @endsection
