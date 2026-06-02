@@ -20,6 +20,9 @@ use App\Http\Controllers\Admin\AdminDepartamentoController;
 use App\Http\Controllers\Admin\AdminMunicipioController;
 use App\Http\Controllers\Admin\AdminProductoController;
 use App\Http\Controllers\Admin\AdminBoletaPagoController;
+use App\Http\Controllers\Admin\AdminCotizacionController;
+use App\Http\Controllers\Admin\AdminInventarioController;
+use App\Http\Controllers\Admin\AdminPedidoController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -45,6 +48,12 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::get('/productos/{producto}/edit', [AdminProductoController::class, 'edit'])->name('productos.edit');
         Route::put('/productos/{producto}', [AdminProductoController::class, 'update'])->name('productos.update');
         Route::delete('/productos/{producto}', [AdminProductoController::class, 'destroy'])->name('productos.destroy');
+
+        Route::get('/inventario/historial', [AdminInventarioController::class, 'historialIndex'])->name('inventario.historial.index');
+        Route::get('/inventario/ventas', [AdminInventarioController::class, 'ventasIndex'])->name('inventario.ventas.index');
+        Route::get('/inventario', [AdminInventarioController::class, 'index'])->name('inventario.index');
+        Route::get('/inventario/{producto}/ajustar', [AdminInventarioController::class, 'ajustar'])->name('inventario.ajustar');
+        Route::post('/inventario/{producto}/ajustar', [AdminInventarioController::class, 'ajustarStore'])->name('inventario.ajustar.store');
 
         Route::get('/categorias', [AdminCategoriaController::class, 'index'])->name('categorias.index');
         Route::get('/categorias/create', [AdminCategoriaController::class, 'create'])->name('categorias.create');
@@ -72,8 +81,31 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::put('/usuarios/{usuario}', [AdminUsuarioController::class, 'update'])->name('usuarios.update');
 
         Route::get('/boletas', [AdminBoletaPagoController::class, 'index'])->name('boletas.index');
+        Route::post('/boletas/{boleta}/aprobar', [AdminBoletaPagoController::class, 'aprobar'])->name('boletas.aprobar');
+        Route::post('/boletas/{boleta}/rechazar', [AdminBoletaPagoController::class, 'rechazar'])->name('boletas.rechazar');
         Route::get('/boletas/{boleta}/download', [AdminBoletaPagoController::class, 'download'])->name('boletas.download');
         Route::get('/boletas/{boleta}', [AdminBoletaPagoController::class, 'show'])->name('boletas.show');
+
+        Route::get('/cotizaciones', [AdminCotizacionController::class, 'index'])->name('cotizaciones.index');
+        Route::get('/cotizaciones/pendientes', [AdminCotizacionController::class, 'pendientesIndex'])->name('cotizaciones.pendientes.index');
+        Route::post('/cotizaciones/{cotizacion}/revision', [AdminCotizacionController::class, 'marcarEnRevision'])->name('cotizaciones.revision');
+        Route::get('/cotizaciones/{cotizacion}/emitir', [AdminCotizacionController::class, 'emitir'])->name('cotizaciones.emitir');
+        Route::post('/cotizaciones/{cotizacion}/emitir', [AdminCotizacionController::class, 'emitirStore'])->name('cotizaciones.emitir.store');
+        Route::get('/cotizaciones/{cotizacion}/download', [AdminCotizacionController::class, 'download'])->name('cotizaciones.download');
+        Route::get('/cotizaciones/{cotizacion}', [AdminCotizacionController::class, 'show'])->name('cotizaciones.show');
+
+        Route::get('/pedidos', [AdminPedidoController::class, 'index'])->name('pedidos.index');
+        Route::get('/pedidos/historial', [AdminPedidoController::class, 'historialIndex'])->name('pedidos.historial.index');
+        Route::get('/pedidos/seguimiento', [AdminPedidoController::class, 'seguimientoIndex'])->name('pedidos.seguimiento.index');
+        Route::get('/pedidos/{pedido}/seguimiento', [AdminPedidoController::class, 'seguimiento'])->name('pedidos.seguimiento');
+        Route::post('/pedidos/{pedido}/seguimiento/confirmar', [AdminPedidoController::class, 'seguimientoConfirmar'])->name('pedidos.seguimiento.confirmar');
+        Route::post('/pedidos/{pedido}/seguimiento/preparacion', [AdminPedidoController::class, 'seguimientoPreparacion'])->name('pedidos.seguimiento.preparacion');
+        Route::post('/pedidos/{pedido}/seguimiento/enviado', [AdminPedidoController::class, 'seguimientoEnviado'])->name('pedidos.seguimiento.enviado');
+        Route::post('/pedidos/{pedido}/seguimiento/entregado', [AdminPedidoController::class, 'seguimientoEntregado'])->name('pedidos.seguimiento.entregado');
+        Route::post('/pedidos/{pedido}/cancelar', [AdminPedidoController::class, 'cancelar'])->name('pedidos.cancelar');
+        Route::get('/pedidos/{pedido}/historial', [AdminPedidoController::class, 'historial'])->name('pedidos.historial');
+        Route::get('/pedidos/{pedido}', [AdminPedidoController::class, 'show'])->name('pedidos.show');
+        Route::delete('/pedidos/{pedido}', [AdminPedidoController::class, 'destroy'])->name('pedidos.destroy');
     });
 
 Route::middleware('auth')->group(function () {

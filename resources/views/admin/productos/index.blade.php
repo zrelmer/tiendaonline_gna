@@ -121,7 +121,12 @@
 
                                         <td>{{ $producto->categoria?->Cate_Nombre ?? '—' }}</td>
 
-                                        <td>{{ $stock }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.inventario.ajustar', $producto) }}"
+                                               title="Ajustar stock en inventario">
+                                                {{ $stock }}
+                                            </a>
+                                        </td>
 
                                         <td class="td-price">Q {{ number_format($producto->Prod_Precio, 2) }}</td>
 

@@ -14,6 +14,10 @@ use Illuminate\Validation\ValidationException;
 
 class AdminProductoService
 {
+    public function __construct(
+        protected AdminInventarioService $adminInventarioService
+    ) {}
+
     /**
      * @param  array<string, mixed>  $datos
      * @param  array<int, UploadedFile>  $imagenes
@@ -33,11 +37,17 @@ class AdminProductoService
                 'Prod_Activo' => (bool) $datos['Prod_Activo'],
             ]);
 
-            Inventario::query()->create([
+            $inventario = Inventario::query()->create([
                 'Id_Producto' => $producto->Id_Producto,
                 'Stock' => (int) $datos['Stock'],
                 'Stock_Reservado' => (int) ($datos['Stock_Reservado'] ?? 0),
             ]);
+
+            $this->adminInventarioService->registrarStockInicialAlta(
+                $producto,
+                $inventario,
+                (int) $datos['Stock']
+            );
 
             foreach ($imagenes as $orden => $archivo) {
                 $this->guardarImagenProducto($producto, $archivo, $orden);
@@ -66,13 +76,13 @@ class AdminProductoService
                 'Prod_Activo' => (bool) $datos['Prod_Activo'],
             ]);
 
-            $producto->inventario()->updateOrCreate(
-                ['Id_Producto' => $producto->Id_Producto],
-                [
-                    'Stock' => (int) $datos['Stock'],
-                    'Stock_Reservado' => (int) ($producto->inventario?->Stock_Reservado ?? 0),
-                ]
-            );
+            if (! $producto->inventario) {
+                Inventario::query()->create([
+                    'Id_Producto' => $producto->Id_Producto,
+                    'Stock' => 0,
+                    'Stock_Reservado' => 0,
+                ]);
+            }
 
             $ordenBase = (int) $producto->imagenes()->max('orden');
 

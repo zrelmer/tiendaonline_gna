@@ -8,6 +8,7 @@ use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Usuario;
 use App\Services\AdminBestSellingProductsService;
+use App\Services\AdminInventarioService;
 use App\Services\AdminRecentOrdersService;
 use App\Services\AdminRecentPagosService;
 use App\Services\AdminRevenueChartService;
@@ -20,14 +21,18 @@ class AdminLayoutComposer
 {
     public function compose(View $view): void
     {
+        $adminInventarioService = app(AdminInventarioService::class);
+
         $view->with([
             'totalIngresos' => (float) Pedido::query()
+                ->visibleEnAdmin()
                 ->where('Id_Estatus', '!=', EstatusCatalog::PEDIDO_CANCELADO)
                 ->sum('Ped_TotalPrecio'),
-            'totalPedidos' => Pedido::query()->count(),
+            'totalPedidos' => Pedido::query()->visibleEnAdmin()->count(),
             'totalProductos' => Producto::query()->where('Prod_Activo', 1)->count(),
             'totalUsuarios' => Usuario::query()->where('Id_Rol', Usuario::ROL_USUARIO)->count(),
             'pedidosPendientes' => Pedido::query()
+                ->visibleEnAdmin()
                 ->whereIn('Id_Estatus', [
                     EstatusCatalog::PEDIDO_PENDIENTE,
                     EstatusCatalog::PEDIDO_CONFIRMADO,
@@ -40,6 +45,9 @@ class AdminLayoutComposer
                     EstatusCatalog::COTIZACION_EN_REVISION,
                 ])
                 ->count(),
+            'inventarioBajoStock' => $adminInventarioService->contarBajoStock(),
+            'inventarioSinRegistro' => $adminInventarioService->contarSinInventario(),
+            'inventarioUmbralBajoStock' => $adminInventarioService->umbralBajoStock(),
             'categorias' => Categoria::query()
                 ->withCount(['productos' => fn ($query) => $query->where('Prod_Activo', 1)])
                 ->orderBy('Cate_Nombre')

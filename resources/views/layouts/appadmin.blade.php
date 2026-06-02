@@ -44,34 +44,26 @@
                             </div>
                             <ul class="profile-dropdown onhover-show-div">
                                 <li>
-                                    <a href="all-users.html">
-                                        <i data-feather="users"></i>
-                                        <span>Users</span>
+                                    <a href="{{ route('dashboard') }}">
+                                        <i data-feather="home"></i>
+                                        <span>Mi Panel</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="order-list.html">
-                                        <i data-feather="archive"></i>
-                                        <span>Orders</span>
+                                    <a href="{{ route('admin.dashboard') }}">
+                                        <i data-feather="grid"></i>
+                                        <span>Panel Admin</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="support-ticket.html">
-                                        <i data-feather="phone"></i>
-                                        <span>Spports Tickets</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="profile-setting.html">
-                                        <i data-feather="settings"></i>
-                                        <span>Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="javascript:void(0)">
-                                        <i data-feather="log-out"></i>
-                                        <span>Log out</span>
-                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                        @csrf
+                                        <a href="javascript:void(0)"
+                                           onclick="event.preventDefault(); if (typeof clearClientShopStorage === 'function') { clearClientShopStorage(); } this.closest('form').submit();">
+                                            <i data-feather="log-out"></i>
+                                            <span>Cerrar Sesión</span>
+                                        </a>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -211,51 +203,81 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="#">Listado de Pedidos</a>
+                                            <a href="{{ route('admin.pedidos.index') }}">Listado de Pedidos</a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="#">Detalle de Pedido</a>
-                                        </li>
+                                        </li> --}}
                                         <li>
-                                            <a href="#">Historial de Pedido</a>
+                                            <a href="{{ route('admin.pedidos.historial.index') }}">Historial de Pedido</a>
                                         </li>
                                         <li>
                                             {{-- en este boton actualizaremos el seguimiento de un pedido para que se vea reflejado en el panel de usuario --}}
-                                            <a href="#">Seguimiento de Pedido</a>
+                                            <a href="{{ route('admin.pedidos.seguimiento.index') }}">Seguimiento de Pedido</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 {{-- aca controlaremos las cotizaciones el crud de Cotizaciones --}}
                                 <li class="sidebar-list">
-                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
-                                        <i class="ri-focus-3-line"></i>
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-file-list-3-line"></i>
                                         <span>Cotizaciones</span>
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="translation.html">Translation</a>
+                                            <a href="{{ route('admin.cotizaciones.index') }}">Listado de cotizaciones</a>
                                         </li>
-
                                         <li>
-                                            <a href="currency-rates.html">Currency Rates</a>
+                                            <a href="{{ route('admin.cotizaciones.pendientes.index') }}">Pendientes de atención</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                                {{-- aca controlaremos el inventario el crud de Inventario --}}
+                                {{-- Inventario --}}
+                                @php
+                                    use App\Services\AdminInventarioService;
+                                @endphp
                                 <li class="sidebar-list">
                                     <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i class="ri-focus-3-line"></i>
                                         <span>Inventario</span>
+                                        @if ($inventarioBajoStock > 0)
+                                            <span class="badge rounded-pill admin-sidebar-inventario-badge"
+                                                  title="Productos con stock bajo">
+                                                {{ $inventarioBajoStock }}
+                                            </span>
+                                        @endif
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="translation.html">Inventario</a>
+                                            <a href="{{ route('admin.inventario.index') }}">Stock</a>
                                         </li>
-
+                                        @if ($inventarioBajoStock > 0)
+                                            <li>
+                                                <a href="{{ route('admin.inventario.index', ['filtro' => AdminInventarioService::FILTRO_BAJO_STOCK]) }}">
+                                                    Stock bajo
+                                                    <span class="badge rounded-pill admin-inventario-submenu-badge">
+                                                        {{ $inventarioBajoStock }}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($inventarioSinRegistro > 0)
+                                            <li>
+                                                <a href="{{ route('admin.inventario.index', ['filtro' => AdminInventarioService::FILTRO_SIN_INVENTARIO]) }}">
+                                                    Sin registro
+                                                    <span class="badge rounded-pill admin-inventario-submenu-badge admin-inventario-submenu-badge--muted">
+                                                        {{ $inventarioSinRegistro }}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endif
                                         <li>
-                                            <a href="currency-rates.html">Historial de Inventario</a>
+                                            <a href="{{ route('admin.inventario.historial.index') }}">Historial</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.inventario.ventas.index') }}">Ventas por producto</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -708,7 +730,13 @@
                                                 </div>
                                                 <div class="to-do-list-name">
                                                     <label for="admin-task-{{ $tarea->id }}" class="mb-0 w-100" style="cursor: pointer;">
-                                                        <strong>{{ $tarea->titulo }}</strong>
+                                                        <strong>
+                                                            @if (! empty($tarea->url))
+                                                                <a href="{{ $tarea->url }}" class="text-reset text-decoration-none">{{ $tarea->titulo }}</a>
+                                                            @else
+                                                                {{ $tarea->titulo }}
+                                                            @endif
+                                                        </strong>
                                                         <p class="mb-0">{{ $tarea->descripcion }}</p>
                                                     </label>
                                                 </div>
@@ -748,24 +776,6 @@
         <!-- Page Body End -->
     </div>
     <!-- page-wrapper End-->
-
-    <!-- Modal Start -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h5 class="modal-title" id="staticBackdropLabel">Logging Out</h5>
-                    <p>Are you sure you want to log out?</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="button-box">
-                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">No</button>
-                        <button type="button" class="btn  btn--yes btn-primary">Yes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal End -->
 
     @include('partials.admin.scripts')
 </body>

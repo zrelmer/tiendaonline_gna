@@ -291,18 +291,35 @@
                                     {{ $esEdicion ? 'Stock actual' : 'Stock inicial' }}
                                 </label>
                                 <div class="col-sm-9">
-                                    <input class="form-control @error('Stock') is-invalid @enderror"
-                                           type="number"
-                                           id="Stock"
-                                           name="Stock"
-                                           value="{{ $stockActual }}"
-                                           placeholder="0"
-                                           min="0"
-                                           step="1"
-                                           required>
-                                    @error('Stock')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
+                                    @if ($esEdicion)
+                                        <input class="form-control"
+                                               type="number"
+                                               id="Stock"
+                                               value="{{ $stockActual }}"
+                                               readonly
+                                               disabled>
+                                        <small class="text-muted d-block mt-1">
+                                            El stock se modifica desde
+                                            <a href="{{ route('admin.inventario.ajustar', $producto) }}">Inventario → Ajustar stock</a>.
+                                            Los cambios quedan en el historial de movimientos.
+                                        </small>
+                                    @else
+                                        <input class="form-control @error('Stock') is-invalid @enderror"
+                                               type="number"
+                                               id="Stock"
+                                               name="Stock"
+                                               value="{{ $stockActual }}"
+                                               placeholder="0"
+                                               min="0"
+                                               step="1"
+                                               required>
+                                        <small class="text-muted d-block mt-1">
+                                            Solo al crear el producto. Después, usa el módulo de inventario.
+                                        </small>
+                                        @error('Stock')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
                             </div>
 
@@ -356,7 +373,7 @@
             const stockDisponiblePreview = document.getElementById('stock-disponible-preview');
             const stockReservado = {{ $stockReservado }};
 
-            if (stockInput && stockDisponiblePreview) {
+            if (stockInput && stockDisponiblePreview && !stockInput.readOnly) {
                 stockInput.addEventListener('input', function () {
                     const stock = parseInt(stockInput.value, 10) || 0;
                     stockDisponiblePreview.textContent = String(Math.max(0, stock - stockReservado));

@@ -161,6 +161,36 @@ class WhatsAppService
         return $this->sendToUsuario($usuario, $message);
     }
 
+    public function sendPedidoEnviado(Pedido $pedido): bool
+    {
+        $pedido->loadMissing(['usuario', 'envio']);
+
+        $usuario = $pedido->usuario;
+
+        if (! $usuario) {
+            return false;
+        }
+
+        $nombre = (string) ($usuario->Usu_Nombre ?? 'cliente');
+        $empresaEnvio = trim((string) ($pedido->envio?->Empresa_Envio ?? ''));
+        $numeroGuia = trim((string) ($pedido->envio?->Numero_Guia ?? ''));
+        $urlSeguimiento = url('/dashboard');
+
+        $message = "Hola {$nombre}, tu pedido *{$pedido->Ped_Numero}* fue enviado. 📦\n\n";
+
+        if ($empresaEnvio !== '') {
+            $message .= "Transportista: {$empresaEnvio}\n";
+        }
+
+        if ($numeroGuia !== '') {
+            $message .= "Guía: {$numeroGuia}\n";
+        }
+
+        $message .= "\nConsulta el detalle en tu panel (Seguimiento de órdenes):\n{$urlSeguimiento}";
+
+        return $this->sendToUsuario($usuario, $message);
+    }
+
     protected function client(): Client
     {
         if ($this->twilio === null) {

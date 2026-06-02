@@ -61,8 +61,6 @@ class AdminProductoUpdateRequest extends FormRequest
             'Prod_Descripcion' => ['required', 'string'],
             'Prod_Precio' => ['required', 'numeric', 'min:0'],
             'Prod_PrecioOferta' => ['nullable', 'numeric', 'min:0'],
-            'Stock' => ['required', 'integer', 'min:0'],
-            'Stock_Reservado' => ['nullable', 'integer', 'min:0'],
             'imagenes' => ['nullable', 'array'],
             'imagenes.*' => ['image', 'mimes:jpeg,jpg,png,gif,webp', 'max:5120'],
         ];
@@ -83,7 +81,6 @@ class AdminProductoUpdateRequest extends FormRequest
             'Id_Estatus.required' => 'Selecciona el estatus del producto.',
             'Prod_Descripcion.required' => 'Escribe la descripción del producto.',
             'Prod_Precio.required' => 'Indica el precio de venta.',
-            'Stock.required' => 'Indica el stock.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen válida.',
             'imagenes.*.max' => 'Cada imagen no puede superar 5 MB.',
         ];

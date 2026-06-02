@@ -5,12 +5,19 @@ namespace App\Services;
 use App\Models\Cotizacion;
 use App\Models\Pago;
 use App\Models\Pedido;
+use App\Models\Producto;
+use App\Services\AdminInventarioService;
+use App\Services\PedidoService;
 use App\Support\EstatusCatalog;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class AdminTareasPendientesService
 {
+    public function __construct(
+        protected AdminInventarioService $adminInventarioService
+    ) {}
+
     /**
      * @return Collection<int, object{
      *     id: string,
@@ -24,7 +31,7 @@ class AdminTareasPendientesService
         $tareas = collect();
 
         Pago::query()
-            ->with(['pedido', 'estatus'])
+            ->with(['pedido.boletaPago', 'estatus'])
             ->whereIn('Id_Estatus', [
                 EstatusCatalog::PAGO_PENDIENTE_COMPROBANTE,
                 EstatusCatalog::PAGO_PENDIENTE_VERIFICACION,
@@ -35,13 +42,22 @@ class AdminTareasPendientesService
             ->get()
             ->each(function (Pago $pago) use ($tareas) {
                 $numero = $pago->pedido?->Ped_Numero ?? '—';
+                $boleta = $pago->pedido?->boletaPago;
+                $esVerificacionTransferencia = (int) $pago->Id_Estatus === EstatusCatalog::PAGO_PENDIENTE_VERIFICACION
+                    && (int) $pago->Id_MetodoPago === PedidoService::METODO_TRANSFERENCIA
+                    && $boleta !== null;
 
                 $tareas->push((object) [
                     'id' => 'pago-'.$pago->Id_Pago,
-                    'titulo' => 'Verificar pago · '.$numero,
+                    'titulo' => $esVerificacionTransferencia
+                        ? 'Aprobar boleta · '.$numero
+                        : 'Verificar pago · '.$numero,
                     'descripcion' => ($pago->estatus?->Nom_Estatus ?? 'Pago pendiente')
                         .' · '.$this->tiempoRelativo($pago->created_at),
                     'fecha' => $pago->created_at ?? now(),
+                    'url' => $esVerificacionTransferencia
+                        ? route('admin.boletas.show', $boleta)
+                        : null,
                 ]);
             });
 
@@ -61,10 +77,32 @@ class AdminTareasPendientesService
                     'descripcion' => ($cotizacion->estatus?->Nom_Estatus ?? 'Cotización pendiente')
                         .' · '.$this->tiempoRelativo($cotizacion->created_at),
                     'fecha' => $cotizacion->created_at ?? now(),
+                    'url' => route('admin.cotizaciones.show', $cotizacion),
+                ]);
+            });
+
+        $this->adminInventarioService
+            ->productosBajoStockParaAlertas($limit)
+            ->each(function (Producto $producto) use ($tareas) {
+                $inventario = $producto->inventario;
+                $stock = (int) ($inventario?->Stock ?? 0);
+                $reservado = (int) ($inventario?->Stock_Reservado ?? 0);
+                $disponible = max(0, $stock - $reservado);
+
+                $tareas->push((object) [
+                    'id' => 'inventario-'.$producto->Id_Producto,
+                    'titulo' => 'Stock bajo · '.$producto->Prod_Nombre,
+                    'descripcion' => 'Disponible: '.$disponible
+                        .' (umbral ≤ '.$this->adminInventarioService->umbralBajoStock().')',
+                    'fecha' => $inventario?->Ultima_Actualizacion
+                        ? Carbon::parse($inventario->Ultima_Actualizacion)
+                        : now(),
+                    'url' => route('admin.inventario.ajustar', $producto),
                 ]);
             });
 
         Pedido::query()
+            ->visibleEnAdmin()
             ->with('estatus')
             ->whereIn('Id_Estatus', [
                 EstatusCatalog::PEDIDO_PENDIENTE,
@@ -81,6 +119,7 @@ class AdminTareasPendientesService
                     'descripcion' => ($pedido->estatus?->Nom_Estatus ?? 'Pedido pendiente')
                         .' · '.$this->tiempoRelativo($pedido->created_at),
                     'fecha' => $pedido->created_at ?? now(),
+                    'url' => route('admin.pedidos.seguimiento', $pedido),
                 ]);
             });
 

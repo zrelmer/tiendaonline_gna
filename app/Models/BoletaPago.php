@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\EstatusCatalog;
+use App\Services\PedidoService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +26,20 @@ class BoletaPago extends Model
     public function pedido()
     {
         return $this->belongsTo(Pedido::class, 'Id_Pedido', 'Id_Pedido');
+    }
+
+    public function scopePendientesVerificacionAdmin($query)
+    {
+        return $query->whereHas('pedido', function ($pedido) {
+            $pedido
+                ->visibleEnAdmin()
+                ->where('Id_Estatus', EstatusCatalog::PEDIDO_PENDIENTE)
+                ->whereHas('pago', function ($pago) {
+                    $pago
+                        ->where('Id_MetodoPago', PedidoService::METODO_TRANSFERENCIA)
+                        ->where('Id_Estatus', EstatusCatalog::PAGO_PENDIENTE_VERIFICACION);
+                });
+        });
     }
 
     public function scopeBuscarAdmin($query, string $termino)

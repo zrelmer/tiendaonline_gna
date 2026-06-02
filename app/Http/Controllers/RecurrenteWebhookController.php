@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\PedidoHistorial;
+use App\Services\InventarioPedidoService;
 use App\Services\PedidoService;
 use App\Support\EstatusCatalog;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\DB;
 class RecurrenteWebhookController extends Controller
 {
     public function __construct(
-        protected PedidoService $pedidoService
+        protected PedidoService $pedidoService,
+        protected InventarioPedidoService $inventarioPedidoService
     ) {}
 
     public function __invoke(Request $request): JsonResponse
@@ -67,6 +69,17 @@ class RecurrenteWebhookController extends Controller
                 'Comentario' => $comentario,
                 'Fecha_Cambio' => now(),
             ]);
+
+            if ($idEstatusPedido === EstatusCatalog::PEDIDO_CONFIRMADO) {
+                $pedido->loadMissing('detalle.producto');
+                $this->inventarioPedidoService->descontarPorConfirmacion($pedido);
+            }
+
+            if ($idEstatusPedido === EstatusCatalog::PEDIDO_CANCELADO) {
+                $pedido->loadMissing('detalle.producto');
+                $this->inventarioPedidoService->liberarReservaPorPedido($pedido);
+                $this->inventarioPedidoService->reponerPorCancelacion($pedido);
+            }
         });
 
         if ($idEstatusPago === EstatusCatalog::PAGO_PAGADO) {

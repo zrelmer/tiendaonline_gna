@@ -92,6 +92,33 @@ class Producto extends Model
         });
     }
 
+    public function scopeFiltroInventarioAdmin($query, ?string $filtro, int $umbral)
+    {
+        if ($filtro === null) {
+            return $query;
+        }
+
+        return match ($filtro) {
+            \App\Services\AdminInventarioService::FILTRO_BAJO_STOCK => $query->whereHas(
+                'inventario',
+                fn ($inventario) => $inventario->whereRaw('(Stock - Stock_Reservado) <= ?', [$umbral])
+            ),
+            \App\Services\AdminInventarioService::FILTRO_SIN_INVENTARIO => $query->whereDoesntHave('inventario'),
+            \App\Services\AdminInventarioService::FILTRO_SIN_STOCK => $query->where(function ($q) {
+                $q->whereDoesntHave('inventario')
+                    ->orWhereHas(
+                        'inventario',
+                        fn ($inventario) => $inventario->whereRaw('(Stock - Stock_Reservado) <= 0')
+                    );
+            }),
+            \App\Services\AdminInventarioService::FILTRO_CON_STOCK => $query->whereHas(
+                'inventario',
+                fn ($inventario) => $inventario->whereRaw('(Stock - Stock_Reservado) > 0')
+            ),
+            default => $query,
+        };
+    }
+
     protected function descripcionSegura(): Attribute
     {
         return Attribute::get(

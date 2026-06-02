@@ -276,3 +276,493 @@ body.dark-only .dashboard-category.dashboard-category-round .category-image:hove
     margin-bottom: 1rem;
     color: #1e293b;
 }
+
+.admin-boleta-filtros .admin-boleta-filtro-btn {
+    border-radius: 999px;
+}
+
+.admin-boleta-pendientes-badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.admin-boletas-table-wrap .table-boleta td {
+    vertical-align: middle;
+}
+
+.admin-boleta-row-pendiente {
+    background-color: rgba(255, 193, 7, 0.06);
+}
+
+.admin-boleta-verificacion-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-boleta-verificacion-badge.pendiente {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.admin-boleta-verificacion-badge.aprobada {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.admin-boleta-verificacion-badge.rechazada {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.admin-boleta-preview-wrap .admin-boleta-preview-thumb {
+    max-height: 420px;
+    width: auto;
+}
+
+/* Listado admin — pedidos */
+.admin-pedidos-table-wrap .table-pedido thead th {
+    white-space: nowrap;
+}
+
+.admin-pedido-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #f3f4f6;
+    color: #4b5563;
+    white-space: nowrap;
+}
+
+.admin-pedido-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.admin-pedido-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.admin-pedido-meta dt {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+}
+
+.admin-pedido-meta dd {
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+.admin-pedido-meta dd:last-child {
+    margin-bottom: 0;
+}
+
+/* Historial admin — línea de tiempo por pedido */
+.admin-pedido-historial-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-pedido-historial-timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 24px;
+}
+
+.admin-pedido-historial-timeline-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ccc 0,
+        #ccc 4px,
+        transparent 4px,
+        transparent 8px
+    );
+}
+
+.admin-pedido-historial-timeline-marker {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffc107;
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.admin-pedido-historial-timeline-item.is-current .admin-pedido-historial-timeline-marker {
+    background: #0baf9a;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(11, 175, 154, 0.2);
+}
+
+.admin-pedido-historial-timeline-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #222;
+}
+
+.admin-pedido-historial-timeline-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.admin-pedidos-historial-table-wrap .table-pedido-historial td {
+    vertical-align: middle;
+}
+
+/* Seguimiento admin — barra de progreso */
+.admin-pedido-seguimiento-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.admin-pedido-seguimiento-step {
+    flex: 1 1 0;
+    min-width: 72px;
+    text-align: center;
+    position: relative;
+}
+
+.admin-pedido-seguimiento-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: calc(50% + 12px);
+    width: calc(100% - 24px);
+    height: 2px;
+    background: #ddd;
+    z-index: 0;
+}
+
+.admin-pedido-seguimiento-step.is-done:not(:last-child)::after,
+.admin-pedido-seguimiento-step.is-active:not(:last-child)::after {
+    background: #0baf9a;
+}
+
+.admin-pedido-seguimiento-step-dot {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    position: relative;
+    z-index: 1;
+}
+
+.admin-pedido-seguimiento-step.is-done .admin-pedido-seguimiento-step-dot,
+.admin-pedido-seguimiento-step.is-active .admin-pedido-seguimiento-step-dot {
+    background: #0baf9a;
+}
+
+.admin-pedido-seguimiento-step-label {
+    display: block;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: #777;
+    font-weight: 600;
+}
+
+.admin-pedido-seguimiento-step.is-active .admin-pedido-seguimiento-step-label,
+.admin-pedido-seguimiento-step.is-done .admin-pedido-seguimiento-step-label {
+    color: #222;
+}
+
+.admin-pedido-seguimiento-filtros .admin-pedido-seguimiento-filtro-btn {
+    border-radius: 999px;
+}
+
+.admin-pedido-seguimiento-total-badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.admin-pedidos-seguimiento-table-wrap .table-pedido-seguimiento td {
+    vertical-align: middle;
+}
+
+.admin-pedido-seguimiento-accion-label {
+    font-weight: 600;
+    color: #222;
+}
+
+.admin-pedido-seguimiento-row-bloqueado {
+    background-color: rgba(255, 193, 7, 0.06);
+}
+
+/* Listado admin — cotizaciones */
+.admin-cotizaciones-table-wrap .table-cotizacion td {
+    vertical-align: middle;
+}
+
+.admin-cotizacion-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #f3f4f6;
+    color: #4b5563;
+    white-space: nowrap;
+}
+
+.admin-cotizacion-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.admin-cotizacion-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.admin-cotizacion-badge.warning-bg {
+    background: #ffc107;
+    color: #222;
+}
+
+.admin-cotizacion-meta dt {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+}
+
+.admin-cotizacion-meta dd {
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+.admin-cotizacion-meta dd:last-child {
+    margin-bottom: 0;
+}
+
+.admin-cotizacion-terminos {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #475569;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-cotizacion-pendientes-filtros .admin-cotizacion-pendientes-filtro-btn {
+    border-radius: 999px;
+}
+
+.admin-cotizacion-pendientes-total-badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.admin-cotizaciones-pendientes-table-wrap .table-cotizacion-pendientes td {
+    vertical-align: middle;
+}
+
+.admin-cotizacion-accion-label {
+    font-weight: 600;
+    color: #222;
+}
+
+.admin-cotizacion-terminos-input {
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.admin-cotizacion-emitir-lineas .admin-cotizacion-costo-unit {
+    max-width: 9rem;
+}
+
+/* Inventario admin */
+.admin-inventario-kpi-card {
+    border: 1px solid #e2e8f0;
+    box-shadow: none;
+}
+
+.admin-inventario-kpi-card h4 {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.admin-inventario-kpi-card--warning {
+    border-color: #fcd34d;
+    background: #fffbeb;
+}
+
+.admin-inventario-kpi-card--success {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.admin-inventario-filtros .admin-inventario-filtro-btn {
+    border-radius: 999px;
+}
+
+.admin-inventario-table-wrap .table-inventario td {
+    vertical-align: middle;
+}
+
+.admin-inventario-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.admin-inventario-badge.success-bg {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.admin-inventario-badge.warning-bg {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.admin-inventario-badge.danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.admin-inventario-badge--muted {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.admin-inventario-row--alerta td:first-child {
+    box-shadow: inset 3px 0 0 #f59e0b;
+}
+
+.admin-inventario-meta dt {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    margin-bottom: 0.15rem;
+}
+
+.admin-inventario-meta dd {
+    margin-bottom: 0.75rem;
+    color: #1e293b;
+}
+
+.admin-inventario-meta dd:last-child {
+    margin-bottom: 0;
+}
+
+.admin-inventario-preview {
+    background: #f8fafc;
+}
+
+.admin-inventario-historial-filtros .form-label {
+    margin-bottom: 0.25rem;
+}
+
+.admin-inventario-historial-table-wrap .table-inventario-historial td {
+    vertical-align: middle;
+}
+
+.admin-inventario-historial-ref {
+    display: inline-block;
+    max-width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+}
+
+.admin-inventario-historial-tipo {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+.admin-inventario-historial-signo {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.admin-inventario-historial-signo--entrada {
+    color: #166534;
+}
+
+.admin-inventario-historial-signo--salida {
+    color: #991b1b;
+}
+
+/* Inventario — menú lateral y tarjetas KPI */
+.admin-sidebar-inventario-badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #f59e0b;
+    color: #fff;
+}
+
+.sidebar-submenu a .admin-inventario-submenu-badge {
+    margin-left: 0.35rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    background: #fef3c7;
+    color: #92400e;
+    vertical-align: middle;
+}
+
+.sidebar-submenu a .admin-inventario-submenu-badge--muted {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.admin-inventario-kpi-card-link {
+    color: inherit;
+}
+
+.admin-inventario-kpi-card-link:hover .admin-inventario-kpi-card--warning {
+    border-color: #f59e0b;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+}
+
+.admin-inventario-historial-table-wrap .table-inventario-historial tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.admin-inventario-ventas-filtros .form-label {
+    margin-bottom: 0.25rem;
+}
+
+.admin-inventario-ventas-table-wrap .table-inventario-ventas td {
+    vertical-align: middle;
+}

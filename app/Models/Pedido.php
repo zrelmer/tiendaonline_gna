@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pedido extends Model
 {
     protected $table = 'tb_pedido';
+
     protected $primaryKey = 'Id_Pedido';
 
     protected $fillable = [
@@ -15,7 +16,20 @@ class Pedido extends Model
         'Ped_Numero',
         'Ped_TotalPrecio',
         'Id_Estatus',
+        'Ped_OcultoAdmin',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'Ped_OcultoAdmin' => 'boolean',
+        ];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'Id_Pedido';
+    }
 
     public function usuario(){
         // se utiliza belongsTo porque cada pedido pertenece a un usuario específico
@@ -46,5 +60,46 @@ class Pedido extends Model
     public function boletaPago()
     {
         return $this->hasOne(BoletaPago::class, 'Id_Pedido', 'Id_Pedido');
+    }
+
+    public function scopeVisibleEnAdmin($query)
+    {
+        return $query->where('Ped_OcultoAdmin', false);
+    }
+
+    /**
+     * @param  array<int>  $estatusIds
+     */
+    public function scopePendientesSeguimientoAdmin($query, array $estatusIds)
+    {
+        return $query
+            ->visibleEnAdmin()
+            ->whereIn('Id_Estatus', $estatusIds);
+    }
+
+    public function scopeBuscarAdmin($query, string $termino)
+    {
+        $termino = trim($termino);
+
+        if ($termino === '') {
+            return $query;
+        }
+
+        $like = '%'.$termino.'%';
+
+        return $query->where(function ($q) use ($termino, $like) {
+            $q->where('Ped_Numero', 'like', $like)
+                ->orWhereHas('usuario', function ($usuario) use ($like) {
+                    $usuario->where('Usu_Nombre', 'like', $like)
+                        ->orWhere('Usu_Correo', 'like', $like);
+                })
+                ->orWhereHas('estatus', fn ($estatus) => $estatus->where('Nom_Estatus', 'like', $like))
+                ->orWhereHas('pago.metodoPago', fn ($metodo) => $metodo->where('MetPag_Descripcion', 'like', $like))
+                ->orWhereHas('pago.estatus', fn ($estatus) => $estatus->where('Nom_Estatus', 'like', $like));
+
+            if (ctype_digit($termino)) {
+                $q->orWhere('Id_Pedido', (int) $termino);
+            }
+        });
     }
 }

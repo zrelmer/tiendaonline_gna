@@ -13,6 +13,7 @@ class AdminRecentOrdersService
     public function latest(int $limit = 5): Collection
     {
         return Pedido::query()
+            ->visibleEnAdmin()
             ->with([
                 'detalle.producto',
                 'estatus',

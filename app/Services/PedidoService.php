@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\PedidoEnviadoMail;
 use App\Mail\PedidoGeneradoMail;
 use App\Models\DetallePedido;
 use App\Models\Direccion;
@@ -26,7 +27,8 @@ class PedidoService
     public function __construct(
         protected CarritoService $carritoService,
         protected EnvioService $envioService,
-        protected WhatsAppService $whatsAppService
+        protected WhatsAppService $whatsAppService,
+        protected InventarioPedidoService $inventarioPedidoService
     ) {}
 
     public function crearDesdeCheckout(
@@ -154,6 +156,9 @@ class PedidoService
             if ($restaurarCarrito) {
                 $this->restaurarCarritoDesdePedido($pedido);
             }
+
+            $this->inventarioPedidoService->liberarReservaPorPedido($pedido);
+            $this->inventarioPedidoService->reponerPorCancelacion($pedido);
         });
     }
 
@@ -178,6 +183,8 @@ class PedidoService
 
         return DB::transaction(function () use ($pedido, $direccion, $items) {
             $pedido->loadMissing(['detalle.producto.categoria', 'envio']);
+
+            $this->inventarioPedidoService->liberarReservaPorPedido($pedido);
 
             $detallesPorId = $pedido->detalle->keyBy('Id_DetallePedido');
 
@@ -210,6 +217,10 @@ class PedidoService
                     'items' => 'El pedido debe incluir al menos un producto.',
                 ]);
             }
+
+            $this->inventarioPedidoService->validarStockParaPedido($pedido);
+
+            $this->inventarioPedidoService->reservarPorPedido($pedido);
 
             $subtotal = $pedido->detalle->sum(
                 fn ($linea) => (float) $linea->DetaPed_SubTotal
@@ -277,6 +288,8 @@ class PedidoService
                 ]);
             }
 
+            $this->inventarioPedidoService->validarStockParaCarrito($detalles);
+
             $direccion = Direccion::query()
                 ->where('Id_Direccion', $idDireccion)
                 ->where('Id_Usuario', $idUsuario)
@@ -340,6 +353,8 @@ class PedidoService
                 'Fecha_Cambio' => now(),
             ]);
 
+            $this->inventarioPedidoService->reservarPorPedido($pedido);
+
             $this->carritoService->vaciarCarrito($idUsuario);
 
             return $pedido->load(['detalle.producto', 'pago', 'envio']);
@@ -391,5 +406,23 @@ class PedidoService
         }
 
         Mail::to($correo)->send(new PedidoGeneradoMail($pedido, $pagoConfirmado));
+    }
+
+    public function enviarNotificacionesPedidoEnviado(Pedido $pedido): void
+    {
+        $this->enviarCorreoPedidoEnviado($pedido);
+        $this->whatsAppService->sendPedidoEnviado($pedido);
+    }
+
+    public function enviarCorreoPedidoEnviado(Pedido $pedido): void
+    {
+        $pedido->loadMissing(['usuario', 'envio', 'estatus']);
+        $correo = $pedido->usuario?->Usu_Correo;
+
+        if (! $correo) {
+            return;
+        }
+
+        Mail::to($correo)->send(new PedidoEnviadoMail($pedido));
     }
 }
