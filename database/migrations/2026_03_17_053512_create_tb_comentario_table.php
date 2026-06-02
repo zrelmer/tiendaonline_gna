@@ -24,10 +24,12 @@ return new class extends Migration
             $table->foreign('Id_Producto')->references('Id_Producto')->on('tb_producto');
         });
 
-        DB::statement('ALTER TABLE tb_comentario ADD CONSTRAINT chk_rating CHECK (Rating BETWEEN 1 AND 5)');
+        if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+            DB::statement('ALTER TABLE tb_comentario ADD CONSTRAINT chk_rating CHECK (Rating BETWEEN 1 AND 5)');
+        }
     }
 
-    /**DB::statement('ALTER TABLE tb_comentario ADD CONSTRAINT chk_rating CHECK (Rating BETWEEN 1 AND 5)');
+    /**
      * Reverse the migrations.
      */
     public function down(): void

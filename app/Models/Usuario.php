@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// Cambiamos Model por Authenticatable para que sirva para iniciar sesión
 use App\Services\WhatsAppService;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'tb_usuario';
     protected $primaryKey = 'Id_Usuario'; // Corregida la 'K' mayúscula
@@ -22,7 +22,7 @@ class Usuario extends Authenticatable
         'Usu_Correo',
         'Usu_Pass',
         'Usu_Telefono',
-        'Id_Rol'
+        'Id_Rol',
     ];
 
     // Oculta el campo de contraseña
@@ -60,6 +60,10 @@ class Usuario extends Authenticatable
     {
         if ($key === 'email') {
             return $this->Usu_Correo;
+        }
+
+        if ($key === 'name') {
+            return $this->Usu_Nombre;
         }
 
         if ($key === 'password') {

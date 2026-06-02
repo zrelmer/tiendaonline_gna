@@ -88,6 +88,16 @@
                         </div>
                     </div>
 
+                    @if (request()->routeIs('dashboard') || request()->routeIs('dashboard.*'))
+                        <div class="header-go-shop d-flex align-items-center flex-shrink-0 ms-2 ms-xl-3">
+                            <a href="{{ route('home') }}"
+                               class="btn theme-bg-color text-white btn-sm fw-semibold text-nowrap">
+                                <i class="iconly-Buy icli"></i>
+                                <span class="ms-1">Ir a tienda</span>
+                            </a>
+                        </div>
+                    @endif
+
                     <div class="rightside-menu">
                         <div class="option-list">
                             <ul>

@@ -34,6 +34,11 @@
 
                 <div class="nav-right col-6 pull-right right-header p-0">
                     <ul class="nav-menus">
+                        <li class="d-flex align-items-center me-3">
+                            <a href="{{ route('home') }}" class="btn btn-primary btn-sm fw-semibold text-nowrap">
+                                Ir a tienda
+                            </a>
+                        </li>
                         <li class="profile-nav onhover-dropdown pe-0 me-0">
                             <div class="media profile-media">
                                 <img class="user-profile rounded-circle" src="{{ asset('assets/admin/images/users/5.png') }}" alt="">
@@ -140,6 +145,21 @@
 
                                         <li>
                                             <a href="{{ route('admin.categorias.create') }}">Agregar Categoria</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-list-check-2"></i>
+                                        <span>Marcas</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="{{ route('admin.marcas.index') }}">Listado de Marcas</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ route('admin.marcas.create') }}">Agregar Marca</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -303,17 +323,16 @@
                         @yield('content')
                     @else
                     <div class="row">
-                        <!-- chart caard section start -->
                         <div class="col-sm-6 col-xxl-3 col-lg-6">
-                            <div class="main-tiles border-5 border-0  card-hover card o-hidden">
+                            <div class="main-tiles border-5 border-0 card-hover card o-hidden">
                                 <div class="custome-1-bg b-r-4 card-body">
                                     <div class="media align-items-center static-top-widget">
                                         <div class="media-body p-0">
-                                            <span class="m-0">Total Revenue</span>
-                                            <h4 class="mb-0 counter">$6659
-                                                <span class="badge badge-light-primary grow">
-                                                    <i data-feather="trending-up"></i>8.5%</span>
+                                            <span class="m-0">Ingresos totales</span>
+                                            <h4 class="mb-0 td-price">
+                                                Q {{ number_format($totalIngresos, 2) }}
                                             </h4>
+                                            <small class="text-muted">Pedidos no cancelados</small>
                                         </div>
                                         <div class="align-self-center text-center">
                                             <i class="ri-database-2-line"></i>
@@ -328,10 +347,16 @@
                                 <div class="custome-2-bg b-r-4 card-body">
                                     <div class="media static-top-widget">
                                         <div class="media-body p-0">
-                                            <span class="m-0">Total Orders</span>
-                                            <h4 class="mb-0 counter">9856
-                                                <span class="badge badge-light-danger grow">
-                                                    <i data-feather="trending-down"></i>8.5%</span>
+                                            <span class="m-0">Total pedidos</span>
+                                            <h4 class="mb-0">
+                                                {{ number_format($totalPedidos) }}
+                                                @if ($pedidosPendientes > 0)
+                                                    <a href="{{ route('admin.pedidos.index') }}"
+                                                       class="badge badge-light-warning grow text-decoration-none"
+                                                       title="Ver pedidos en curso">
+                                                        {{ $pedidosPendientes }} en curso
+                                                    </a>
+                                                @endif
                                             </h4>
                                         </div>
                                         <div class="align-self-center text-center">
@@ -343,19 +368,21 @@
                         </div>
 
                         <div class="col-sm-6 col-xxl-3 col-lg-6">
-                            <div class="main-tiles border-5 card-hover border-0  card o-hidden">
+                            <div class="main-tiles border-5 card-hover border-0 card o-hidden">
                                 <div class="custome-3-bg b-r-4 card-body">
                                     <div class="media static-top-widget">
                                         <div class="media-body p-0">
-                                            <span class="m-0">Total Products</span>
-                                            <h4 class="mb-0 counter">893
-                                                <a href="add-new-product.html" class="badge badge-light-secondary grow">
-                                                    ADD NEW</a>
+                                            <span class="m-0">Productos activos</span>
+                                            <h4 class="mb-0">
+                                                {{ number_format($totalProductos) }}
+                                                <a href="{{ route('admin.productos.create') }}"
+                                                   class="badge badge-light-secondary grow text-decoration-none">
+                                                    + Nuevo
+                                                </a>
                                             </h4>
                                         </div>
-
                                         <div class="align-self-center text-center">
-                                            <i class="ri-chat-3-line"></i>
+                                            <i class="ri-store-3-line"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -367,21 +394,25 @@
                                 <div class="custome-4-bg b-r-4 card-body">
                                     <div class="media static-top-widget">
                                         <div class="media-body p-0">
-                                            <span class="m-0">Total Customers</span>
-                                            <h4 class="mb-0 counter">4.6k
-                                                <span class="badge badge-light-success grow">
-                                                    <i data-feather="trending-down"></i>8.5%</span>
+                                            <span class="m-0">Clientes registrados</span>
+                                            <h4 class="mb-0">
+                                                {{ number_format($totalUsuarios) }}
+                                                @if ($cotizacionesPendientes > 0)
+                                                    <a href="{{ route('admin.cotizaciones.pendientes.index') }}"
+                                                       class="badge badge-light-primary grow text-decoration-none"
+                                                       title="Cotizaciones pendientes de atención">
+                                                        {{ $cotizacionesPendientes }} cotiz.
+                                                    </a>
+                                                @endif
                                             </h4>
                                         </div>
-
                                         <div class="align-self-center text-center">
-                                            <i class="ri-user-add-line"></i>
+                                            <i class="ri-user-3-line"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- fin de las cards de ejemplo --}}
                         {{-- CATEGORIAS --}}
                         <div class="col-12">
                             <div class="card o-hidden card-hover">

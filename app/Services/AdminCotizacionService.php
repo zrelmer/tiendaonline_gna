@@ -222,7 +222,7 @@ class AdminCotizacionService
             CotizacionHistorial::create([
                 'Id_Cotizacion' => $cotizacion->Id_Cotizacion,
                 'Id_Estatus' => EstatusCatalog::COTIZACION_EMITIDA,
-                'Comentario' => $comentario ?: 'Cotización formal emitida. El cliente puede descargar el documento desde su panel.',
+                'Comentario' => $comentario ?: 'Cotización formal emitida. El cliente puede descargar el documento y aceptar o rechazar antes de que venza el plazo.',
                 'Fecha_Cambio' => now(),
             ]);
 

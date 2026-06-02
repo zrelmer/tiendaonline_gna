@@ -184,11 +184,13 @@ class AdminPedidoController extends Controller
             ->sortBy('Fecha_Cambio')
             ->values();
 
+        $puedeCancelar = $this->adminPedidoService->puedeCancelar($pedido);
+
         return view('admin.pedidos.seguimiento', compact(
             'pedido',
             'accionDisponible',
             'eventos',
-            'puedeCancelar' => $this->adminPedidoService->puedeCancelar($pedido),
+            'puedeCancelar',
         ));
     }
 

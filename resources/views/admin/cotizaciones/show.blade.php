@@ -16,6 +16,7 @@
         default => '',
     };
     $archivoDisponible = $cotizacion->archivoDisponible();
+    $fechaVencimiento = $cotizacion->fechaVencimiento();
 @endphp
 
 @section('content')
@@ -73,6 +74,18 @@
 
                         <dt>Vigencia</dt>
                         <dd>{{ (int) $cotizacion->Cot_VigenciaDias }} días</dd>
+
+                        @if ($fechaVencimiento)
+                            <dt>Vence el</dt>
+                            <dd>
+                                {{ $fechaVencimiento->format('d/m/Y H:i') }}
+                                @if ($estatusId === EstatusCatalog::COTIZACION_VENCIDA)
+                                    <span class="text-danger small d-block">Plazo vencido</span>
+                                @elseif ($estatusId === EstatusCatalog::COTIZACION_EMITIDA)
+                                    <span class="text-muted small d-block">Pendiente de respuesta del cliente</span>
+                                @endif
+                            </dd>
+                        @endif
 
                         <dt>Total referencia</dt>
                         <dd class="td-price">Q {{ number_format((float) $cotizacion->Cot_Total, 2) }}</dd>

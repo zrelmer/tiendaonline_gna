@@ -59,7 +59,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
         Mail::to($user->Usu_Correo)->send(new BienvenidaUsuario($user));
         app(WhatsAppService::class)->sendBienvenida($user);
-        // REDIRECCIÓN
         return redirect()->route('dashboard');
     }
 }

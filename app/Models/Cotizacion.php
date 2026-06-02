@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Support\EstatusCatalog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class Cotizacion extends Model
@@ -111,5 +113,41 @@ class Cotizacion extends Model
         $extension = strtolower(pathinfo((string) $this->Cot_Archivo, PATHINFO_EXTENSION) ?: 'pdf');
 
         return 'cotizacion-'.($this->Cot_Numero ?: $this->Id_Cotizacion).'.'.$extension;
+    }
+
+    public function fechaVencimiento(): ?Carbon
+    {
+        if ($this->Cot_FechaEmision === null) {
+            return null;
+        }
+
+        return $this->Cot_FechaEmision->copy()->addDays((int) $this->Cot_VigenciaDias);
+    }
+
+    public function estaVencidaPorFecha(): bool
+    {
+        $vencimiento = $this->fechaVencimiento();
+
+        return $vencimiento !== null && now()->greaterThan($vencimiento);
+    }
+
+    public function puedeResponderCliente(): bool
+    {
+        return (int) $this->Id_Estatus === EstatusCatalog::COTIZACION_EMITIDA
+            && ! $this->estaVencidaPorFecha();
+    }
+
+    public function puedeDescargarArchivo(): bool
+    {
+        if (! $this->archivoDisponible()) {
+            return false;
+        }
+
+        return in_array((int) $this->Id_Estatus, [
+            EstatusCatalog::COTIZACION_EMITIDA,
+            EstatusCatalog::COTIZACION_ACEPTADA,
+            EstatusCatalog::COTIZACION_RECHAZADA,
+            EstatusCatalog::COTIZACION_VENCIDA,
+        ], true);
     }
 }

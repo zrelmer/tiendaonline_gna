@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Movimiento extends Model
 {
     protected $table = 'tb_movimiento';
-    protected $primarykey = 'Id_Movimiento';
+
+    protected $primaryKey = 'Id_Movimiento';
+
+    public $incrementing = true;
+
     public $timestamps = false;
 
     protected $fillable = [

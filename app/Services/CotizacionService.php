@@ -150,4 +150,165 @@ class CotizacionService
 
         return $numero;
     }
+
+    /**
+     * Marca como vencidas las cotizaciones emitidas cuyo plazo ya expiró.
+     */
+    public function sincronizarVencidas(?int $idUsuario = null): int
+    {
+        $query = Cotizacion::query()
+            ->where('Id_Estatus', EstatusCatalog::COTIZACION_EMITIDA)
+            ->whereNotNull('Cot_FechaEmision');
+
+        if ($idUsuario !== null) {
+            $query->where('Id_Usuario', $idUsuario);
+        }
+
+        $actualizadas = 0;
+
+        foreach ($query->get() as $cotizacion) {
+            if (! $cotizacion->estaVencidaPorFecha()) {
+                continue;
+            }
+
+            $this->marcarVencida($cotizacion);
+            $actualizadas++;
+        }
+
+        return $actualizadas;
+    }
+
+    public function aceptar(Cotizacion $cotizacion, ?string $comentario = null, ?int $idUsuario = null): Cotizacion
+    {
+        $cotizacion = $this->cotizacionDelUsuario((int) $cotizacion->Id_Cotizacion, $idUsuario);
+
+        $this->sincronizarVencidas((int) $cotizacion->Id_Usuario);
+        $cotizacion->refresh();
+
+        if ($motivo = $this->motivoNoAceptar($cotizacion)) {
+            throw ValidationException::withMessages([
+                'cotizacion' => $motivo,
+            ]);
+        }
+
+        return DB::transaction(function () use ($cotizacion, $comentario) {
+            $cotizacion->update([
+                'Id_Estatus' => EstatusCatalog::COTIZACION_ACEPTADA,
+            ]);
+
+            CotizacionHistorial::create([
+                'Id_Cotizacion' => $cotizacion->Id_Cotizacion,
+                'Id_Estatus' => EstatusCatalog::COTIZACION_ACEPTADA,
+                'Comentario' => $comentario ?: 'Cotización aceptada por el cliente.',
+                'Fecha_Cambio' => now(),
+            ]);
+
+            return $cotizacion->fresh(['estatus', 'detalle.producto', 'historial.estatus']);
+        });
+    }
+
+    public function rechazar(Cotizacion $cotizacion, ?string $comentario = null, ?int $idUsuario = null): Cotizacion
+    {
+        $cotizacion = $this->cotizacionDelUsuario((int) $cotizacion->Id_Cotizacion, $idUsuario);
+
+        $this->sincronizarVencidas((int) $cotizacion->Id_Usuario);
+        $cotizacion->refresh();
+
+        if ($motivo = $this->motivoNoRechazar($cotizacion)) {
+            throw ValidationException::withMessages([
+                'cotizacion' => $motivo,
+            ]);
+        }
+
+        return DB::transaction(function () use ($cotizacion, $comentario) {
+            $cotizacion->update([
+                'Id_Estatus' => EstatusCatalog::COTIZACION_RECHAZADA,
+            ]);
+
+            CotizacionHistorial::create([
+                'Id_Cotizacion' => $cotizacion->Id_Cotizacion,
+                'Id_Estatus' => EstatusCatalog::COTIZACION_RECHAZADA,
+                'Comentario' => $comentario ?: 'Cotización rechazada por el cliente.',
+                'Fecha_Cambio' => now(),
+            ]);
+
+            return $cotizacion->fresh(['estatus', 'detalle.producto', 'historial.estatus']);
+        });
+    }
+
+    public function motivoNoAceptar(Cotizacion $cotizacion): ?string
+    {
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_VENCIDA) {
+            return 'Esta cotización ya venció. Solicita una nueva si aún la necesitas.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_ACEPTADA) {
+            return 'Esta cotización ya fue aceptada.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_RECHAZADA) {
+            return 'Esta cotización ya fue rechazada.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus !== EstatusCatalog::COTIZACION_EMITIDA) {
+            return 'Solo puedes aceptar cotizaciones que ya fueron emitidas por el equipo.';
+        }
+
+        if ($cotizacion->estaVencidaPorFecha()) {
+            return 'El plazo de vigencia de esta cotización expiró.';
+        }
+
+        return null;
+    }
+
+    public function motivoNoRechazar(Cotizacion $cotizacion): ?string
+    {
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_VENCIDA) {
+            return 'Esta cotización ya venció.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_ACEPTADA) {
+            return 'No puedes rechazar una cotización que ya aceptaste.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus === EstatusCatalog::COTIZACION_RECHAZADA) {
+            return 'Esta cotización ya fue rechazada.';
+        }
+
+        if ((int) $cotizacion->Id_Estatus !== EstatusCatalog::COTIZACION_EMITIDA) {
+            return 'Solo puedes rechazar cotizaciones emitidas pendientes de tu respuesta.';
+        }
+
+        if ($cotizacion->estaVencidaPorFecha()) {
+            return 'El plazo de vigencia de esta cotización expiró.';
+        }
+
+        return null;
+    }
+
+    protected function marcarVencida(Cotizacion $cotizacion): Cotizacion
+    {
+        if ((int) $cotizacion->Id_Estatus !== EstatusCatalog::COTIZACION_EMITIDA) {
+            return $cotizacion;
+        }
+
+        return DB::transaction(function () use ($cotizacion) {
+            $vencimiento = $cotizacion->fechaVencimiento();
+
+            $cotizacion->update([
+                'Id_Estatus' => EstatusCatalog::COTIZACION_VENCIDA,
+            ]);
+
+            CotizacionHistorial::create([
+                'Id_Cotizacion' => $cotizacion->Id_Cotizacion,
+                'Id_Estatus' => EstatusCatalog::COTIZACION_VENCIDA,
+                'Comentario' => $vencimiento
+                    ? 'Vigencia vencida el '.$vencimiento->format('d/m/Y H:i').'.'
+                    : 'Vigencia de la cotización vencida.',
+                'Fecha_Cambio' => now(),
+            ]);
+
+            return $cotizacion->fresh(['estatus', 'historial.estatus']);
+        });
+    }
 }

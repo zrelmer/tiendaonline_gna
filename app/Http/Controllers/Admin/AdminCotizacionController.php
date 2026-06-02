@@ -7,6 +7,7 @@ use App\Http\Requests\AdminCotizacionEmitirRequest;
 use App\Http\Requests\AdminCotizacionRevisionRequest;
 use App\Models\Cotizacion;
 use App\Services\AdminCotizacionService;
+use App\Services\CotizacionService;
 use App\Support\EstatusCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,11 +19,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class AdminCotizacionController extends Controller
 {
     public function __construct(
-        protected AdminCotizacionService $adminCotizacionService
+        protected AdminCotizacionService $adminCotizacionService,
+        protected CotizacionService $cotizacionService
     ) {}
 
     public function index(Request $request): View
     {
+        $this->cotizacionService->sincronizarVencidas();
+
         $terminoBusqueda = trim((string) $request->input('q', ''));
 
         $cotizaciones = Cotizacion::query()
@@ -93,6 +97,9 @@ class AdminCotizacionController extends Controller
 
     public function show(Cotizacion $cotizacion): View
     {
+        $this->cotizacionService->sincronizarVencidas((int) $cotizacion->Id_Usuario);
+        $cotizacion->refresh();
+
         $cotizacion->load([
             'usuario',
             'estatus',

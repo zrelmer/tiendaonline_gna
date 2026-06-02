@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Departamento;
 use App\Models\Producto;
 use App\Models\Usuario;
+use App\Services\CotizacionService;
 use App\Services\PedidoService;
 use App\Support\EstatusCatalog;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     public function __construct(
-        protected PedidoService $pedidoService
+        protected PedidoService $pedidoService,
+        protected CotizacionService $cotizacionService
     ) {}
 
     public function index(Request $request): View
@@ -63,6 +65,8 @@ class DashboardController extends Controller
                 'nombre' => $municipio->Nom_Municipio,
             ])->values(),
         ]);
+
+        $this->cotizacionService->sincronizarVencidas((int) $usuario->Id_Usuario);
 
         $cotizaciones = $usuario->cotizaciones()
             ->with(['estatus', 'detalle.producto', 'historial.estatus'])

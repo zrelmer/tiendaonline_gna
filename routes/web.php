@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPedidoController;
@@ -16,6 +15,7 @@ use App\Http\Controllers\RecurrenteWebhookController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCategoriaController;
+use App\Http\Controllers\Admin\AdminMarcaController;
 use App\Http\Controllers\Admin\AdminDepartamentoController;
 use App\Http\Controllers\Admin\AdminMunicipioController;
 use App\Http\Controllers\Admin\AdminProductoController;
@@ -30,10 +30,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/listadeseo', [ListaDeseoController::class, 'index'])->name('listadeseo.index');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'usuario'])
     ->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'admin'])
+Route::middleware(['auth', 'usuario', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -61,6 +61,13 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::get('/categorias/{categoria}/edit', [AdminCategoriaController::class, 'edit'])->name('categorias.edit');
         Route::put('/categorias/{categoria}', [AdminCategoriaController::class, 'update'])->name('categorias.update');
         Route::delete('/categorias/{categoria}', [AdminCategoriaController::class, 'destroy'])->name('categorias.destroy');
+
+        Route::get('/marcas', [AdminMarcaController::class, 'index'])->name('marcas.index');
+        Route::get('/marcas/create', [AdminMarcaController::class, 'create'])->name('marcas.create');
+        Route::post('/marcas', [AdminMarcaController::class, 'store'])->name('marcas.store');
+        Route::get('/marcas/{marca}/edit', [AdminMarcaController::class, 'edit'])->name('marcas.edit');
+        Route::put('/marcas/{marca}', [AdminMarcaController::class, 'update'])->name('marcas.update');
+        Route::delete('/marcas/{marca}', [AdminMarcaController::class, 'destroy'])->name('marcas.destroy');
 
         Route::get('/departamentos', [AdminDepartamentoController::class, 'index'])->name('departamentos.index');
         Route::get('/departamentos/create', [AdminDepartamentoController::class, 'create'])->name('departamentos.create');
@@ -108,10 +115,7 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::delete('/pedidos/{pedido}', [AdminPedidoController::class, 'destroy'])->name('pedidos.destroy');
     });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth', 'usuario'])->group(function () {
     Route::patch('/dashboard/pedidos/{pedido}', [DashboardPedidoController::class, 'update'])
         ->whereNumber('pedido')
         ->name('dashboard.pedidos.update');
@@ -135,6 +139,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/cotizaciones/{cotizacion}/archivo', [DashboardCotizacionController::class, 'download'])
         ->whereNumber('cotizacion')
         ->name('dashboard.cotizaciones.download');
+    Route::post('/dashboard/cotizaciones/{cotizacion}/aceptar', [DashboardCotizacionController::class, 'aceptar'])
+        ->whereNumber('cotizacion')
+        ->name('dashboard.cotizaciones.aceptar');
+    Route::post('/dashboard/cotizaciones/{cotizacion}/rechazar', [DashboardCotizacionController::class, 'rechazar'])
+        ->whereNumber('cotizacion')
+        ->name('dashboard.cotizaciones.rechazar');
     Route::post('/producto/{idproducto}/resena', [ProductoController::class, 'saveReview'])
         ->whereNumber('idproducto')
         ->name('product.review.save');
@@ -179,4 +189,7 @@ require __DIR__.'/auth.php';
 Route::get('/cart', [CarritoController::class, 'index'])->name('cart.index');
 Route::get('/shop', [ProductoController::class, 'shop'])->name('shop.index');
 
-Route::get('/test-whatsapp', [WhatsAppController::class, 'sendNotification']);
+if (app()->environment('local')) {
+    Route::get('/test-whatsapp', [WhatsAppController::class, 'sendNotification'])
+        ->name('test-whatsapp');
+}

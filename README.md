@@ -1,59 +1,335 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tienda Online GNA
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación de comercio electrónico desarrollada con **Laravel 12** y **Laravel Breeze**. Incluye catálogo público, carrito y checkout, panel de cliente, panel de administración, cotizaciones B2B, inventario con historial y pagos por **Recurrente** (tarjeta), transferencia con boleta y contra entrega.
 
-## About Laravel
+Moneda principal: **quetzales (GTQ)**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Contenido
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Requisitos](#requisitos)
+- [Instalación rápida](#instalación-rápida)
+- [Variables de entorno](#variables-de-entorno)
+- [Base de datos y seeders](#base-de-datos-y-seeders)
+- [Ejecutar en desarrollo](#ejecutar-en-desarrollo)
+- [Pruebas automatizadas](#pruebas-automatizadas)
+- [Rutas principales](#rutas-principales)
+- [Módulos del sistema](#módulos-del-sistema)
+- [Integraciones](#integraciones)
+- [Tareas programadas](#tareas-programadas)
+- [Estructura del proyecto](#estructura-del-proyecto)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Requisitos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Herramienta | Versión recomendada |
+|-------------|---------------------|
+| PHP | 8.2+ (extensiones: `pdo_mysql` o `pdo_sqlite`, `mbstring`, `openssl`, `fileinfo`) |
+| Composer | 2.x |
+| Node.js | 18+ |
+| npm | 9+ |
+| MySQL | 8.x (producción / desarrollo local habitual) |
 
-## Laravel Sponsors
+Para desarrollo solo con SQLite, el `.env.example` trae `DB_CONNECTION=sqlite`; en producción se usa MySQL (`tb_*`).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Instalación rápida
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+# 1. Dependencias PHP
+composer install
 
-## Contributing
+# 2. Entorno
+cp .env.example .env
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 3. Base de datos (MySQL: crear la BD y ajustar .env antes)
+php artisan migrate
 
-## Code of Conduct
+# 4. Datos de demostración (catálogo, usuarios, inventario, etc.)
+php artisan db:seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Enlace de almacenamiento público (imágenes de productos, PDFs de cotización)
+php artisan storage:link
 
-## Security Vulnerabilities
+# 6. Frontend (Breeze / Vite)
+npm install
+npm run build
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Atajo con el script de Composer (migrate + build incluidos):
 
-## License
+```bash
+composer setup
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Variables de entorno
+
+Copia `.env.example` a `.env` y configura al menos:
+
+### Aplicación
+
+| Variable | Descripción |
+|----------|-------------|
+| `APP_NAME` | Nombre visible de la tienda |
+| `APP_URL` | URL base (ej. `http://127.0.0.1:8000`) |
+| `APP_DEBUG` | `true` en local, `false` en producción |
+| `APP_TIMEZONE` | Zona horaria de la app (`America/Guatemala`) |
+
+### Base de datos (MySQL)
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=tiendaonline_gnacore
+DB_USERNAME=root
+DB_PASSWORD=
+DB_TIMEZONE=-06:00
+```
+
+Las fechas de pedidos, historial e inventario usan la hora de Guatemala. Tras cambiar la zona en un entorno ya desplegado, ejecuta `php artisan config:clear`. Los registros creados antes con UTC pueden mostrarse con desfase hasta que se migren o se acepte el histórico tal cual.
+
+### Correo
+
+Necesario para recuperación de contraseña (Breeze). En local puedes usar `MAIL_MAILER=log`.
+
+### Recurrente (pagos con tarjeta)
+
+| Variable | Descripción |
+|----------|-------------|
+| `RECURRENTE_PUBLIC_KEY` | Clave pública |
+| `RECURRENTE_SECRET_KEY` | Clave secreta |
+| `RECURRENTE_BASE_URL` | API (por defecto `https://app.recurrente.com/api`) |
+| `RECURRENTE_CURRENCY` | `GTQ` |
+
+El webhook `POST /webhooks/recurrente` está excluido de CSRF en `bootstrap/app.php`.
+
+### Envío
+
+| Variable | Descripción |
+|----------|-------------|
+| `SHIPPING_FREE_THRESHOLD` | Monto mínimo para envío gratis (Q) |
+| `SHIPPING_COST` | Costo de envío si no aplica gratis (Q) |
+
+### WhatsApp (Twilio, opcional)
+
+| Variable | Descripción |
+|----------|-------------|
+| `TWILIO_SID` | Account SID |
+| `TWILIO_AUTH_TOKEN` | Auth token |
+| `TWILIO_WHATSAPP_NUMBER` | Número remitente (formato WhatsApp) |
+| `TWILIO_WHATSAPP_ENABLED` | `true` para enviar mensajes reales |
+| `TWILIO_WHATSAPP_COUNTRY_CODE` | `502` (Guatemala) |
+
+Con `TWILIO_WHATSAPP_ENABLED=false` la app funciona sin enviar WhatsApp.
+
+---
+
+## Base de datos y seeders
+
+El modelo de autenticación es **`Usuario`** (`tb_usuario`), no el `User` por defecto de Breeze.
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+Seeders principales (orden en `DatabaseSeeder`): roles, usuarios, estatus, catálogo, geo, **movimientos de inventario**, inventario, carritos, pedidos de ejemplo, etc.
+
+### Usuario administrador de prueba
+
+| Campo | Valor |
+|-------|--------|
+| Correo | `administrador@example.com` |
+| Contraseña | `password` |
+| Rol | Administrador (`Id_Rol = 1`) |
+
+Los usuarios de prueba adicionales del seeder también usan contraseña `password`.
+
+### Catálogo de movimientos de inventario
+
+El seeder `MovimientoSeeder` carga tipos como *Reserva por pedido*, *Salida por pedido*, *Ajuste manual*, etc. Son necesarios para el checkout y el historial de inventario.
+
+---
+
+## Ejecutar en desarrollo
+
+Servidor, cola, logs y Vite en paralelo:
+
+```bash
+composer dev
+```
+
+O por separado:
+
+```bash
+php artisan serve
+php artisan queue:listen
+npm run dev
+```
+
+En **entorno local** existe la ruta de prueba `GET /test-whatsapp` (solo si `APP_ENV=local`).
+
+Tras cambiar vistas con Vite, si no usas `npm run dev`, ejecuta `npm run build` para generar `public/build/manifest.json`.
+
+---
+
+## Pruebas automatizadas
+
+Los tests usan **SQLite en memoria** (`phpunit.xml`).
+
+```bash
+composer test
+# o
+php artisan test
+```
+
+Cobertura actual: autenticación, flujo de cotizaciones, CRUD de marcas (admin), modelo `Movimiento`.
+
+---
+
+## Rutas principales
+
+| Área | URL | Middleware |
+|------|-----|------------|
+| Inicio | `/` | — |
+| Tienda | `/shop` | — |
+| Carrito | `/cart` | — |
+| Checkout | `/cart/checkout` | `auth` |
+| Dashboard cliente (perfil, pedidos, etc.) | `/dashboard` | `auth`, `usuario` |
+| Panel admin | `/admin/dashboard` | `auth`, `usuario`, `admin` |
+| Login / registro | `/login`, `/register` | `guest` |
+
+Producto (detalle): `/{id}/{slug}`.
+
+---
+
+## Módulos del sistema
+
+### Tienda pública
+
+- Catálogo, búsqueda y ficha de producto con reseñas.
+- Lista de deseos.
+- Carrito (sincronización e ítems vía API autenticada).
+
+### Checkout y pedidos
+
+- Validación de stock y **reserva de inventario** al confirmar pedido.
+- Métodos: tarjeta (Recurrente), transferencia (boleta de pago), contra entrega.
+- Seguimiento y cancelación desde el dashboard del cliente.
+
+### Cotizaciones (B2B)
+
+- El cliente solicita cotización desde el dashboard.
+- El admin revisa, emite PDF y define vigencia.
+- El cliente acepta o rechaza; las emitidas vencen según plazo configurado.
+
+Configuración de negocio: `config/cotizacion.php` (vigencia, términos, datos del emisor).
+
+### Panel de administración
+
+- Dashboard con KPIs (ingresos, pedidos, productos, usuarios).
+- Productos, categorías, **marcas**, inventario (ajustes, historial, ventas).
+- Pedidos (seguimiento, historial, cancelación).
+- Boletas de pago (aprobar / rechazar transferencias).
+- Cotizaciones pendientes y emitidas.
+- Departamentos, municipios y usuarios (listado + cambio de rol).
+
+### Inventario
+
+- Stock, stock reservado e historial por movimiento.
+- Integrado con pedidos (`InventarioPedidoService`).
+- Configuración: `config/inventario.php`.
+
+---
+
+## Integraciones
+
+### Recurrente
+
+Checkout de tarjeta en pestaña externa; confirmación de pago vía **webhook** (`RecurrenteWebhookController`).
+
+### Twilio / WhatsApp
+
+Notificaciones opcionales (reset de contraseña, cambio de contraseña, etc.) controladas por `WhatsAppService` y `config/services.php`.
+
+---
+
+## Tareas programadas
+
+Marcar cotizaciones emitidas como vencidas cuando expire el plazo:
+
+```bash
+php artisan cotizaciones:marcar-vencidas
+```
+
+El comando está definido en `routes/console.php`. Para automatizarlo en producción, regístralo en el scheduler de Laravel (`bootstrap/app.php` → `withSchedule`) y añade al cron del servidor:
+
+```cron
+* * * * * cd /ruta/al/proyecto && php artisan schedule:run >> /dev/null 2>&1
+```
+
+---
+
+## Middleware
+
+| Alias | Clase | Función |
+|-------|--------|---------|
+| `auth` | Laravel | Exige sesión iniciada |
+| `usuario` | `EnsureAuthenticatedUsuario` | Confirma que el usuario autenticado es `App\Models\Usuario` |
+| `admin` | `EnsureUserIsAdmin` | Solo rol administrador (`Id_Rol = 1`) |
+| `guest` | Laravel | Bloquea login/registro si ya hay sesión |
+
+**Grupos en rutas:**
+
+- **Cliente:** `auth` + `usuario` (dashboard, carrito, checkout, cotizaciones).
+- **Admin:** `auth` + `usuario` + `admin` (prefijo `/admin`).
+
+Tras iniciar sesión, administradores van a `/admin/dashboard` y clientes a `/dashboard`.
+
+---
+
+## Estructura del proyecto
+
+```
+app/
+├── Http/Controllers/       # Tienda, dashboard, Auth (Breeze)
+│   └── Admin/              # Panel administrativo
+├── Http/Middleware/        # EnsureAuthenticatedUsuario, EnsureUserIsAdmin
+├── Http/Requests/          # Validación por módulo
+├── Models/                 # Eloquent (tb_*)
+├── Services/               # Lógica de negocio
+├── Support/EstatusCatalog.php
+└── View/Composers/         # KPIs del layout admin
+
+config/
+├── auth.php                # Provider: Usuario
+├── cotizacion.php
+├── inventario.php
+└── shipping.php
+
+database/migrations/        # Esquema tb_*
+database/seeders/
+resources/views/            # Blade (shop, cart, dashboard, admin)
+routes/web.php
+routes/auth.php
+tests/                      # PHPUnit (Feature + Unit)
+```
+
+Convenciones:
+
+- Clave primaria personalizada en modelos (`Id_Producto`, `Id_Usuario`, …).
+- Estados de negocio centralizados en `EstatusCatalog` y `EstatusSeeder`.
+- Roles: `Usuario::ROL_ADMIN` (1), `Usuario::ROL_USUARIO` (2).
+
+---
+
+## Licencia
+
+Proyecto académico / uso interno GNA. Ajusta la licencia según tu institución o empresa.

@@ -13,7 +13,11 @@ class EnsureUserIsAdmin
     {
         $usuario = $request->user();
 
-        if (! $usuario instanceof Usuario || ! $usuario->esAdministrador()) {
+        if (! $usuario instanceof Usuario) {
+            abort(403, 'No tienes permiso para acceder al panel de administración.');
+        }
+
+        if (! $usuario->esAdministrador()) {
             abort(403, 'No tienes permiso para acceder al panel de administración.');
         }
 

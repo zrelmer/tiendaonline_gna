@@ -199,8 +199,9 @@
                     EstatusCatalog::COTIZACION_RECHAZADA, EstatusCatalog::COTIZACION_VENCIDA => 'danger',
                     default => '',
                 };
-                $puedeDescargar = $estatusId === EstatusCatalog::COTIZACION_EMITIDA
-                    && filled($cotizacion->Cot_Archivo);
+                $puedeDescargar = $cotizacion->puedeDescargarArchivo();
+                $puedeResponder = $cotizacion->puedeResponderCliente();
+                $fechaVencimiento = $cotizacion->fechaVencimiento();
                 $historial = ($cotizacion->historial ?? collect())->sortBy('Fecha_Cambio');
             @endphp
 
@@ -212,6 +213,9 @@
                             Solicitud: {{ $cotizacion->created_at?->format('d/m/Y H:i') ?? '—' }}
                             @if ($cotizacion->Cot_FechaEmision)
                                 · Emitida: {{ $cotizacion->Cot_FechaEmision->format('d/m/Y H:i') }}
+                            @endif
+                            @if ($fechaVencimiento && in_array($estatusId, [EstatusCatalog::COTIZACION_EMITIDA, EstatusCatalog::COTIZACION_VENCIDA], true))
+                                · Vence: {{ $fechaVencimiento->format('d/m/Y H:i') }}
                             @endif
                         </p>
                     </div>
@@ -238,14 +242,70 @@
                         @if ($estatusId === EstatusCatalog::COTIZACION_SOLICITUD_RECIBIDA)
                             <p class="text-content small mb-0">En espera de revisión por el equipo.</p>
                         @endif
+                        @if ($estatusId === EstatusCatalog::COTIZACION_EMITIDA && $fechaVencimiento)
+                            <p class="text-content small mb-2">
+                                Tienes hasta el <strong>{{ $fechaVencimiento->format('d/m/Y') }}</strong>
+                                para aceptar o rechazar esta cotización.
+                            </p>
+                        @endif
+                        @if ($estatusId === EstatusCatalog::COTIZACION_VENCIDA)
+                            <p class="text-content small mb-2 text-danger">
+                                El plazo de vigencia expiró. Puedes solicitar una nueva cotización si lo necesitas.
+                            </p>
+                        @endif
                         @if ($puedeDescargar)
                             <a href="{{ route('dashboard.cotizaciones.download', $cotizacion) }}"
-                               class="btn btn-sm theme-bg-color text-white mt-2">
+                               class="btn btn-sm theme-bg-color text-white mt-2 me-2">
                                 <i data-feather="download"></i> Descargar cotización
                             </a>
                         @endif
+                        @if ($puedeResponder)
+                            <form method="POST"
+                                  action="{{ route('dashboard.cotizaciones.aceptar', $cotizacion) }}"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Confirmas que aceptas esta cotización?');">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-success mt-2 me-2">
+                                    <i data-feather="check"></i> Aceptar
+                                </button>
+                            </form>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger mt-2"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rechazar-cotizacion-{{ $cotizacion->Id_Cotizacion }}"
+                                    aria-expanded="false">
+                                <i data-feather="x"></i> Rechazar
+                            </button>
+                        @endif
                     </div>
                 </div>
+
+                @if ($puedeResponder)
+                    <div class="collapse mt-3" id="rechazar-cotizacion-{{ $cotizacion->Id_Cotizacion }}">
+                        <div class="dashboard-bg-box border border-danger-subtle">
+                            <h6 class="mb-2">Rechazar cotización</h6>
+                            <form method="POST"
+                                  action="{{ route('dashboard.cotizaciones.rechazar', $cotizacion) }}"
+                                  onsubmit="return confirm('¿Seguro que deseas rechazar esta cotización?');">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label" for="rechazo-comentario-{{ $cotizacion->Id_Cotizacion }}">
+                                        Motivo del rechazo *
+                                    </label>
+                                    <textarea class="form-control form-control-sm"
+                                              id="rechazo-comentario-{{ $cotizacion->Id_Cotizacion }}"
+                                              name="comentario"
+                                              rows="2"
+                                              maxlength="500"
+                                              minlength="10"
+                                              required
+                                              placeholder="Indica por qué no procedes con esta cotización…"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-danger">Confirmar rechazo</button>
+                            </form>
+                        </div>
+                    </div>
+                @endif
 
                 @if ($cotizacion->Cot_NotasSolicitud)
                     <p class="small text-content mb-3">
