@@ -3,6 +3,7 @@
 @section('title', 'Inicio')
 
 @section('content')
+<div class="home-page-sections">
 <!-- home section start -->
 @include('partials.home')
     <!-- Home Section End -->
@@ -41,7 +42,7 @@
                     $imagenUrl = $imagen ? asset($imagen->url) : asset('storage/products/default.png');
                 @endphp
 
-                <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <div class="col-6 col-md-4 col-lg-2 mb-4">
                     <div class="product-box-4 wow fadeInUp">
 
                         <!-- IMAGEN -->
@@ -154,4 +155,5 @@
     <!-- Newsletter Section Start -->
     @include('partials.news')
     <!-- Newsletter Section End -->
+</div>
 @endsection

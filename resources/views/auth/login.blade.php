@@ -25,7 +25,7 @@
     </div>
 </section>
 <!-- LOGIN -->
-<section class="log-in-section background-image-2 section-b-space">
+<section class="log-in-section auth-page-section background-image-2 section-b-space">
     <div class="container-fluid-lg w-100">
         <div class="row">
 
@@ -38,7 +38,7 @@
             </div>
 
             <!-- FORMULARIO -->
-            <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xxl-4 mx-auto auth-form-col">
                 <div class="log-in-box">
 
                     <div class="log-in-title text-center">
@@ -48,7 +48,7 @@
 
                     <!-- MENSAJE GLOBAL -->
                     @if (session('status'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success auth-alert">
                             {{ session('status') }}
                         </div>
                     @endif
@@ -94,7 +94,7 @@
 
                             <!-- RECORDAR -->
                             <div class="col-12">
-                                <div class="forgot-box d-flex justify-content-between">
+                                <div class="forgot-box d-flex flex-wrap justify-content-between align-items-center gap-2">
                                     <div class="form-check remember-box">
                                         <input class="checkbox_animated check-box"
                                                type="checkbox"
@@ -112,7 +112,7 @@
 
                             <!-- BOTÓN -->
                             <div class="col-12">
-                                <button class="btn btn-animation w-100" type="submit">
+                                <button class="btn btn-animation w-100 auth-submit-btn" type="submit">
                                     Iniciar sesión
                                 </button>
                             </div>

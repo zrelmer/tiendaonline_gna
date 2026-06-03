@@ -29,12 +29,12 @@
 <!-- Breadcrumb Section End -->
 
     <!-- Product Left Sidebar Start -->
-<section class="product-section">
+<section class="product-section product-detail-page">
     <div class="container-fluid-lg">
-        <div class="row">
-            <div class="col-xxl-9 col-xl-8 col-lg-7 wow fadeInUp">
+        <div class="row g-4">
+            <div class="col-12 col-lg-7 col-xxl-9 wow fadeInUp">
                 <div class="row g-4">
-                    <div class="col-xl-6 wow fadeInUp">
+                    <div class="col-12 col-xl-6 wow fadeInUp product-detail-gallery">
                         @php
                             $galeriaImagenes = $producto->imagenes
                                 ->sortBy('orden')
@@ -78,116 +78,13 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-6 wow fadeInUp">
-                        <div class="right-box-contain">
-                            <h2 class="name">{{ $producto->Prod_Nombre }}</h2>
-                            <div class="price-rating">
-                                <h3 class="theme-color price">
-                                    Q{{ number_format($producto->Prod_Precio, 2) }}
-                                    @if (!is_null($producto->Prod_PrecioOferta))
-                                        <del class="text-content">Q{{ number_format($producto->Prod_PrecioOferta, 2) }}</del>
-                                    @endif
-                                </h3>
-                                <div class="product-rating custom-rate">
-                                    <!-- RATING -->
-                                    <ul class="rating">
-                                        @php
-                                            $rating = round($producto->comentarios->avg('Rating') ?? 0);
-                                        @endphp
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <li>
-                                                <i data-feather="star" class="{{ $i <= $rating ? 'fill' : '' }}"></i>
-                                            </li>
-                                        @endfor
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="product-contain">
-                                @if ($producto->descripcion_resumen !== '')
-                                    <p class="w-100">{{ $producto->descripcion_resumen }}</p>
-                                @else
-                                    <p class="w-100">Sin descripcion disponible.</p>
-                                @endif
-                            </div>
-
-                            <div class="note-box product-package">
-                                <div class="cart_qty qty-box product-qty">
-                                    <div class="input-group">
-                                        <button type="button" class="qty-left-minus" data-type="minus" data-field="">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <input class="form-control input-number qty-input" type="text" id="qty-{{ $producto->Id_Producto }}" name="quantity" value="1">
-                                        <button type="button" class="qty-right-plus" data-type="plus" data-field="">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-md bg-dark cart-button text-white w-100"
-                                        onclick="addToCart(
-                                            {{ $producto->Id_Producto }},
-                                            @js($imagenUrl),
-                                            @js(route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug])),
-                                            @js($producto->Prod_Precio),
-                                            @js($producto->Prod_Nombre)
-                                        )">
-                                    Agregar al Carrito
-                                </button>
-                            </div>
-
-                            <div class="buy-box">
-                                <a href="javascript:void(0)"
-                                   onclick="addToWishlist(
-                                        {{ $producto->Id_Producto }},
-                                        @js($imagenUrl),
-                                        @js(route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug])),
-                                        @js($producto->Prod_Precio),
-                                        @js($producto->Prod_Nombre)
-                                   )">
-                                    <i data-feather="heart"></i>
-                                    <span>Agregar a Wishlist</span>
-                                </a>
-                            </div>
-
-                            <div class="payment-option">
-                                <div class="product-title">
-                                    <h4>Guaranteed Safe Checkout</h4>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/1.svg" class="blur-up lazyload" alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/2.svg" class="blur-up lazyload" alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/3.svg" class="blur-up lazyload" alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/4.svg" class="blur-up lazyload" alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/5.svg" class="blur-up lazyload" alt="">
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="col-12 col-xl-6 wow fadeInUp product-detail-purchase">
+                        @include('Products.partials.purchase-box')
                     </div>
                 </div>
             </div>
 
-            <div class="col-xxl-3 col-xl-4 col-lg-5 d-none d-lg-block wow fadeInUp">
+            <div class="col-lg-5 col-xxl-3 d-none d-lg-block wow fadeInUp">
                 <div class="right-sidebar-box">
                     <div class="vendor-box">
                         <div class="vendor-contain">
@@ -204,18 +101,64 @@
     </div>
 </section>
 
-<section>
+{{-- Barra fija de compra en móvil --}}
+<div class="product-mobile-buy-bar d-lg-none" id="productMobileBuyBar" aria-hidden="true">
+    <div class="product-mobile-buy-bar-inner">
+        <div class="product-mobile-buy-bar-price">
+            <span class="small text-content d-block">Precio</span>
+            <strong class="theme-color">Q{{ number_format($producto->Prod_Precio, 2) }}</strong>
+        </div>
+        <div class="product-mobile-buy-bar-actions">
+            <div class="cart_qty qty-box product-qty product-mobile-buy-bar-qty">
+                <div class="input-group">
+                    <button type="button"
+                            class="qty-left-minus product-mobile-qty-minus"
+                            data-type="minus"
+                            aria-label="Disminuir cantidad">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <input class="form-control input-number qty-input product-mobile-qty-display"
+                           type="text"
+                           value="1"
+                           readonly
+                           tabindex="-1"
+                           aria-hidden="true">
+                    <button type="button"
+                            class="qty-right-plus product-mobile-qty-plus"
+                            data-type="plus"
+                            aria-label="Aumentar cantidad">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="button"
+                    class="btn btn-md bg-dark text-white product-mobile-buy-btn"
+                    aria-label="Agregar al carrito"
+                    onclick="addToCart(
+                        {{ $producto->Id_Producto }},
+                        @js($imagenUrl),
+                        @js(route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug])),
+                        @js($producto->Prod_Precio),
+                        @js($producto->Prod_Nombre)
+                    )">
+                Agregar
+            </button>
+        </div>
+    </div>
+</div>
+
+<section class="product-detail-tabs-section">
     <div class="container-fluid-lg">
         <div class="row">
             <div class="col-12">
                 <div class="product-section-box m-0">
                     <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Descripción</button>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">Review</button>
+                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">Reseñas</button>
                         </li>
                     </ul>
 
@@ -436,7 +379,8 @@
                             <div class="product-box-4 wow fadeInUp">
                                 <div class="product-image">
                                     <div class="label-flex">
-                                        <button type="button" class="btn p-0 wishlist btn-wishlist notifi-wishlist"
+                                        <button type="button" class="btn p-0 wishlist btn-wishlist"
+                                                aria-label="Agregar a lista de deseos"
                                             onclick="addToWishlist(
                                                 {{ $relacionado->Id_Producto }},
                                                 @js($relImgUrl),
@@ -588,5 +532,54 @@
 </div>
     <!-- Review Modal End -->
 <!-- Product Left Sidebar End -->
-{{-- Scripts: solo en layouts/app (partials.js). Incluirlos aquí ejecutaba JS antes del panel tema (#colorPick) y duplicaba script.js / slick. --}}
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var mainQty = document.getElementById('qty-{{ $producto->Id_Producto }}');
+        var mobileBar = document.getElementById('productMobileBuyBar');
+        var mobileQtyDisplay = document.querySelector('.product-mobile-qty-display');
+        var mainAddBtn = document.querySelector('.product-detail-add-cart');
+
+        if (!mainQty || !mobileBar) {
+            return;
+        }
+
+        function syncMobileQtyDisplay() {
+            if (mobileQtyDisplay) {
+                mobileQtyDisplay.value = mainQty.value;
+            }
+        }
+
+        syncMobileQtyDisplay();
+
+        document.querySelectorAll('.product-mobile-qty-minus, .product-mobile-qty-plus').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var target = btn.classList.contains('product-mobile-qty-minus')
+                    ? document.querySelector('.product-detail-purchase .qty-left-minus')
+                    : document.querySelector('.product-detail-purchase .qty-right-plus');
+                if (target) {
+                    target.click();
+                    syncMobileQtyDisplay();
+                }
+            });
+        });
+
+        mainQty.addEventListener('change', syncMobileQtyDisplay);
+        mainQty.addEventListener('input', syncMobileQtyDisplay);
+
+        if (mainAddBtn && window.IntersectionObserver) {
+            var observer = new IntersectionObserver(function (entries) {
+                var visible = entries[0] && entries[0].isIntersecting;
+                mobileBar.classList.toggle('is-visible', !visible);
+                mobileBar.setAttribute('aria-hidden', visible ? 'true' : 'false');
+                document.body.classList.toggle('product-detail-buy-bar-visible', !visible);
+            }, { threshold: 0.15 });
+            observer.observe(mainAddBtn);
+        } else {
+            mobileBar.classList.add('is-visible');
+            mobileBar.setAttribute('aria-hidden', 'false');
+        }
+    });
+</script>
+@endpush
 @endsection

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Usuario;
 use App\View\Composers\AdminLayoutComposer;
+use App\View\Composers\ShopNavComposer;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\View;
@@ -27,6 +28,17 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Pagination\Paginator::defaultView('vendor.pagination.custom');
 
         View::composer('layouts.appadmin', AdminLayoutComposer::class);
+        View::composer([
+            'layouts.app',
+            'welcome',
+            'partials.category',
+            'partials.home',
+            'partials.value',
+            'partials.banner1',
+            'partials.banner2',
+            'partials.header',
+            'partials.mobile-menu-offcanvas',
+        ], ShopNavComposer::class);
 
         Authenticate::redirectUsing(
             fn () => route('login')

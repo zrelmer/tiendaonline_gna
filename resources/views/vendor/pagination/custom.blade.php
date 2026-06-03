@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
-    <nav class="custom-pagination">
-        <ul class="pagination justify-content-center">
+    <nav class="custom-pagination" aria-label="Paginación de productos">
+        <ul class="pagination justify-content-center flex-wrap">
             {{-- Anterior --}}
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled" aria-disabled="true">

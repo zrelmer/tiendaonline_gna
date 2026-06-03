@@ -1,3 +1,9 @@
+/*
+ * Overrides panel admin (Rica / layouts.appadmin).
+ * Móvil: Fase 8 en este archivo + assets/admin/js/admin-mobile.js
+ * (no usar resources/views/admin/partials/* — layout alternativo retirado).
+ */
+
 /* Sin botón RTL (no se carga customizer.js) */
 .customizer-links,
 .rtl-btn,
@@ -765,4 +771,514 @@ body.dark-only .dashboard-category.dashboard-category-round .category-image:hove
 
 .admin-inventario-ventas-table-wrap .table-inventario-ventas td {
     vertical-align: middle;
+}
+
+/* =============================================================================
+   Fase 8 — Panel admin móvil (solo ≤991.98px; escritorio sin cambios de layout)
+   ============================================================================= */
+body.admin-app .admin-sidebar-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+@media (max-width: 991.98px) {
+    body.admin-app {
+        overflow-x: clip;
+    }
+
+    body.admin-app.admin-sidebar-open {
+        overflow: hidden;
+    }
+
+    body.admin-app .page-header .header-wrapper {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    body.admin-app .page-header .nav-right .nav-menus {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    body.admin-app .page-header .nav-right .btn-sm {
+        min-height: 40px;
+    }
+
+    body.admin-app .page-header .profile-media .user-name-hide {
+        display: none !important;
+    }
+
+    body.admin-app .page-body .container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    body.admin-app .title-header {
+        gap: 12px;
+    }
+
+    body.admin-app .title-header h5 {
+        font-size: clamp(1.05rem, 4vw, 1.35rem);
+        line-height: 1.3;
+    }
+
+    body.admin-app .title-header .right-options ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    body.admin-app .title-header .right-options .btn,
+    body.admin-app .title-header .right-options a.btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    body.admin-app .card-table .table-header .input-group {
+        flex-wrap: wrap;
+    }
+
+    body.admin-app .card-table .table-header .input-group .btn {
+        min-height: 44px;
+    }
+
+    body.admin-app .theme-form.mega-form .row.align-items-center > [class*='col-sm-'] {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    body.admin-app .theme-form.mega-form .form-label-title,
+    body.admin-app .theme-form.mega-form .col-form-label {
+        margin-bottom: 6px;
+    }
+
+    body.admin-app .theme-form.mega-form .btn,
+    body.admin-app .card .btn {
+        min-height: 44px;
+    }
+
+    body.admin-app .admin-pedido-seguimiento-progress {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-app .admin-pedido-seguimiento-step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+        min-width: 0;
+    }
+
+    body.admin-app .admin-pedido-seguimiento-step:not(:last-child)::after {
+        display: none;
+    }
+
+    body.admin-app .admin-pedido-historial-timeline-item {
+        gap: 12px;
+    }
+
+    body.admin-app .dashboard-category.dashboard-category-round .category-image {
+        width: 72px !important;
+        height: 72px !important;
+        min-width: 72px;
+        min-height: 72px;
+        max-width: 72px;
+    }
+
+    body.admin-app .dashboard-category.dashboard-category-round .category-image .category-remix-icon {
+        font-size: 1.75rem;
+    }
+
+    /* Overlay del tema (z-index:6) quedaba encima del menú por custom z-index:1040 */
+    body.admin-app .bg-overlay.active {
+        z-index: 1040;
+    }
+
+    body.admin-app .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper:not(.close_icon) {
+        z-index: 1055;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    body.admin-app #sidebarEffect,
+    body.admin-app #sidebarEffect canvas {
+        pointer-events: none !important;
+    }
+
+    body.admin-app .sidebar-wrapper:not(.close_icon) .sidebar-main,
+    body.admin-app .sidebar-wrapper:not(.close_icon) nav,
+    body.admin-app .sidebar-wrapper:not(.close_icon) .sidebar-links,
+    body.admin-app .sidebar-wrapper:not(.close_icon) .simplebar-content-wrapper {
+        position: relative;
+        z-index: 2;
+        pointer-events: auto;
+    }
+
+    /* Rica: left:-300px y margin en #sidebar-menu rompen acordeón en móvil */
+    body.admin-app .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links {
+        left: 0 !important;
+        margin-top: 0;
+        color: inherit;
+    }
+
+    body.admin-app .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper #sidebar-menu {
+        margin-left: 0 !important;
+    }
+
+    body.admin-app .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper:not(.close_icon) .according-menu {
+        display: block !important;
+    }
+
+    body.admin-app .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper:not(.close_icon) .sidebar-main .sidebar-links > li .sidebar-submenu a {
+        display: block !important;
+    }
+
+    body.admin-app .sidebar-wrapper nav .sidebar-links > li > a.sidebar-title {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    body.admin-app .sidebar-wrapper nav .sidebar-links > li > a.sidebar-title .according-menu {
+        margin-left: auto;
+        pointer-events: none;
+        flex-shrink: 0;
+    }
+
+    body.admin-app .sidebar-wrapper nav .sidebar-links > li > a.link-nav {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    body.admin-app .sidebar-wrapper nav .sidebar-links .sidebar-submenu {
+        position: relative;
+        z-index: 2;
+    }
+
+    body.admin-app .sidebar-wrapper nav .sidebar-links > li.admin-submenu-open > .sidebar-submenu {
+        display: block !important;
+    }
+}
+
+@media (min-width: 992px) {
+    body.admin-app #sidebar-menu {
+        margin-left: unset;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body.admin-app .title-header.option-title {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    body.admin-app .title-header .right-options {
+        width: 100%;
+    }
+
+    body.admin-app .title-header .right-options ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-app .title-header .right-options ul li,
+    body.admin-app .title-header .right-options ul li a {
+        width: 100%;
+    }
+
+    body.admin-app .admin-boleta-filtros,
+    body.admin-app .admin-pedido-seguimiento-filtros,
+    body.admin-app .admin-cotizacion-pendientes-filtros,
+    body.admin-app .admin-inventario-filtros,
+    body.admin-app .admin-inventario-historial-filtros,
+    body.admin-app .admin-inventario-ventas-filtros {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    body.admin-app .admin-inventario-kpi-card {
+        margin-bottom: 8px;
+    }
+
+    /* Tablas CRUD → tarjetas */
+    body.admin-app .admin-productos-table-wrap .theme-table,
+    body.admin-app .admin-productos-table-wrap .theme-table thead,
+    body.admin-app .admin-productos-table-wrap .theme-table tbody,
+    body.admin-app .admin-productos-table-wrap .theme-table tr,
+    body.admin-app .admin-productos-table-wrap .theme-table th,
+    body.admin-app .admin-productos-table-wrap .theme-table td {
+        display: block;
+        width: 100%;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table thead {
+        display: none;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody tr {
+        border: 1px solid #e8e8e8;
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #fff;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td {
+        border: none;
+        padding: 6px 0;
+        text-align: left !important;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td::before {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 4px;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td[colspan] {
+        text-align: center !important;
+        padding: 16px 0;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td[colspan]::before {
+        display: none;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td:last-child ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0;
+        margin: 8px 0 0;
+        list-style: none;
+    }
+
+    body.admin-app .admin-productos-table-wrap .theme-table tbody td:last-child ul li a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 8px;
+        border-radius: 8px;
+        background: #f1f5f9;
+    }
+
+    /* Etiquetas por tabla */
+    body.admin-app .table-product tbody td:nth-child(1)::before { content: "Imagen producto"; }
+    body.admin-app .table-product tbody td:nth-child(2)::before { content: "Nombre producto"; }
+    body.admin-app .table-product tbody td:nth-child(3)::before { content: "Categoría"; }
+    body.admin-app .table-product tbody td:nth-child(4)::before { content: "Cantidad actual"; }
+    body.admin-app .table-product tbody td:nth-child(5)::before { content: "Precio"; }
+    body.admin-app .table-product tbody td:nth-child(6)::before { content: "Estatus"; }
+    body.admin-app .table-product tbody td:nth-child(7)::before { content: "Opciones"; }
+
+    body.admin-app .table-categoria tbody td:nth-child(1)::before { content: "Imagen categoría"; }
+    body.admin-app .table-categoria tbody td:nth-child(2)::before { content: "Nombre categoría"; }
+    body.admin-app .table-categoria tbody td:nth-child(3)::before { content: "Slug"; }
+    body.admin-app .table-categoria tbody td:nth-child(4)::before { content: "Descripción"; }
+    body.admin-app .table-categoria tbody td:nth-child(5)::before { content: "Opciones"; }
+
+    body.admin-app .table-marca tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-marca tbody td:nth-child(2)::before { content: "Nombre marca"; }
+    body.admin-app .table-marca tbody td:nth-child(3)::before { content: "Slug"; }
+    body.admin-app .table-marca tbody td:nth-child(4)::before { content: "Productos"; }
+    body.admin-app .table-marca tbody td:nth-child(5)::before { content: "Opciones"; }
+
+    body.admin-app .table-departamento tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-departamento tbody td:nth-child(2)::before { content: "Nombre departamento"; }
+    body.admin-app .table-departamento tbody td:nth-child(3)::before { content: "Municipios"; }
+    body.admin-app .table-departamento tbody td:nth-child(4)::before { content: "Opciones"; }
+
+    body.admin-app .table-municipio tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-municipio tbody td:nth-child(2)::before { content: "Nombre municipio"; }
+    body.admin-app .table-municipio tbody td:nth-child(3)::before { content: "Departamento"; }
+    body.admin-app .table-municipio tbody td:nth-child(4)::before { content: "Direcciones"; }
+    body.admin-app .table-municipio tbody td:nth-child(5)::before { content: "Opciones"; }
+
+    body.admin-app .table-usuario tbody td:nth-child(1)::before { content: "Nombre"; }
+    body.admin-app .table-usuario tbody td:nth-child(2)::before { content: "Correo"; }
+    body.admin-app .table-usuario tbody td:nth-child(3)::before { content: "Teléfono"; }
+    body.admin-app .table-usuario tbody td:nth-child(4)::before { content: "Dirección"; }
+    body.admin-app .table-usuario tbody td:nth-child(5)::before { content: "Rol"; }
+    body.admin-app .table-usuario tbody td:nth-child(6)::before { content: "Opciones"; }
+
+    body.admin-app .table-pedido tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-pedido tbody td:nth-child(2)::before { content: "Número"; }
+    body.admin-app .table-pedido tbody td:nth-child(3)::before { content: "Usuario"; }
+    body.admin-app .table-pedido tbody td:nth-child(4)::before { content: "Fecha"; }
+    body.admin-app .table-pedido tbody td:nth-child(5)::before { content: "Total"; }
+    body.admin-app .table-pedido tbody td:nth-child(6)::before { content: "Método de pago"; }
+    body.admin-app .table-pedido tbody td:nth-child(7)::before { content: "Estatus pedido"; }
+    body.admin-app .table-pedido tbody td:nth-child(8)::before { content: "Estatus pago"; }
+    body.admin-app .table-pedido tbody td:nth-child(9)::before { content: "Opciones"; }
+
+    body.admin-app .table-boleta tbody td:nth-child(1)::before { content: "ID boleta"; }
+    body.admin-app .table-boleta tbody td:nth-child(2)::before { content: "Pedido"; }
+    body.admin-app .table-boleta tbody td:nth-child(3)::before { content: "Usuario"; }
+    body.admin-app .table-boleta tbody td:nth-child(4)::before { content: "Fecha carga"; }
+    body.admin-app .table-boleta tbody td:nth-child(5)::before { content: "Estatus pago"; }
+    body.admin-app .table-boleta tbody td:nth-child(6)::before { content: "Estatus pedido"; }
+    body.admin-app .table-boleta tbody td:nth-child(7)::before { content: "Verificación"; }
+    body.admin-app .table-boleta tbody td:nth-child(8)::before { content: "Opciones"; }
+
+    body.admin-app .table-cotizacion tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(2)::before { content: "Número"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(3)::before { content: "Cliente"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(4)::before { content: "Usuario"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(5)::before { content: "Fecha solicitud"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(6)::before { content: "Total ref."; }
+    body.admin-app .table-cotizacion tbody td:nth-child(7)::before { content: "Estatus"; }
+    body.admin-app .table-cotizacion tbody td:nth-child(8)::before { content: "Opciones"; }
+
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(2)::before { content: "Número"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(3)::before { content: "Cliente"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(4)::before { content: "Usuario"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(5)::before { content: "Fecha"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(6)::before { content: "Total ref."; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(7)::before { content: "Estatus"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(8)::before { content: "Próxima acción"; }
+    body.admin-app .table-cotizacion-pendientes tbody td:nth-child(9)::before { content: "Opciones"; }
+
+    body.admin-app .table-inventario tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-inventario tbody td:nth-child(2)::before { content: "Producto"; }
+    body.admin-app .table-inventario tbody td:nth-child(3)::before { content: "Categoría"; }
+    body.admin-app .table-inventario tbody td:nth-child(4)::before { content: "Stock"; }
+    body.admin-app .table-inventario tbody td:nth-child(5)::before { content: "Reservado"; }
+    body.admin-app .table-inventario tbody td:nth-child(6)::before { content: "Disponible"; }
+    body.admin-app .table-inventario tbody td:nth-child(7)::before { content: "Estado"; }
+    body.admin-app .table-inventario tbody td:nth-child(8)::before { content: "Última act."; }
+    body.admin-app .table-inventario tbody td:nth-child(9)::before { content: "Opciones"; }
+
+    body.admin-app .table-inventario-historial tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(2)::before { content: "Fecha"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(3)::before { content: "Producto"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(4)::before { content: "Tipo"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(5)::before { content: "Cant."; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(6)::before { content: "Stock antes"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(7)::before { content: "Stock después"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(8)::before { content: "Referencia"; }
+    body.admin-app .table-inventario-historial tbody td:nth-child(9)::before { content: "Enlace"; }
+
+    body.admin-app .table-inventario-ventas tbody td:nth-child(1)::before { content: "#"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(2)::before { content: "Producto"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(3)::before { content: "Categoría"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(4)::before { content: "Unidades"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(5)::before { content: "Pedidos"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(6)::before { content: "Monto"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(7)::before { content: "Stock disp."; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(8)::before { content: "Última venta"; }
+    body.admin-app .table-inventario-ventas tbody td:nth-child(9)::before { content: "Opciones"; }
+
+    body.admin-app .table-pedido-historial tbody td:nth-child(1)::before { content: "Fecha"; }
+    body.admin-app .table-pedido-historial tbody td:nth-child(2)::before { content: "Pedido"; }
+    body.admin-app .table-pedido-historial tbody td:nth-child(3)::before { content: "Usuario"; }
+    body.admin-app .table-pedido-historial tbody td:nth-child(4)::before { content: "Estatus registrado"; }
+    body.admin-app .table-pedido-historial tbody td:nth-child(5)::before { content: "Comentario"; }
+    body.admin-app .table-pedido-historial tbody td:nth-child(6)::before { content: "Opciones"; }
+
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(1)::before { content: "ID"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(2)::before { content: "Número"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(3)::before { content: "Usuario"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(4)::before { content: "Fecha"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(5)::before { content: "Total"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(6)::before { content: "Estatus pedido"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(7)::before { content: "Estatus pago"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(8)::before { content: "Próxima acción"; }
+    body.admin-app .table-pedido-seguimiento tbody td:nth-child(9)::before { content: "Opciones"; }
+
+    /* Dashboard — tablas de widgets */
+    body.admin-app .best-selling-table,
+    body.admin-app .best-selling-table tbody,
+    body.admin-app .best-selling-table tr,
+    body.admin-app .best-selling-table td {
+        display: block;
+        width: 100%;
+    }
+
+    body.admin-app .best-selling-table tbody tr {
+        border: 1px solid #ececec;
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #fff;
+    }
+
+    body.admin-app .best-selling-table tbody td {
+        border: none;
+        padding: 8px 0;
+    }
+
+    body.admin-app .best-selling-table .product-detail-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 4px 12px;
+    }
+
+    body.admin-app .best-selling-table .product-detail-box h6 {
+        margin: 0;
+        font-size: 0.72rem;
+        color: #777;
+    }
+
+    body.admin-app .transactions-table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 0;
+        border-bottom: 1px solid #ececec;
+    }
+
+    body.admin-app .transactions-table tbody tr td {
+        border: none;
+        padding: 0;
+    }
+
+    body.admin-app .transactions-table tbody tr td:first-child {
+        flex: 1 1 100%;
+    }
+
+    body.admin-app .card-header-top {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
+    body.admin-app .custom-pagination .pagination .page-link {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.admin-app .col-sm-6.col-xxl-3.col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

@@ -15,7 +15,7 @@
             <div class="timer-notification text-center">
                 <h6>
                     ¡Algo que te gusta ahora está en oferta!
-                    <a href="{{ url('shop-left-sidebar') }}" class="text-white">
+                    <a href="{{ route('shop.index') }}" class="text-white">
                         Comprar ahora
                     </a>
                 </h6>
@@ -35,7 +35,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="navbar-top">
-                    <button class="navbar-toggler d-xl-none d-block p-0 me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#primaryMenu">
+                    <button class="navbar-toggler header-mobile-hide d-xl-none d-block p-0 me-3"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#primaryMenu"
+                            aria-controls="primaryMenu"
+                            aria-label="Abrir menú">
                         <span class="navbar-toggler-icon">
                             <i class="iconly-Category icli theme-color"></i>
                         </span>
@@ -101,7 +106,7 @@
                     <div class="rightside-menu">
                         <div class="option-list">
                             <ul>
-                                <li>
+                                <li class="header-mobile-hide">
                                     <a href="javascript:void(0)" class="header-icon user-icon search-icon">
                                         <i class="iconly-Profile icli"></i>
                                     </a>
@@ -152,16 +157,16 @@
                                     </a>
                                 </li>  --}}
                                 {{--  tuve problemas con la plantilla y genere css es este partado  --}}
-                                <li class="right-side onhover-dropdown">
-                                    <div class="delivery-login-box" style="display:flex; align-items:center; gap:8px;">
+                                <li class="right-side onhover-dropdown header-user-dropdown header-mobile-hide">
+                                    <div class="delivery-login-box">
 
-                                    <div class="delivery-icon" style="display:flex; align-items:center;">
+                                    <div class="delivery-icon">
                                         <i data-feather="user"></i>
                                     </div>
 
-                                    <div class="delivery-detail" style="display:flex; flex-direction:column; line-height:1;">
-                                        <h6 style="margin:0;">Hola,</h6>
-                                        <h5 style="margin:0;">{{ Auth::user()->Usu_Nombre ?? 'Mi Cuenta'}}</h5>
+                                    <div class="delivery-detail">
+                                        <h6>Hola,</h6>
+                                        <h5>{{ Auth::user()->Usu_Nombre ?? 'Mi Cuenta'}}</h5>
                                     </div>
 
                                     </div>

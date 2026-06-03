@@ -522,9 +522,9 @@ function renderCart() {
 
         container.innerHTML += `
 
-        <tr class="product-box-contain">
+        <tr class="product-box-contain cart-item-mobile-row">
 
-            <td class="product-detail">
+            <td class="product-detail" data-label="Producto">
 
                 <h4 class="table-title text-content">
                     Producto
@@ -561,7 +561,7 @@ function renderCart() {
 
             </td>
 
-            <td class="price">
+            <td class="price" data-label="Precio">
 
                 <h4 class="table-title text-content">
                     Precio
@@ -573,9 +573,9 @@ function renderCart() {
 
             </td>
 
-            <td class="quantity">
+            <td class="quantity" data-label="Cantidad">
 
-                <h4 class="table-title text-content text-right">
+                <h4 class="table-title text-content">
                     Cantidad
                 </h4>
 
@@ -586,8 +586,9 @@ function renderCart() {
                         <div class="input-group">
 
                             <button type="button"
-                                    class="btn qty-left-minus"
-                                    onclick="changeQty(${item.id}, 'minus')">
+                                    class="btn qty-left-minus cart-qty-btn"
+                                    onclick="changeQty(${item.id}, 'minus')"
+                                    aria-label="Disminuir cantidad">
 
                                 <i class="fa fa-minus ms-0"></i>
 
@@ -596,11 +597,13 @@ function renderCart() {
                             <input class="form-control input-number qty-input"
                                    type="text"
                                    value="${item.cantidad}"
-                                   readonly>
+                                   readonly
+                                   aria-label="Cantidad">
 
                             <button type="button"
-                                    class="btn qty-right-plus"
-                                    onclick="changeQty(${item.id}, 'plus')">
+                                    class="btn qty-right-plus cart-qty-btn"
+                                    onclick="changeQty(${item.id}, 'plus')"
+                                    aria-label="Aumentar cantidad">
 
                                 <i class="fa fa-plus ms-0"></i>
 
@@ -614,10 +617,10 @@ function renderCart() {
 
             </td>
 
-            <td class="subtotal">
+            <td class="subtotal" data-label="Subtotal">
 
                 <h4 class="table-title text-content">
-                    Total
+                    Subtotal
                 </h4>
 
                 <h5>
@@ -626,15 +629,16 @@ function renderCart() {
 
             </td>
 
-            <td class="save-remove">
+            <td class="save-remove" data-label="Acción">
 
                 <h4 class="table-title text-content">
                     Acción
                 </h4>
 
-                <a class="remove close_button"
+                <a class="remove close_button cart-remove-btn"
                    href="javascript:void(0)"
-                   onclick="removeFromCart(${item.id})">
+                   onclick="removeFromCart(${item.id})"
+                   aria-label="Eliminar del carrito">
 
                     Eliminar
 

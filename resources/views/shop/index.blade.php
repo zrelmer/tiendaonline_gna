@@ -31,7 +31,9 @@
 
             {{-- Sidebar filtros --}}
             <div class="col-lg-3">
-                <div class="shop-sidebar-wrap left-box">
+                <div class="shop-sidebar-wrap left-box"
+                     id="shopFiltersPanel"
+                     aria-hidden="true">
                     <div class="shop-sidebar shop-left-sidebar">
                         <div class="back-button">
                             <h3>
@@ -44,9 +46,13 @@
                               action="{{ route('shop.index') }}"
                               id="shop-filter-form"
                               class="shop-filter-form">
+                            @if (request('search'))
+                                <input type="hidden" name="search" value="{{ request('search') }}">
+                            @endif
+
                             <div class="accordion custom-accordion" id="accordionExample">
 
-                                {{-- El filtro por texto (search) está en partials/header.blade.php --}}
+                                {{-- Búsqueda por texto: se envía desde el header (?search=) --}}
 
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
@@ -207,7 +213,11 @@
                             </p>
                         @endif
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary filter-button d-lg-none">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary filter-button d-lg-none"
+                            id="shopFilterToggle"
+                            aria-controls="shopFiltersPanel"
+                            aria-expanded="false">
                         <i class="fa-solid fa-filter me-1"></i> Filtros
                     </button>
                 </div>
@@ -234,7 +244,8 @@
                                     <div class="product-image">
                                         <div class="label-flex">
                                             <button type="button"
-                                                    class="btn p-0 wishlist btn-wishlist notifi-wishlist"
+                                                    class="btn p-0 wishlist btn-wishlist"
+                                                    aria-label="Agregar a lista de deseos"
                                                     onclick="addToWishlist(
                                                         {{ $product->Id_Producto }},
                                                         @js($imagenUrl),
@@ -268,7 +279,7 @@
                                             @endfor
                                         </ul>
                                         <a href="{{ route('product.details', ['idproducto' => $product->Id_Producto, 'slug_producto' => $product->Prod_Slug]) }}">
-                                            <h5 class="name text-truncate">{{ $product->Prod_Nombre }}</h5>
+                                            <h5 class="name">{{ $product->Prod_Nombre }}</h5>
                                         </a>
                                         <h5 class="price theme-color">
                                             Q {{ number_format($product->Prod_Precio, 2) }}
@@ -289,6 +300,7 @@
                                             </div>
                                             <button type="button"
                                                     class="buy-button buy-button-2 btn btn-cart"
+                                                    aria-label="Agregar al carrito"
                                                     onclick="addToCart(
                                                         {{ $product->Id_Producto }},
                                                         @js($imagenUrl),
@@ -305,7 +317,7 @@
                         @endforeach
                     </div>
 
-                    <div class="mt-4 d-flex justify-content-center">
+                    <div class="mt-4 shop-pagination-wrap">
                         {{ $products->links() }}
                     </div>
                 @endif
@@ -324,9 +336,38 @@
 
         var form = document.getElementById('shop-filter-form');
         var debounceTimer = null;
+        var filterPanel = document.getElementById('shopFiltersPanel');
+        var filterToggle = document.getElementById('shopFilterToggle');
+        var overlay = document.querySelector('.bg-overlay');
+        var sidebarWrap = document.querySelector('.shop-page .shop-sidebar-wrap');
+
+        function setFiltersOpen(isOpen) {
+            document.body.classList.toggle('shop-filters-open', isOpen);
+
+            if (sidebarWrap) {
+                sidebarWrap.classList.toggle('show', isOpen);
+            }
+            if (overlay) {
+                overlay.classList.toggle('show', isOpen);
+            }
+            if (filterPanel) {
+                filterPanel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            }
+            if (filterToggle) {
+                filterToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        }
+
+        function openMobileSidebar() {
+            if (window.matchMedia('(min-width: 992px)').matches) {
+                return;
+            }
+            setFiltersOpen(true);
+        }
 
         function closeMobileSidebar() {
-            $('.shop-page .shop-sidebar-wrap, .bg-overlay').removeClass('show');
+            setFiltersOpen(false);
         }
 
         function submitFilters() {
@@ -347,17 +388,45 @@
                 input.addEventListener('change', submitFilters);
             });
 
-            // Sin name="search": la búsqueda por texto se hace desde el header.
             form.querySelectorAll('input[name="min_price"], input[name="max_price"]').forEach(function (input) {
                 input.addEventListener('input', debouncedSubmit);
                 input.addEventListener('change', debouncedSubmit);
             });
         }
 
-        $('.shop-page .filter-button').on('click', function () {
-            $('.shop-page .shop-sidebar-wrap, .bg-overlay').addClass('show');
+        if (filterToggle) {
+            filterToggle.addEventListener('click', function () {
+                if (document.body.classList.contains('shop-filters-open')) {
+                    closeMobileSidebar();
+                } else {
+                    openMobileSidebar();
+                }
+            });
+        }
+
+        document.querySelectorAll('.shop-page .back-button').forEach(function (el) {
+            el.addEventListener('click', closeMobileSidebar);
         });
-        $('.shop-page .back-button, .bg-overlay').on('click', closeMobileSidebar);
+
+        if (overlay) {
+            overlay.addEventListener('click', function () {
+                if (document.body.classList.contains('shop-filters-open')) {
+                    closeMobileSidebar();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && document.body.classList.contains('shop-filters-open')) {
+                closeMobileSidebar();
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.matchMedia('(min-width: 992px)').matches) {
+                closeMobileSidebar();
+            }
+        });
     });
 </script>
 @endpush

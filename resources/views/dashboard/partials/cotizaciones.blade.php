@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered align-middle" id="tabla-lineas-cotizacion">
+                        <table class="table table-bordered align-middle dashboard-table-mobile" id="tabla-lineas-cotizacion">
                             <thead>
                                 <tr>
                                     <th style="min-width:180px;">Producto del catálogo</th>
@@ -314,7 +314,7 @@
                 @endif
 
                 <div class="table-responsive mb-3">
-                    <table class="table table-sm table-bordered mb-0">
+                    <table class="table table-sm table-bordered mb-0 dashboard-table-mobile">
                         <thead>
                             <tr>
                                 <th>Cant.</th>
@@ -326,10 +326,10 @@
                         <tbody>
                             @foreach ($cotizacion->detalle as $linea)
                                 <tr>
-                                    <td>{{ (int) $linea->Cantidad }}</td>
-                                    <td>{{ $linea->Descripcion }}</td>
-                                    <td>Q {{ number_format((float) $linea->Costo_Unit, 2) }}</td>
-                                    <td>Q {{ number_format((float) $linea->Subtotal, 2) }}</td>
+                                    <td data-label="Cant.">{{ (int) $linea->Cantidad }}</td>
+                                    <td data-label="Descripción">{{ $linea->Descripcion }}</td>
+                                    <td data-label="Costo unit.">Q {{ number_format((float) $linea->Costo_Unit, 2) }}</td>
+                                    <td data-label="Subtotal">Q {{ number_format((float) $linea->Subtotal, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

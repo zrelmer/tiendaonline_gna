@@ -7,6 +7,7 @@
 <script src="{{ asset('assets/admin/js/config.js') }}"></script>
 <script src="{{ asset('assets/admin/js/tooltip-init.js') }}"></script>
 <script src="{{ asset('assets/admin/js/sidebar-menu.js') }}"></script>
+<script src="{{ asset('assets/admin/js/admin-mobile.js') }}"></script>
 <script src="{{ asset('assets/admin/js/notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/notify/index.js') }}"></script>
 <script src="{{ asset('assets/admin/js/chart/apex-chart/apex-chart1.js') }}"></script>

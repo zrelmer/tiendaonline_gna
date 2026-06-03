@@ -3,7 +3,7 @@
      tabindex="-1"
      aria-labelledby="modalNuevaDireccionLabel"
      aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
         <div class="modal-content">
             <form method="POST" action="{{ route('cart.checkout.direccion.store') }}" id="form-nueva-direccion">
                 @csrf

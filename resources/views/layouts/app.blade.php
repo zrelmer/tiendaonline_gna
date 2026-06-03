@@ -8,7 +8,10 @@
     @include('partials.head')
 </head>
 
-<body class="theme-color-2">
+@php
+    $isAuthGuestPage = request()->routeIs('login', 'register', 'password.request', 'password.reset');
+@endphp
+<body @class(['theme-color-2', 'has-mobile-nav' => ! $isAuthGuestPage])>
 
     <!-- Loader Start -->
     @include('partials.loader')
@@ -18,53 +21,61 @@
     @include('partials.header')
     <!-- Header End -->
 
+    @include('partials.mobile-menu-offcanvas')
+
     <!-- mobile fix menu start -->
-    <div class="mobile-menu d-md-none d-block mobile-cart">
+    @unless ($isAuthGuestPage)
+    <nav class="mobile-menu d-md-none d-block mobile-cart" aria-label="Navegación inferior">
         <ul>
-            <li class="active">
+            <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                 <a href="{{ route('home') }}">
                     <i class="iconly-Home icli"></i>
-                    <span>Home</span>
+                    <span>Inicio</span>
                 </a>
             </li>
 
-            <li class="mobile-category">
-                <a href="javascript:void(0)">
-                    <i class="iconly-Category icli js-link"></i>
-                    <span>Category</span>
+            <li class="mobile-category {{ request()->routeIs('shop.index') ? 'active' : '' }}">
+                <a href="javascript:void(0)"
+                   data-bs-toggle="offcanvas"
+                   data-bs-target="#primaryMenu"
+                   aria-controls="primaryMenu"
+                   aria-label="Abrir menú y categorías">
+                    <i class="iconly-Category icli"></i>
+                    <span>Menú</span>
                 </a>
             </li>
 
             <li>
-                <a href="search.html" class="search-box">
+                <a href="javascript:void(0)" class="search-box" aria-label="Buscar productos">
                     <i class="iconly-Search icli"></i>
-                    <span>Search</span>
+                    <span>Buscar</span>
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('listadeseo.index') }}" class="notifi-wishlist">
+            <li class="{{ request()->routeIs('listadeseo.*') ? 'active' : '' }}">
+                <a href="{{ route('listadeseo.index') }}">
                     <i class="iconly-Heart icli"></i>
-                    <span>My Wish</span>
+                    <span>Deseos</span>
                 </a>
             </li>
 
-            <li>
+            <li class="{{ request()->routeIs('cart.*') ? 'active' : '' }}">
                 <a href="{{ route('cart.index') }}">
                     <i class="iconly-Bag-2 icli fly-cate"></i>
-                    <span>Cart</span>
+                    <span>Carrito</span>
                 </a>
             </li>
         </ul>
-    </div>
+    </nav>
+    @endunless
     <!-- mobile fix menu end -->
     @yield('content')
 
     <!-- Footer Start -->
     {{--  @include('partials.footer')  --}}
-    @if (!request()->routeIs('login') && !request()->routeIs('register') && !request()->routeIs('password.request') && !request()->routeIs('password.reset'))
+    @unless ($isAuthGuestPage)
         @include('partials.footer')
-    @endif
+    @endunless
     <!-- Footer End -->
 
     <!-- Quick View Modal Box Start -->
@@ -80,7 +91,7 @@
                     <div class="row g-sm-4 g-2">
                         <div class="col-lg-6">
                             <div class="slider-image">
-                                <img src="../assets/images/product/category/1.jpg" class="img-fluid blur-up lazyload" alt="">
+                                <img src="{{ asset('assets/images/product/category/1.jpg') }}" class="img-fluid blur-up lazyload" alt="">
                             </div>
                         </div>
 
@@ -154,10 +165,12 @@
                                 </div>
 
                                 <div class="modal-button">
-                                    <button onclick="location.href = 'cart.html';" class="btn btn-md add-cart-button icon">Add
-                                        To Cart</button>
-                                    <button onclick="location.href = 'product-left.html';" class="btn theme-bg-color view-button icon text-white fw-bold btn-md">
-                                        View More Details</button>
+                                    <button type="button" class="btn btn-md add-cart-button icon" data-bs-dismiss="modal">
+                                        Cerrar
+                                    </button>
+                                    <a href="{{ route('shop.index') }}" class="btn theme-bg-color view-button icon text-white fw-bold btn-md">
+                                        Ir a la tienda
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -167,47 +180,6 @@
         </div>
     </div>
     <!-- Quick View Modal Box End -->
-    <!-- Cookie Bar Box Start -->
-    <div class="cookie-bar-box" id="cookieConsentBanner">
-        <div class="cookie-box">
-            <div class="cookie-image">
-                <img src="../assets/images/cookie-bar.png" class="blur-up lazyload" alt="">
-                <h2>Cookies!</h2>
-            </div>
-
-            <div class="cookie-contain">
-                <h5 class="text-content">Utilizamos cookies para mejorar su experiencia</h5>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button class="btn privacy-button">Privacy Policy</button>
-            <button class="btn ok-button">OK</button>
-        </div>
-    </div>
-    <!-- Cookie Bar Box End -->
-    <script>
-        (function () {
-            var STORAGE_KEY = 'tiendaonline_cookie_consent_v1';
-            var box = document.getElementById('cookieConsentBanner');
-            if (!box) return;
-            try {
-                if (localStorage.getItem(STORAGE_KEY) === '1') {
-                    box.classList.add('hide');
-                    return;
-                }
-            } catch (e) {}
-            var okBtn = box.querySelector('.ok-button');
-            if (okBtn) {
-                okBtn.addEventListener('click', function () {
-                    try {
-                        localStorage.setItem(STORAGE_KEY, '1');
-                    } catch (e) {}
-                    box.classList.add('hide');
-                });
-            }
-        })();
-    </script>
 
     <!-- Items section Start -->
     <div class="button-item">

@@ -35,10 +35,26 @@ $('.category-slider').slick({
         settings: {
             slidesToShow: 3,
         }
-    }, {
+    },
+    {
+        breakpoint: 767,
+        settings: {
+            slidesToShow: 3.2,
+            slidesToScroll: 1,
+        }
+    },
+    {
         breakpoint: 482,
         settings: {
-            slidesToShow: 2,
+            slidesToShow: 2.65,
+            slidesToScroll: 1,
+        }
+    },
+    {
+        breakpoint: 360,
+        settings: {
+            slidesToShow: 2.35,
+            slidesToScroll: 1,
         }
     },
     ]

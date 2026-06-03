@@ -14,7 +14,7 @@
                             <h3 class="mb-sm-3 mb-1">Tecnología de última generación</h3>
                             <h4>Hasta 50% de descuento</h4>
 
-                            <a href="shop-left-sidebar.html"
+                            <a href="{{ route('shop.index') }}"
                                class="btn theme-color bg-white btn-md fw-bold mt-sm-3 mt-1 mend-auto">
                                 Comprar ahora
                             </a>
@@ -35,7 +35,7 @@
                             <h3 class="mb-sm-3 mb-1">Licencias Digitales de Antivirus</h3>
                             <h4 class="text-content">Promoción de fin de semana</h4>
 
-                            <a href="shop-left-sidebar.html"
+                            <a href="{{ route('shop.index') }}"
                                class="btn theme-bg-color text-white btn-md fw-bold mt-sm-3 mt-1 mend-auto">
                                 Comprar ahora
                             </a>

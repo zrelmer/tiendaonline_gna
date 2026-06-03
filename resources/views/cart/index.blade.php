@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de deseos')
+@section('title', 'Carrito de compras')
 
 @section('content')
 
@@ -29,7 +29,7 @@
 <!-- Breadcrumb Section End -->
 
 <!-- Cart Section Start -->
-<section class="cart-section section-b-space">
+<section class="cart-section cart-page-section section-b-space">
     <div class="container-fluid-lg">
 
         {{-- CART EMPTY --}}
@@ -56,15 +56,15 @@
         </div>
 
         {{-- CART CONTENT --}}
-        <div class="row g-sm-5 g-3" id="cart-content">
+        <div class="row g-sm-5 g-3 cart-layout-row" id="cart-content">
 
             {{-- PRODUCTS --}}
-            <div class="col-xxl-9">
+            <div class="col-12 col-xxl-9 order-2 order-lg-1">
 
                 <div class="cart-table">
-                    <div class="table-responsive-xl">
+                    <div class="table-responsive-xl cart-table-responsive">
 
-                        <table class="table">
+                        <table class="table cart-items-table">
                             <tbody id="cart-items">
                                 {{-- JS Render --}}
                             </tbody>
@@ -76,9 +76,9 @@
             </div>
 
             {{-- SUMMARY --}}
-            <div class="col-xxl-3">
+            <div class="col-12 col-xxl-3 order-1 order-lg-2">
 
-                <div class="summery-box p-sticky">
+                <div class="summery-box p-sticky cart-summary-box">
 
                     <div class="summery-header">
                         <h3>Resumen del carrito</h3>
@@ -119,7 +119,7 @@
 
                             <li>
                                 <a href="{{ auth()->check() ? route('cart.checkout') : route('login') }}"
-                                   class="btn btn-animation proceed-btn fw-bold w-100">
+                                   class="btn btn-animation proceed-btn fw-bold w-100 cart-proceed-btn">
                                     Proceder al pago
                                 </a>
                             </li>

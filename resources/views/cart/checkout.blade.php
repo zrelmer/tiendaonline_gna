@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Checkout')
+@section('title', 'Finalizar compra')
 
 @section('content')
 
@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="breadcrumb-contain">
-                    <h2>Checkout</h2>
+                    <h2>Finalizar compra</h2>
                     <nav>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item">
@@ -18,7 +18,7 @@
                                     <i class="fa-solid fa-house"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active">Checkout</li>
+                            <li class="breadcrumb-item active">Finalizar compra</li>
                         </ol>
                     </nav>
                 </div>
@@ -29,16 +29,16 @@
 <!-- Breadcrumb Section End -->
 
 <!-- Checkout section Start -->
-<section class="checkout-section-2 section-b-space">
+<section class="checkout-section-2 checkout-page-section section-b-space">
     <div class="container-fluid-lg">
         @if (session('success'))
-            <div class="alert alert-success mb-4" role="alert">
+            <div class="alert alert-success mb-4 checkout-alert" role="alert">
                 {{ session('success') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger mb-4" role="alert">
+            <div class="alert alert-danger mb-4 checkout-alert" role="alert">
                 <ul class="mb-0 ps-3">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -49,8 +49,8 @@
 
         <form method="POST" action="{{ route('cart.checkout.store') }}" id="checkout-form">
             @csrf
-        <div class="row g-sm-4 g-3">
-            <div class="col-lg-8">
+        <div class="row g-sm-4 g-3 checkout-layout-row">
+            <div class="col-12 col-lg-8 order-2 order-lg-1 checkout-form-col">
                 <div class="left-sidebar-checkout">
                     <div class="checkout-detail-box">
                         <ul>
@@ -77,7 +77,7 @@
                                                         $municipio = $direccion->municipio;
                                                         $departamento = $municipio?->departamento;
                                                     @endphp
-                                                    <div class="col-xxl-6 col-lg-12 col-md-6">
+                                                    <div class="col-12 col-md-6 col-xxl-6">
                                                         <div class="delivery-address-box">
                                                             <div>
                                                                 <div class="form-check">
@@ -286,7 +286,7 @@
                                         <h4>Pagar</h4>
                                     </div><!-- fin del checkout-title -->
                                     <button type="submit"
-                                            class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
+                                            class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold checkout-submit-main d-none d-lg-block"
                                             @disabled($direcciones->isEmpty() || $lineasCarrito->isEmpty())>
                                         Realizar compra
                                     </button>
@@ -304,8 +304,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="right-side-summery-box">
+            <div class="col-12 col-lg-4 order-1 order-lg-2 checkout-summary-col">
+                <div class="right-side-summery-box checkout-summary-sticky">
                     <div class="summery-box-2">
                         <div class="summery-header">
                             <h3>Resumen del pedido</h3>
@@ -355,6 +355,23 @@
         </div>
         </form>
 
+        <div class="checkout-mobile-bar d-lg-none"
+             id="checkoutMobileBar"
+             aria-hidden="false">
+            <div class="checkout-mobile-bar-inner">
+                <div class="checkout-mobile-bar-total">
+                    <span class="small text-content d-block">Total</span>
+                    <strong class="theme-color" id="checkout-mobile-total-display">Q{{ number_format($totalCarrito, 2) }}</strong>
+                </div>
+                <button type="submit"
+                        form="checkout-form"
+                        class="btn theme-bg-color text-white fw-bold checkout-mobile-submit"
+                        @disabled($direcciones->isEmpty() || $lineasCarrito->isEmpty())>
+                    Realizar compra
+                </button>
+            </div>
+        </div>
+
         <form id="form-boleta-pago"
               action="{{ route('boleta-pago.store') }}"
               method="POST"
@@ -374,16 +391,16 @@
         const checkoutForm = document.getElementById('checkout-form');
         const tarjetaId = Number(@json(optional($metodosPago->firstWhere('plantilla', 'tarjeta'))->Id_MetodoPago));
 
-        if (!checkoutForm || !Number.isFinite(tarjetaId) || tarjetaId < 1) {
-            return;
+        if (checkoutForm && Number.isFinite(tarjetaId) && tarjetaId >= 1) {
+            checkoutForm.addEventListener('submit', function () {
+                const metodo = document.querySelector('input[name="id_metodo_pago"]:checked');
+                const esTarjeta = metodo && Number(metodo.value) === tarjetaId;
+
+                checkoutForm.target = esTarjeta ? '_blank' : '_self';
+            });
         }
 
-        checkoutForm.addEventListener('submit', function () {
-            const metodo = document.querySelector('input[name="id_metodo_pago"]:checked');
-            const esTarjeta = metodo && Number(metodo.value) === tarjetaId;
-
-            checkoutForm.target = esTarjeta ? '_blank' : '_self';
-        });
+        document.body.classList.add('checkout-page-active');
     });
 </script>
 @endpush

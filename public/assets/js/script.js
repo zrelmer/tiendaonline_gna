@@ -137,6 +137,7 @@ $(document).ready(function () {
         $('li a').removeClass("active");
         $(this).addClass("active");
     });
+
 });
 
 /*=====================
@@ -200,17 +201,7 @@ $(document).ready(function () {
 });
 
 /*=====================
-   08. User Dashboard Left Sidebar Show Js
-   ==========================*/
-$(".left-dashboard-show").click(function () {
-    $(".bg-overlay, .dashboard-left-sidebar").addClass("show");
-});
-$(".close-button, .bg-overlay, .user-nav-pills .nav-item .nav-link").click(function () {
-    $(".bg-overlay, .dashboard-left-sidebar").removeClass("show");
-});
-
-/*=====================
-   09. Tooltip Js
+   08. Tooltip Js
    ==========================*/
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -254,9 +245,22 @@ $(".bg-img").each(function () {
 /*=====================
    12. search box function Js
    ==========================*/
-$(".search-box").on("click", function () {
-    $(this).closest(".rightside-box").find(".search-full").addClass("open");
+function openHeaderSearch() {
+    var $search = $("header .search-full").first();
+    $search.addClass("open");
+    var $input = $search.find('input[type="search"]').first();
+    if ($input.length) {
+        setTimeout(function () {
+            $input.trigger("focus");
+        }, 150);
+    }
+}
+
+$(".search-box").on("click", function (e) {
+    e.preventDefault();
+    openHeaderSearch();
 });
+
 $(window).on("load resize", function () {
     // open searchbox
     $(".search-type").on("click", function () {
@@ -265,7 +269,7 @@ $(window).on("load resize", function () {
 
     // close search
     $(".close-search").on("click", function () {
-        $(this).closest(".rightside-box").find(".search-full").removeClass("open");
+        $(this).closest(".search-full").removeClass("open show");
     });
 });
 
@@ -402,9 +406,12 @@ $(".close_button").click(function () {
 });
 
 /*=====================
-   22. Category Box js
+   22. Category Box js (legacy dropdown; menú móvil usa offcanvas #primaryMenu)
    ==========================*/
-$(".mobile-category").click(function () {
+$(".mobile-category").click(function (e) {
+    if ($("#primaryMenu").length) {
+        return;
+    }
     $(".bg-overlay, .category-dropdown").addClass("show");
 });
 $(".close-button, .bg-overlay").click(function () {

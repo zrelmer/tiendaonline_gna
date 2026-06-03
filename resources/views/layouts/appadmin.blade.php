@@ -5,7 +5,7 @@
     @include('partials.admin.head')
 </head>
 
-<body>
+<body class="admin-app">
     <!-- tap on top start -->
     <div class="tap-top">
         <span class="lnr lnr-chevron-up"></span>
@@ -24,8 +24,14 @@
                             <img class="img-fluid white-logo" src="{{ asset('assets/admin/images/logo/LogoGNA.png') }}" alt="logo">
                         </a>
                     </div>
-                    <div class="toggle-sidebar">
-                        <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                    <div class="toggle-sidebar admin-mobile-sidebar-toggle">
+                        <button type="button"
+                                class="status_toggle middle sidebar-toggle admin-sidebar-toggle-btn"
+                                aria-label="Abrir o cerrar menú"
+                                aria-expanded="false"
+                                aria-controls="sidebar-menu">
+                            <i data-feather="align-center"></i>
+                        </button>
                         <a href="{{ route('admin.dashboard') }}">
                             <img src="{{ asset('assets/admin/images/logo/LogoGNA.png') }}" class="img-fluid" alt="">
                         </a>
@@ -85,7 +91,7 @@
                 <div id="sidebarEffect"></div>
                 <div>
                     <div class="logo-wrapper logo-wrapper-center">
-                        <a href="index.html" data-bs-original-title="" title="">
+                        <a href="{{ route('admin.dashboard') }}" title="Panel principal">
                             <img class="img-fluid for-white" src="{{ asset('assets/admin/images/logo/LogoGNA.png') }}" alt="logo">
                         </a>
                         <div class="back-btn">
@@ -225,9 +231,6 @@
                                         <li>
                                             <a href="{{ route('admin.pedidos.index') }}">Listado de Pedidos</a>
                                         </li>
-                                        {{-- <li>
-                                            <a href="#">Detalle de Pedido</a>
-                                        </li> --}}
                                         <li>
                                             <a href="{{ route('admin.pedidos.historial.index') }}">Historial de Pedido</a>
                                         </li>

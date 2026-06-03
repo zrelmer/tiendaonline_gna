@@ -20,7 +20,7 @@
                             </div>
 
                             <div class="offer-box">
-                                <a href="shop-left-sidebar.html"
+                                <a href="{{ route('shop.index') }}"
                                    class="btn-category btn theme-bg-color text-white">
                                     Comprar Ahora
                                 </a>
@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="offer-box">
-                                <a href="shop-left-sidebar.html"
+                                <a href="{{ route('shop.index') }}"
                                    class="btn-category btn theme-bg-color text-white">
                                     Comprar Ahora
                                 </a>
@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="offer-box">
-                                <a href="shop-left-sidebar.html"
+                                <a href="{{ route('shop.index') }}"
                                    class="btn-category btn theme-bg-color text-white">
                                     Comprar Ahora
                                 </a>
@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="offer-box">
-                                <a href="shop-left-sidebar.html"
+                                <a href="{{ route('shop.index') }}"
                                    class="btn-category btn theme-bg-color text-white">
                                     Comprar Ahora
                                 </a>

@@ -29,7 +29,7 @@
 </section>
 
 <!-- REGISTER -->
-<section class="log-in-section section-b-space">
+<section class="log-in-section auth-page-section section-b-space">
     <div class="container-fluid-lg w-100">
         <div class="row">
 
@@ -41,7 +41,7 @@
             </div>
 
             <!-- FORMULARIO -->
-            <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xxl-4 mx-auto auth-form-col">
                 <div class="log-in-box">
 
                     <div class="log-in-title">
@@ -51,7 +51,7 @@
 
                     <!-- MENSAJES -->
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger auth-alert">
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -69,11 +69,14 @@
                                 <div class="form-floating theme-form-floating">
                                     <input type="text"
                                            name="Usu_Nombre"
-                                           class="form-control"
+                                           class="form-control @error('Usu_Nombre') is-invalid @enderror"
                                            placeholder="Nombre completo"
                                            value="{{ old('Usu_Nombre') }}"
                                            required>
                                     <label>Nombre completo</label>
+                                    @error('Usu_Nombre')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -82,11 +85,14 @@
                                 <div class="form-floating theme-form-floating">
                                     <input type="email"
                                            name="Usu_Correo"
-                                           class="form-control"
+                                           class="form-control @error('Usu_Correo') is-invalid @enderror"
                                            placeholder="Correo electrónico"
                                            value="{{ old('Usu_Correo') }}"
                                            required>
                                     <label>Correo electrónico</label>
+                                    @error('Usu_Correo')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -95,11 +101,14 @@
                                 <div class="form-floating theme-form-floating">
                                     <input type="text"
                                            name="Usu_Telefono"
-                                           class="form-control"
+                                           class="form-control @error('Usu_Telefono') is-invalid @enderror"
                                            placeholder="Teléfono"
                                            value="{{ old('Usu_Telefono') }}"
                                            required>
                                     <label>Teléfono</label>
+                                    @error('Usu_Telefono')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -108,10 +117,13 @@
                                 <div class="form-floating theme-form-floating">
                                     <input type="password"
                                            name="Usu_Pass"
-                                           class="form-control"
+                                           class="form-control @error('Usu_Pass') is-invalid @enderror"
                                            placeholder="Contraseña"
                                            required>
                                     <label>Contraseña</label>
+                                    @error('Usu_Pass')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -120,7 +132,7 @@
                                 <div class="form-floating theme-form-floating">
                                     <input type="password"
                                            name="Usu_Pass_confirmation"
-                                           class="form-control"
+                                           class="form-control @error('Usu_Pass') is-invalid @enderror"
                                            placeholder="Confirmar contraseña"
                                            required>
                                     <label>Confirmar contraseña</label>
@@ -141,7 +153,7 @@
 
                             <!-- BOTON -->
                             <div class="col-12">
-                                <button class="btn btn-animation w-100" type="submit">
+                                <button class="btn btn-animation w-100 auth-submit-btn" type="submit">
                                     Registrarse
                                 </button>
                             </div>

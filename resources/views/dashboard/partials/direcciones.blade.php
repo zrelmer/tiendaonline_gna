@@ -48,7 +48,7 @@
                     : (int) $direccion->Id_Municipio;
             @endphp
 
-            <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6">
+            <div class="col-12 col-md-6 col-xl-6 col-xxl-4">
                 <div class="address-box dashboard-address-card">
                     <div>
                         <div class="label">
@@ -118,7 +118,7 @@
                  id="editar-direccion-{{ $direccion->Id_Direccion }}"
                  tabindex="-1"
                  aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
                     <div class="modal-content">
                         <form method="POST"
                               action="{{ route('dashboard.direcciones.update', $direccion) }}"
@@ -192,7 +192,7 @@
 </div>
 
 <div class="modal fade" id="add-address" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
         <div class="modal-content">
             <form method="POST"
                   action="{{ route('dashboard.direcciones.store') }}"

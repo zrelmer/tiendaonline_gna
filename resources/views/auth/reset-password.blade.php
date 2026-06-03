@@ -29,7 +29,7 @@
 </section>
 
 <!-- RESET PASSWORD -->
-<section class="log-in-section section-b-space">
+<section class="log-in-section auth-page-section section-b-space">
     <div class="container-fluid-lg w-100">
         <div class="row">
 
@@ -41,7 +41,7 @@
             </div>
 
             <!-- FORMULARIO -->
-            <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xxl-4 mx-auto auth-form-col">
                 <div class="log-in-box">
 
                     <div class="log-in-title">
@@ -51,8 +51,8 @@
 
                     <!-- MENSAJES -->
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
+                        <div class="alert alert-danger auth-alert">
+                            <ul class="mb-0 ps-3">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -73,13 +73,16 @@
                                     <input type="email"
                                            id="email"
                                            name="email"
-                                           class="form-control"
+                                           class="form-control @error('email') is-invalid @enderror"
                                            placeholder="Correo electrónico"
                                            value="{{ old('email', $request->email) }}"
                                            required
                                            autofocus
                                            autocomplete="username">
                                     <label for="email">Correo electrónico</label>
+                                    @error('email')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -89,11 +92,14 @@
                                     <input type="password"
                                            id="password"
                                            name="password"
-                                           class="form-control"
+                                           class="form-control @error('password') is-invalid @enderror"
                                            placeholder="Nueva contraseña"
                                            required
                                            autocomplete="new-password">
                                     <label for="password">Nueva contraseña</label>
+                                    @error('password')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -103,7 +109,7 @@
                                     <input type="password"
                                            id="password_confirmation"
                                            name="password_confirmation"
-                                           class="form-control"
+                                           class="form-control @error('password') is-invalid @enderror"
                                            placeholder="Confirmar contraseña"
                                            required
                                            autocomplete="new-password">
@@ -113,8 +119,8 @@
 
                             <!-- BOTON -->
                             <div class="col-12">
-                                <button class="btn btn-animation w-100" type="submit">
-                                    Restablecer Contraseña
+                                <button class="btn btn-animation w-100 auth-submit-btn" type="submit">
+                                    Restablecer contraseña
                                 </button>
                             </div>
 

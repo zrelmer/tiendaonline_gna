@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Usuario Dashboard')
+@section('title', 'Mi cuenta')
 
 @section('content')
 
@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="breadcrumb-contain">
-                    <h2>Usuario Dashboard</h2>
+                    <h2>Mi cuenta</h2>
                     <nav>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item">
@@ -18,7 +18,7 @@
                                     <i class="fa-solid fa-house"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active">Usuario Dashboard</li>
+                            <li class="breadcrumb-item active">Mi cuenta</li>
                         </ol>
                     </nav>
                 </div>
@@ -29,13 +29,13 @@
 <!-- Breadcrumb Section End -->
 
 <!-- User Dashboard Section Start -->
-<section class="user-dashboard-section section-b-space">
+<section class="user-dashboard-section user-dashboard-page section-b-space">
     <div class="container-fluid-lg">
-        <div class="row">
-            <div class="col-xxl-3 col-lg-4">
-                <div class="dashboard-left-sidebar">
+        <div class="row g-4">
+            <div class="col-12 col-lg-4">
+                <div class="dashboard-left-sidebar" id="dashboardSidebar" aria-hidden="true">
                     <div class="close-button d-flex d-lg-none">
-                        <button class="close-sidebar">
+                        <button type="button" class="close-sidebar" aria-label="Cerrar menú">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
@@ -77,7 +77,7 @@
 
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-tracking-tab" data-bs-toggle="pill" data-bs-target="#pills-tracking" type="button" role="tab"><i data-feather="truck"></i>
-                                Seguimiento de Ordenes</button>
+                                Seguimiento de órdenes</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-quotes-tab" data-bs-toggle="pill" data-bs-target="#pills-quotes" type="button" role="tab"><i data-feather="clipboard"></i>
@@ -91,12 +91,17 @@
                 </div>
             </div>
 
-            <div class="col-xxl-9 col-lg-8">
-                <button class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none">Show
-                    Menu</button>
+            <div class="col-12 col-lg-8">
+                <button type="button"
+                        class="btn dashboard-menu-toggle btn-animation btn-md fw-bold d-block mb-4 d-lg-none w-100"
+                        id="dashboardMenuToggle"
+                        aria-controls="dashboardSidebar"
+                        aria-expanded="false">
+                    <i class="fa-solid fa-bars me-2"></i> Mostrar menú
+                </button>
                 <div class="dashboard-right-sidebar">
                     @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
+                        <div class="alert alert-success dashboard-alert">{{ session('success') }}</div>
                     @endif
 
                     <div class="tab-content" id="pills-tabContent">
@@ -189,27 +194,28 @@
 <!-- User Dashboard Section End -->
 @endsection
 
-@if (session('tab'))
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var tabMap = {
-                    orders: 'pills-order-tab',
-                    addresses: 'pills-address-tab',
-                    profile: 'pills-profile-tab',
-                    tracking: 'pills-tracking-tab',
-                    quotes: 'pills-quotes-tab',
-                };
-                var activeTab = @json(session('tab'));
-                var tabButton = activeTab ? document.getElementById(tabMap[activeTab] || '') : null;
-                if (tabButton && window.bootstrap) {
-                    window.bootstrap.Tab.getOrCreateInstance(tabButton).show();
-                }
-                if (window.feather) {
-                    window.feather.replace();
-                }
-            });
-        </script>
-    @endpush
-@endif
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tabMap = {
+            orders: 'pills-order-tab',
+            addresses: 'pills-address-tab',
+            profile: 'pills-profile-tab',
+            tracking: 'pills-tracking-tab',
+            quotes: 'pills-quotes-tab',
+            privacy: 'pills-privacy-tab',
+        };
+        var activeTab = @json(session('tab'));
+        var tabButton = activeTab ? document.getElementById(tabMap[activeTab] || '') : null;
+
+        if (tabButton && window.bootstrap) {
+            window.bootstrap.Tab.getOrCreateInstance(tabButton).show();
+        }
+
+        if (window.feather) {
+            window.feather.replace();
+        }
+    });
+</script>
+@endpush
 

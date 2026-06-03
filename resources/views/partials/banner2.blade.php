@@ -21,7 +21,7 @@
                                 Equipos confiables, rápidos y modernos
                             </h4>
 
-                            <a href="shop-left-sidebar.html"
+                            <a href="{{ route('shop.index') }}"
                                class="btn theme-bg-color mt-sm-4 btn-md mx-auto text-white fw-bold">
                                 Comprar ahora
                             </a>

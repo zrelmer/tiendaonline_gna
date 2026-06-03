@@ -25,11 +25,12 @@
 <script src="{{ asset('assets/js/custom-wow.js') }}"></script>
 <!-- Script principal -->
 <script src="{{ asset('assets/js/script.js') }}"></script>
+<script src="{{ asset('assets/js/shop-mobile.js') }}"></script>
 <!-- Configuración del tema -->
 <script src="{{ asset('assets/js/theme-setting.js') }}"></script>
 <script src="{{ asset('js/detalles.js') }}"></script>
  <!-- Price Range Js -->
- <script src="../assets/js/ion.rangeSlider.min.js"></script>
+<script src="{{ asset('assets/js/ion.rangeSlider.min.js') }}"></script>
 <script>
     window.clearClientShopStorage = function () {
         localStorage.removeItem('carrito');

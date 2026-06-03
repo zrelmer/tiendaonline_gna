@@ -153,7 +153,7 @@
 
             @if ($esGestionable)
                 <div class="modal fade" id="editar-pedido-{{ $pedido->Id_Pedido }}" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
                         <div class="modal-content">
                             <form method="POST" action="{{ route('dashboard.pedidos.update', $pedido) }}">
                                 @csrf
@@ -198,7 +198,7 @@
                                     </div>
 
                                     <div class="table-responsive">
-                                        <table class="table table-bordered align-middle">
+                                        <table class="table table-bordered align-middle dashboard-table-mobile">
                                             <thead>
                                                 <tr>
                                                     <th>Producto</th>
@@ -208,13 +208,13 @@
                                             <tbody>
                                                 @foreach ($lineas as $index => $linea)
                                                     <tr>
-                                                        <td>
+                                                        <td data-label="Producto">
                                                             {{ $linea->producto?->Prod_Nombre ?? 'Producto' }}
                                                             <input type="hidden"
                                                                    name="items[{{ $index }}][id_detalle]"
                                                                    value="{{ $linea->Id_DetallePedido }}">
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Cantidad">
                                                             <input type="number"
                                                                    class="form-control"
                                                                    name="items[{{ $index }}][cantidad]"
