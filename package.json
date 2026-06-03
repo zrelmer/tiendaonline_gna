@@ -4,9 +4,15 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "build:css": "node scripts/merge-custom-css.mjs",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:visual": "playwright test tests/e2e/visual.spec.js --update-snapshots",
+        "test:e2e:visual:check": "playwright test tests/e2e/visual.spec.js"
     },
     "devDependencies": {
+        "@playwright/test": "^1.52.0",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/vite": "^4.0.0",
         "alpinejs": "^3.4.2",

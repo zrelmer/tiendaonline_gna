@@ -23,5 +23,10 @@
 <link rel="stylesheet" href="{{ asset('assets/css/bulk-style.css') }}">
 <!-- Estilos principales -->
 <link id="color-link" rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-<!-- Overrides del proyecto -->
-<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+<!-- Overrides del proyecto (bundle en prod si existe tras npm run build:css) -->
+@php
+    $gnaCustomCss = file_exists(public_path('assets/css/custom.bundle.css'))
+        ? 'assets/css/custom.bundle.css'
+        : 'assets/css/custom.css';
+@endphp
+<link rel="stylesheet" href="{{ asset($gnaCustomCss) }}">

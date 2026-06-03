@@ -28,7 +28,8 @@ class PedidoService
         protected CarritoService $carritoService,
         protected EnvioService $envioService,
         protected WhatsAppService $whatsAppService,
-        protected InventarioPedidoService $inventarioPedidoService
+        protected InventarioPedidoService $inventarioPedidoService,
+        protected AdminNotificationService $adminNotificationService
     ) {}
 
     public function crearDesdeCheckout(
@@ -160,6 +161,11 @@ class PedidoService
             $this->inventarioPedidoService->liberarReservaPorPedido($pedido);
             $this->inventarioPedidoService->reponerPorCancelacion($pedido);
         });
+
+        $this->adminNotificationService->pedidoCancelado(
+            $pedido->fresh(['usuario', 'pago.metodoPago']),
+            'Cliente'
+        );
     }
 
     /**
@@ -362,10 +368,12 @@ class PedidoService
 
         $pedido->loadMissing(['usuario', 'pago.metodoPago', 'detalle.producto']);
 
-        // Tarjeta: notificación solo cuando Recurrente confirma el pago (webhook).
+        // Tarjeta: notificación al cliente solo cuando Recurrente confirma el pago (webhook).
         if ($idMetodoPago !== self::METODO_TARJETA) {
             $this->enviarNotificacionesPedido($pedido);
         }
+
+        $this->adminNotificationService->pedidoNuevo($pedido);
 
         return $pedido;
     }

@@ -1,0 +1,193 @@
+/* Fase 1 / 10 — Navegación, header cuenta, offcanvas
+   Selectores con header.header-2 / body para ganar al tema sin !important */
+
+/* Fase 10 — Barra inferior: móvil + tablet (<1200px) */
+@media (max-width: 1199.98px) {
+    body.has-mobile-nav .mobile-menu {
+        z-index: 1030;
+    }
+
+    body.has-mobile-nav {
+        padding-bottom: var(--gna-mobile-page-padding-bottom);
+    }
+
+    body.has-mobile-nav .footer-section-2 .sub-footer,
+    body.has-mobile-nav .footer-section .sub-footer {
+        margin-bottom: var(--gna-mobile-nav-clearance);
+    }
+
+    /* Carrito flotante lateral: redundante con la barra inferior */
+    body.has-mobile-nav .button-item,
+    body.has-mobile-nav .item-section {
+        display: none;
+    }
+
+    body.has-mobile-nav .tap-top {
+        bottom: calc(var(--gna-mobile-nav-height) + 12px);
+    }
+}
+
+/* Teléfono (<768px): icono perfil suelto y «Hola, Mi Cuenta» ocultos (barra inferior) */
+@media (max-width: 767.98px) {
+    body.has-mobile-nav header.header-2 .rightside-menu .option-list > ul > li.header-phone-hide,
+    body.has-mobile-nav header.header-2 .rightside-menu .option-list > ul > li.header-user-dropdown.right-side {
+        display: none;
+    }
+}
+
+/* Tablet (768–1199px): «Hola, Mi Cuenta» visible; sin icono perfil suelto (tema lo muestra <1200px) */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    header.header-2 .rightside-menu .option-list > ul > li.header-phone-hide,
+    header.header-2 .rightside-menu .option-list > ul > li.header-phone-hide .header-icon.user-icon {
+        display: none;
+    }
+
+    header.header-2 .rightside-menu .option-list > ul > li.header-user-dropdown.right-side {
+        display: list-item;
+    }
+}
+
+/* Tablet y escritorio (≥768px): menú de cuenta por clic (móvil usa barra inferior) */
+@media (min-width: 768px) {
+    body.has-mobile-nav header.header-2 .header-user-dropdown {
+        position: relative;
+    }
+
+    body.has-mobile-nav header.header-2 .header-account-trigger {
+        cursor: pointer;
+    }
+
+    body.has-mobile-nav header.header-2 .header-user-dropdown .onhover-div-login {
+        top: calc(100% + 6px);
+        right: 0;
+        margin-top: 0;
+        z-index: 1060;
+    }
+
+    body.has-mobile-nav header.header-2 .header-user-dropdown:not(.is-open) .onhover-div-login,
+    body.has-mobile-nav header.header-2 .header-user-dropdown:not(.is-open):hover .onhover-div-login {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    body.has-mobile-nav header.header-2 .header-user-dropdown.is-open .onhover-div-login {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: none;
+    }
+
+    body.has-mobile-nav header.header-2 .header-user-dropdown.is-open .onhover-div-login a,
+    body.has-mobile-nav header.header-2 .header-user-dropdown.is-open .onhover-div-login button {
+        pointer-events: auto;
+        cursor: pointer;
+    }
+}
+
+header.header-2 .header-user-dropdown .delivery-login-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+header.header-2 .header-user-dropdown .delivery-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+header.header-2 .header-user-dropdown .delivery-detail {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+header.header-2 .header-user-dropdown .delivery-detail h6,
+header.header-2 .header-user-dropdown .delivery-detail h5 {
+    margin: 0;
+}
+
+@media (max-width: 575px) {
+    header.header-2 .header-user-dropdown .delivery-detail {
+        display: none;
+    }
+}
+
+/* Menú offcanvas móvil (#primaryMenu) — lista vertical */
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .mobile-menu-nav-list,
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .mobile-menu-nav-item,
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .mobile-menu-category-item {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+}
+
+.mobile-menu-offcanvas .mobile-nav-links a,
+.mobile-menu-offcanvas .mobile-nav-links button {
+    color: #222;
+    font-weight: 500;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.mobile-menu-offcanvas .mobile-nav-links a:hover,
+.mobile-menu-offcanvas .mobile-nav-links a:focus,
+.mobile-menu-offcanvas .mobile-nav-links button:hover,
+.mobile-menu-offcanvas .mobile-nav-links button:focus {
+    color: var(--theme-color);
+    background: rgba(13, 164, 135, 0.08);
+}
+
+.mobile-menu-offcanvas .mobile-nav-links a i,
+.mobile-menu-offcanvas .mobile-nav-links button i {
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+}
+
+.mobile-menu-offcanvas .mobile-menu-categories {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid #ececec;
+}
+
+.mobile-menu-offcanvas .mobile-menu-section-title {
+    color: #222;
+    font-size: 14px;
+}
+
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list a {
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list a h6 {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list a:hover,
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list a:focus {
+    background: rgba(13, 164, 135, 0.06);
+}
+
+.mobile-menu-offcanvas.categories-canvas .offcanvas-body .categories-list ul.mobile-menu-category-list a h6::before {
+    display: none;
+}

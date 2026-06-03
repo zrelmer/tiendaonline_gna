@@ -11,7 +11,8 @@ use Illuminate\Validation\ValidationException;
 class AdminPedidoService
 {
     public function __construct(
-        protected InventarioPedidoService $inventarioPedidoService
+        protected InventarioPedidoService $inventarioPedidoService,
+        protected AdminNotificationService $adminNotificationService
     ) {}
 
     public function ocultar(Pedido $pedido): Pedido
@@ -90,6 +91,11 @@ class AdminPedidoService
 
             return $pedido->fresh(['estatus', 'pago.estatus', 'pago.metodoPago', 'envio.estatus']);
         });
+
+        $this->adminNotificationService->pedidoCancelado(
+            $pedido->loadMissing(['usuario', 'pago.metodoPago']),
+            'Equipo administrativo'
+        );
 
         return [
             'pedido' => $pedido,

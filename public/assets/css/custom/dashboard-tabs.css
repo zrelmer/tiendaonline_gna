@@ -1,0 +1,515 @@
+/* Dash tabs */
+/* Dashboard — pestaña Órdenes */
+.user-dashboard-section .dashboard-order .order-contain {
+    flex-direction: column;
+}
+
+.user-dashboard-section .dashboard-order .order-contain .order-box.dashboard-order-item {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-header {
+    align-items: flex-start;
+    width: 100%;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-header .order-detail {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .order-container .order-detail h4.dashboard-order-title {
+    flex-wrap: wrap;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .order-container .order-detail h4 .dashboard-order-badge {
+    margin-left: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-number {
+    word-break: break-all;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(-90deg, #ff6b6b 0%, #ff4f4f 100%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge.success-bg {
+    background: var(--theme-color2);
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-badge.danger {
+    background: #dc3545;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-meta,
+.user-dashboard-section .dashboard-order .dashboard-order-address {
+    word-break: break-word;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-address i {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-actions form {
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-note {
+    flex: 0 0 auto;
+    max-width: 220px;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product {
+    align-items: flex-start;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail.dashboard-order-product {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-thumb {
+    flex: 0 0 88px;
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-thumb img,
+.user-dashboard-section .dashboard-order .dashboard-order-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product:hover .dashboard-order-thumb img {
+    transform: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-info {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-info h3 {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+    font-size: calc(15px + 2 * (100vw - 320px) / 1600);
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-product-meta {
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail .order-wrap .product-size.dashboard-order-product-meta li {
+    width: auto;
+    flex: 1 1 calc(33.333% - 8px);
+    min-width: 120px;
+}
+
+.user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail:hover .order-image img {
+    transform: none;
+}
+
+.user-dashboard-section .dashboard-order .dashboard-order-summary {
+    margin-top: 16px;
+    padding: 12px 16px 4px;
+    border-top: 1px solid #ececec;
+    word-break: break-word;
+}
+
+.user-dashboard-section .dashboard-right-sidebar {
+    overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+    .user-dashboard-section .dashboard-order .dashboard-order-header {
+        flex-direction: column;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-actions {
+        width: 100%;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-actions .btn {
+        flex: 1 1 auto;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-product {
+        flex-direction: row;
+    }
+
+    .user-dashboard-section .dashboard-right-sidebar .dashboard-order .order-contain .order-box .product-order-detail .order-wrap .product-size.dashboard-order-product-meta li {
+        flex: 1 1 100%;
+    }
+
+    .user-dashboard-section .dashboard-order .dashboard-order-note {
+        max-width: 100%;
+    }
+}
+
+/* Dashboard — pestaña Direcciones */
+.user-dashboard-section .dashboard-address .dashboard-address-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card > div:first-child {
+    flex: 1 1 auto;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card .address-table td p {
+    word-break: break-word;
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-address .dashboard-address-card .button-group form {
+    margin: 0;
+}
+
+/* Dashboard — pestaña Perfil */
+.user-dashboard-section .dashboard-profile .dashboard-profile-summary .location-profile h6 {
+    word-break: break-word;
+    line-height: 1.45;
+}
+
+.user-dashboard-section .dashboard-profile .dashboard-profile-illustration {
+    max-width: 280px;
+}
+
+.user-dashboard-section .dashboard-profile .dashboard-profile-form,
+.user-dashboard-section .dashboard-profile .dashboard-password-form {
+    max-width: 480px;
+}
+
+@media (max-width: 575px) {
+    .user-dashboard-section .dashboard-order .dashboard-order-thumb {
+        flex: 0 0 72px;
+        width: 72px;
+        height: 72px;
+        min-width: 72px;
+    }
+}
+
+/* Dashboard — pestaña Seguimiento de órdenes */
+.user-dashboard-section .dashboard-tracking-card {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-tracking-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-tracking-order {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f3f3f3;
+    color: #555;
+    white-space: nowrap;
+}
+
+.user-dashboard-section .dashboard-tracking-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.user-dashboard-section .dashboard-tracking-step {
+    flex: 1 1 0;
+    min-width: 72px;
+    text-align: center;
+    position: relative;
+}
+
+.user-dashboard-section .dashboard-tracking-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: calc(50% + 18px);
+    width: calc(100% - 36px);
+    height: 2px;
+    background: #ddd;
+    z-index: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-done:not(:last-child)::after,
+.user-dashboard-section .dashboard-tracking-step.is-active:not(:last-child)::after {
+    background: #0baf9a;
+}
+
+.user-dashboard-section .dashboard-tracking-step-icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f3f3;
+    color: #888;
+    position: relative;
+    z-index: 1;
+}
+
+.user-dashboard-section .dashboard-tracking-step-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-done .dashboard-tracking-step-icon,
+.user-dashboard-section .dashboard-tracking-step.is-active .dashboard-tracking-step-icon {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-tracking-step-label {
+    display: block;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: #777;
+    font-weight: 600;
+}
+
+.user-dashboard-section .dashboard-tracking-step.is-active .dashboard-tracking-step-label,
+.user-dashboard-section .dashboard-tracking-step.is-done .dashboard-tracking-step-label {
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping {
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: #f8f8f8;
+    border: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list li {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.user-dashboard-section .dashboard-tracking-shipping-list li:last-child {
+    margin-bottom: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 24px;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ccc 0,
+        #ccc 4px,
+        transparent 4px,
+        transparent 8px
+    );
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-marker {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffc107;
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-marker svg {
+    width: 18px;
+    height: 18px;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-item.is-current .dashboard-tracking-timeline-marker {
+    background: #0baf9a;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(11, 175, 154, 0.2);
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #222;
+}
+
+.user-dashboard-section .dashboard-tracking-timeline-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Dashboard — pestaña Cotizaciones */
+.user-dashboard-section .dashboard-quote-form-box {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-quote-card {
+    padding: 20px;
+}
+
+.user-dashboard-section .dashboard-quote-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+.user-dashboard-section .dashboard-quote-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f3f3f3;
+    color: #555;
+    white-space: nowrap;
+}
+
+.user-dashboard-section .dashboard-quote-badge.success-bg {
+    background: #0baf9a;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-quote-badge.danger {
+    background: #ff4f4f;
+    color: #fff;
+}
+
+.user-dashboard-section .dashboard-quote-terms {
+    padding: 12px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    border: 1px solid #ececec;
+}
+
+@media (max-width: 767px) {
+    .user-dashboard-section .dashboard-tracking-progress {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        min-width: 0;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step:not(:last-child)::after {
+        display: none;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step-icon {
+        margin: 0;
+    }
+
+    .user-dashboard-section .dashboard-tracking-step-label {
+        font-size: 0.85rem;
+    }
+}

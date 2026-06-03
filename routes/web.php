@@ -185,6 +185,7 @@ Route::get('/{idproducto}/{slug_producto}', [ProductoController::class, 'details
     ->whereNumber('idproducto')
     ->name('product.details');
 Route::post('/webhooks/recurrente', RecurrenteWebhookController::class)->name('webhooks.recurrente');
+
 require __DIR__.'/auth.php';
 Route::get('/cart', [CarritoController::class, 'index'])->name('cart.index');
 Route::get('/shop', [ProductoController::class, 'shop'])->name('shop.index');

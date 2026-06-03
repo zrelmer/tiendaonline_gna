@@ -16,6 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class BoletaPagoService
 {
+    public function __construct(
+        protected AdminNotificationService $adminNotificationService
+    ) {}
+
     public function pedidoDelUsuario(int $idPedido, ?int $idUsuario = null): Pedido
     {
         $idUsuario ??= (int) Auth::user()->Id_Usuario;
@@ -50,7 +54,7 @@ class BoletaPagoService
     {
         $idUsuario ??= (int) Auth::user()->Id_Usuario;
 
-        return DB::transaction(function () use ($archivo, $idPedido, $idUsuario) {
+        $boleta = DB::transaction(function () use ($archivo, $idPedido, $idUsuario) {
             $pedido = $this->pedidoDelUsuario($idPedido, $idUsuario);
             $pago = $pedido->pago;
 
@@ -109,5 +113,12 @@ class BoletaPagoService
 
             return $boleta;
         });
+
+        $this->adminNotificationService->boletaSubida(
+            $this->pedidoDelUsuario($idPedido, $idUsuario),
+            $boleta
+        );
+
+        return $boleta;
     }
 }

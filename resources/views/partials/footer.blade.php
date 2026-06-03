@@ -6,7 +6,7 @@
                     <div class="service-contain">
                         <div class="service-box">
                             <div class="service-image">
-                                <img src="../assets/svg/product.svg" class="blur-up lazyload" alt="">
+                                <img src="../assets/svg/en-linea.png" class="blur-up lazyload" alt="">
                             </div>
 
                             <div class="service-detail">
@@ -53,8 +53,9 @@
                         <a href="{{ route('home') }}" class="foot-logo">
                             <img src="{{ asset('assets/images/logo/LogoGNA.png') }}" class="img-fluid" alt="Logo GNA" style="width: 120px;">
                         </a>
-                        <p class="information-text">it is a long established fact that a reader will be distracted
-                            by the readable content.</p>
+                        <p class="information-text">Innovación y tecnología a tu alcance. Especialistas en desarrollo de software, servicios técnicos avanzados y las mejores 
+                            soluciones tecnológicas para tu negocio o proyectos.
+                        </p>
                         <ul class="social-icon">
                             <li>
                                 <a href="https://www.facebook.com/profile.php?id=61587057020755" target="_blank">
@@ -93,14 +94,14 @@
 
                     <div class="col-xxl-3 col-xl-4 col-sm-6">
                         <div class="footer-title">
-                            <h4>Store infomation</h4>
+                            <h4>Información de Contacto</h4>
                         </div>
                         <ul class="footer-address footer-contact">
                             <li>
                                 <a href="javascript:void(0)">
                                     <div class="inform-box">
                                         <i data-feather="phone"></i>
-                                        <p>Call us: 123-456-7890</p>
+                                        <p>Llamar a: +502 4213-2791</p>
                                     </div>
                                 </a>
                             </li>
@@ -109,7 +110,7 @@
                                 <a href="javascript:void(0)">
                                     <div class="inform-box">
                                         <i data-feather="mail"></i>
-                                        <p>Email Us: Support@Fastkart.com</p>
+                                        <p>Email: soporte@gnacore.com.gt</p>
                                     </div>
                                 </a>
                             </li>
@@ -120,7 +121,7 @@
 
             <div class="sub-footer section-small-space">
                 <div class="left-footer">
-                    <p>2026 Copyright by GNA Core</p>
+                    <p>2026 Copyright by GNA Core | Todos los derechos reservados EY</p>
                 </div>
                 <div class="right-footer">
                     <ul class="payment-box">

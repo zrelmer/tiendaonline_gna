@@ -15,6 +15,10 @@ use Illuminate\Validation\ValidationException;
 
 class CotizacionService
 {
+    public function __construct(
+        protected AdminNotificationService $adminNotificationService
+    ) {}
+
     /**
      * @param  array{
      *     nombre_cliente: string,
@@ -36,7 +40,7 @@ class CotizacionService
             ]);
         }
 
-        return DB::transaction(function () use ($datos, $idUsuario, $lineas) {
+        $cotizacion = DB::transaction(function () use ($datos, $idUsuario, $lineas) {
             $subtotal = round(collect($lineas)->sum('subtotal'), 2);
 
             $cotizacion = Cotizacion::create([
@@ -74,6 +78,10 @@ class CotizacionService
 
             return $cotizacion->load(['estatus', 'detalle.producto', 'historial.estatus']);
         });
+
+        $this->adminNotificationService->cotizacionSolicitada($cotizacion);
+
+        return $cotizacion;
     }
 
     public function cotizacionDelUsuario(int $idCotizacion, ?int $idUsuario = null): Cotizacion
@@ -191,7 +199,7 @@ class CotizacionService
             ]);
         }
 
-        return DB::transaction(function () use ($cotizacion, $comentario) {
+        $cotizacion = DB::transaction(function () use ($cotizacion, $comentario) {
             $cotizacion->update([
                 'Id_Estatus' => EstatusCatalog::COTIZACION_ACEPTADA,
             ]);
@@ -205,6 +213,10 @@ class CotizacionService
 
             return $cotizacion->fresh(['estatus', 'detalle.producto', 'historial.estatus']);
         });
+
+        $this->adminNotificationService->cotizacionRespondida($cotizacion, true, $comentario);
+
+        return $cotizacion;
     }
 
     public function rechazar(Cotizacion $cotizacion, ?string $comentario = null, ?int $idUsuario = null): Cotizacion
@@ -220,7 +232,7 @@ class CotizacionService
             ]);
         }
 
-        return DB::transaction(function () use ($cotizacion, $comentario) {
+        $cotizacion = DB::transaction(function () use ($cotizacion, $comentario) {
             $cotizacion->update([
                 'Id_Estatus' => EstatusCatalog::COTIZACION_RECHAZADA,
             ]);
@@ -234,6 +246,10 @@ class CotizacionService
 
             return $cotizacion->fresh(['estatus', 'detalle.producto', 'historial.estatus']);
         });
+
+        $this->adminNotificationService->cotizacionRespondida($cotizacion, false, $comentario);
+
+        return $cotizacion;
     }
 
     public function motivoNoAceptar(Cotizacion $cotizacion): ?string

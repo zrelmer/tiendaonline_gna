@@ -35,16 +35,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="navbar-top">
-                    <button class="navbar-toggler header-mobile-hide d-xl-none d-block p-0 me-3"
-                            type="button"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#primaryMenu"
-                            aria-controls="primaryMenu"
-                            aria-label="Abrir menú">
-                        <span class="navbar-toggler-icon">
-                            <i class="iconly-Category icli theme-color"></i>
-                        </span>
-                    </button>
                     <a href="{{ route('home') }}" class="web-logo nav-logo">
                         <img src="{{ asset('assets/images/logo/LogoGNA.png') }}" class="img-fluid blur-up lazyload" alt="Logo GNA" style="width: 120px;">
                     </a>
@@ -106,7 +96,7 @@
                     <div class="rightside-menu">
                         <div class="option-list">
                             <ul>
-                                <li class="header-mobile-hide">
+                                <li class="header-phone-hide">
                                     <a href="javascript:void(0)" class="header-icon user-icon search-icon">
                                         <i class="iconly-Profile icli"></i>
                                     </a>
@@ -157,8 +147,14 @@
                                     </a>
                                 </li>  --}}
                                 {{--  tuve problemas con la plantilla y genere css es este partado  --}}
-                                <li class="right-side onhover-dropdown header-user-dropdown header-mobile-hide">
-                                    <div class="delivery-login-box">
+                                <li class="right-side onhover-dropdown header-user-dropdown">
+                                    <div class="delivery-login-box header-account-trigger"
+                                         role="button"
+                                         tabindex="0"
+                                         aria-expanded="false"
+                                         aria-haspopup="true"
+                                         aria-controls="headerAccountMenu"
+                                         aria-label="Menú de cuenta">
 
                                     <div class="delivery-icon">
                                         <i data-feather="user"></i>
@@ -171,7 +167,7 @@
 
                                     </div>
                                     {{--  datos login  --}}
-                                    <div class="onhover-div onhover-div-login">
+                                    <div class="onhover-div onhover-div-login" id="headerAccountMenu">
                                     <ul class="user-box-name">
                                         @auth
                                             @php

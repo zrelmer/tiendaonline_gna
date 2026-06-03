@@ -13,6 +13,13 @@
 /.zed
 /auth.json
 /node_modules
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/tests/e2e/.auth/
+/tests/e2e/snapshots/
+/public/assets/css/custom.bundle.css
 /public/build
 /public/hot
 /public/storage

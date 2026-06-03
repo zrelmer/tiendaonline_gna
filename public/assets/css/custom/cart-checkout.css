@@ -1,0 +1,168 @@
+/* Cart */
+/* Fase 5 — Carrito y checkout móvil */
+.cart-page-section,
+.checkout-page-section {
+    overflow-x: clip;
+}
+
+.cart-page-section .cart-summary-box,
+.checkout-page-section .checkout-summary-sticky {
+    position: static;
+}
+
+@media (min-width: 992px) {
+    .cart-page-section .cart-summary-box {
+        position: sticky;
+        top: 100px;
+    }
+
+    .checkout-page-section .checkout-summary-sticky {
+        position: sticky;
+        top: 100px;
+    }
+}
+
+.cart-page-section .cart-proceed-btn,
+.cart-page-section .shopping-button {
+    min-height: 44px;
+}
+
+@media (max-width: 991.98px) {
+    .cart-page-section .cart-table-responsive {
+        overflow: visible;
+    }
+
+    .cart-page-section .cart-items-table,
+    .cart-page-section .cart-items-table tbody,
+    .cart-page-section .cart-items-table tr,
+    .cart-page-section .cart-items-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .cart-page-section .cart-items-table tr.cart-item-mobile-row {
+        border: 1px solid #ececec;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 14px;
+        background: #fff;
+    }
+
+    .cart-page-section .cart-items-table td {
+        border: none;
+        padding: 8px 0;
+    }
+
+    .cart-page-section .cart-items-table td.product-detail {
+        padding-top: 0;
+    }
+
+    .cart-page-section .cart-items-table td .table-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #777;
+        margin-bottom: 6px;
+    }
+
+    .cart-page-section .cart-items-table td .product {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .cart-page-section .cart-items-table td .product-image img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .cart-page-section .cart-items-table td .name a {
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .cart-page-section .cart-qty-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .cart-page-section .cart-remove-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 8px 12px;
+    }
+}
+
+.checkout-page-section .checkout-alert {
+    word-break: break-word;
+}
+
+.checkout-page-section .delivery-address-box {
+    height: 100%;
+}
+
+.checkout-page-section .accordion-button,
+.checkout-page-section .form-check-label,
+.checkout-page-section .checkout-mobile-submit,
+.checkout-page-section .btn-animation[data-bs-toggle="modal"] {
+    min-height: 44px;
+}
+
+.checkout-page-section .accordion-button .form-check-input {
+    min-width: 1.1em;
+    min-height: 1.1em;
+}
+
+.checkout-page-section .summery-contain li {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.checkout-page-section .summery-contain li h4:first-of-type {
+    flex: 1 1 60%;
+    word-break: break-word;
+}
+
+.checkout-page-section .checkout-image {
+    max-width: 56px;
+    height: auto;
+}
+
+.checkout-mobile-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1035;
+    background: #fff;
+    border-top: 1px solid #ececec;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    padding: 10px 12px;
+}
+
+body.has-mobile-nav .checkout-mobile-bar {
+    bottom: var(--gna-mobile-sticky-bar-offset);
+}
+
+body.checkout-page-active.has-mobile-nav {
+    padding-bottom: var(--gna-mobile-double-bar-padding);
+}
+
+body.checkout-page-active:not(.has-mobile-nav) {
+    padding-bottom: var(--gna-mobile-page-padding-bottom);
+}
+
+.checkout-mobile-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.checkout-mobile-submit {
+    min-height: 48px;
+    flex: 1 1 auto;
+    max-width: 220px;
+}

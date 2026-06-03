@@ -22,6 +22,7 @@ class Usuario extends Authenticatable
         'Usu_Correo',
         'Usu_Pass',
         'Usu_Telefono',
+        'google_id',
         'Id_Rol',
     ];
 

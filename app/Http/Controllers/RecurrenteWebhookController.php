@@ -16,7 +16,8 @@ class RecurrenteWebhookController extends Controller
 {
     public function __construct(
         protected PedidoService $pedidoService,
-        protected InventarioPedidoService $inventarioPedidoService
+        protected InventarioPedidoService $inventarioPedidoService,
+        protected AdminNotificationService $adminNotificationService
     ) {}
 
     public function __invoke(Request $request): JsonResponse
@@ -83,7 +84,13 @@ class RecurrenteWebhookController extends Controller
         });
 
         if ($idEstatusPago === EstatusCatalog::PAGO_PAGADO) {
-            $this->pedidoService->enviarNotificacionesPedido($pedido->fresh(), true);
+            $pedidoActualizado = $pedido->fresh();
+            $this->pedidoService->enviarNotificacionesPedido($pedidoActualizado, true);
+            $this->adminNotificationService->pagoTarjetaConfirmado($pedidoActualizado);
+        }
+
+        if ($idEstatusPago === EstatusCatalog::PAGO_RECHAZADO) {
+            $this->adminNotificationService->pagoTarjetaFallido($pedido->fresh(), $status);
         }
 
         return response()->json(['ok' => true]);

@@ -166,17 +166,18 @@
                         <h6>o</h6>
                     </div>
 
-                    <!-- GOOGLE -->
+                    @if (config('services.google.client_id'))
                     <div class="log-in-button">
                         <ul>
                             <li>
-                                <a href="#" class="btn google-button w-100">
+                                <a href="{{ route('google.login') }}" class="btn google-button w-100">
                                     <img src="{{ asset('assets/images/inner-page/google.png') }}" alt="">
                                     Registrarse con Google
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    @endif
 
                     <!-- LOGIN -->
                     <div class="sign-up-box">

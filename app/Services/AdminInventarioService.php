@@ -116,6 +116,39 @@ class AdminInventarioService
     }
 
     /**
+     * Productos con unidades disponibles entre 1 y el umbral (excluye sin stock).
+     *
+     * @return Collection<int, Producto>
+     */
+    public function productosBajoStockParaResumen(): Collection
+    {
+        $umbral = $this->umbralBajoStock();
+
+        return $this->queryBaseProductos()
+            ->with('inventario')
+            ->whereHas(
+                'inventario',
+                fn ($inventario) => $inventario->whereRaw('(Stock - Stock_Reservado) BETWEEN 1 AND ?', [$umbral])
+            )
+            ->orderBy('Prod_Nombre')
+            ->orderBy('Id_Producto')
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, Producto>
+     */
+    public function productosSinStockParaResumen(): Collection
+    {
+        return $this->queryBaseProductos()
+            ->with('inventario')
+            ->filtroInventarioAdmin(self::FILTRO_SIN_STOCK, $this->umbralBajoStock())
+            ->orderBy('Prod_Nombre')
+            ->orderBy('Id_Producto')
+            ->get();
+    }
+
+    /**
      * @return array{
      *     total_productos: int,
      *     bajo_stock: int,

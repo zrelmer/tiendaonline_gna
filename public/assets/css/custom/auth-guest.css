@@ -1,0 +1,5 @@
+/* Auth guest (login, registro, reset): sin carrito flotante lateral del tema */
+body.auth-guest-page .button-item,
+body.auth-guest-page .item-section {
+    display: none;
+}

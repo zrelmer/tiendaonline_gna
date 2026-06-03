@@ -1,0 +1,6 @@
+/* Misc */
+/* Quita el fondo decorativo (frutas) del body */
+body.bg-effect,
+.bg-effect {
+    background-image: none;
+}

@@ -1,0 +1,11 @@
+/* Escritorio (≥1200px) — ajustes puntuales sobre el tema */
+
+@media (min-width: 1200px) {
+    body.has-mobile-nav .tap-top {
+        bottom: 24px;
+    }
+
+    header.header-2 .header-user-dropdown .onhover-div-login {
+        min-width: 160px;
+    }
+}

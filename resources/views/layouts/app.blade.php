@@ -11,7 +11,11 @@
 @php
     $isAuthGuestPage = request()->routeIs('login', 'register', 'password.request', 'password.reset');
 @endphp
-<body @class(['theme-color-2', 'has-mobile-nav' => ! $isAuthGuestPage])>
+<body @class([
+    'theme-color-2',
+    'has-mobile-nav' => ! $isAuthGuestPage,
+    'auth-guest-page' => $isAuthGuestPage,
+])>
 
     <!-- Loader Start -->
     @include('partials.loader')
@@ -25,7 +29,7 @@
 
     <!-- mobile fix menu start -->
     @unless ($isAuthGuestPage)
-    <nav class="mobile-menu d-md-none d-block mobile-cart" aria-label="Navegación inferior">
+    <nav class="mobile-menu d-xl-none d-block mobile-cart" aria-label="Navegación inferior">
         <ul>
             <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                 <a href="{{ route('home') }}">
@@ -181,7 +185,8 @@
     </div>
     <!-- Quick View Modal Box End -->
 
-    <!-- Items section Start -->
+    @unless ($isAuthGuestPage)
+    <!-- Items section Start (oculto en login/registro/reset) -->
     <div class="button-item">
         <button class="item-btn btn text-white">
             <i class="iconly-Bag-2 icli"></i>
@@ -198,6 +203,7 @@
         <button onclick="location.href = '{{ route('cart.index') }}';" class="btn item-button btn-sm fw-bold"><span id="total-cart2">0.00</span></button>
     </div>
     <!-- Items section End -->
+    @endunless
 
     <!-- Tap to top and theme setting button start -->
     <!-- Tap to top and theme setting button end -->

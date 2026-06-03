@@ -1,0 +1,10 @@
+/* Fase 9 — Tokens móvil (barra inferior + barras fijas) */
+:root {
+    --gna-mobile-nav-height: 58px;
+    --gna-mobile-nav-clearance: 72px;
+    --gna-mobile-sticky-bar-offset: var(--gna-mobile-nav-height);
+    --gna-mobile-page-padding-bottom: var(--gna-mobile-nav-clearance);
+    --gna-mobile-double-bar-padding: calc(
+        var(--gna-mobile-nav-clearance) + var(--gna-mobile-nav-height)
+    );
+}
