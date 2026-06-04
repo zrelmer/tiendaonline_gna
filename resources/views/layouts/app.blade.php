@@ -222,6 +222,11 @@
                 store: @json(route('cart.items.store')),
                 itemBase: @json(url('/cart/items')),
             },
+            shipping: {
+                freeThreshold: @json((float) config('shipping.umbral_envio_gratis', 300)),
+                cost: @json((float) config('shipping.costo_envio', 35)),
+                digitalSlugs: @json(config('shipping.categorias_digitales_slug', [])),
+            },
         };
         window.WISHLIST_CONFIG = {
             isAuthenticated: @json(auth()->check()),

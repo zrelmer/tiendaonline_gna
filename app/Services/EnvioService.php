@@ -58,9 +58,14 @@ class EnvioService
             return false;
         }
 
-        $slug = Str::lower(Str::ascii((string) $categoria->Cate_Slug));
+        $slug = $this->normalizarSlugCategoria((string) $categoria->Cate_Slug);
+
+        if ($slug === 'licencia') {
+            return true;
+        }
+
         $slugsDigitales = array_map(
-            fn (string $value) => Str::lower(Str::ascii($value)),
+            fn (string $value) => $this->normalizarSlugCategoria($value),
             (array) config('shipping.categorias_digitales_slug', [])
         );
 
@@ -83,5 +88,10 @@ class EnvioService
         }
 
         return false;
+    }
+
+    private function normalizarSlugCategoria(string $slug): string
+    {
+        return Str::lower(Str::ascii(trim($slug)));
     }
 }

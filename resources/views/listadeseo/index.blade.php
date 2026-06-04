@@ -151,7 +151,8 @@
                         item.imagen,
                         item.url,
                         parseFloat(item.precio),
-                        item.nombre
+                        item.nombre,
+                        item.categoria_slug || ''
                     );
                 }
             }

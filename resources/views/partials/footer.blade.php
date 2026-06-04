@@ -53,7 +53,7 @@
                         <a href="{{ route('home') }}" class="foot-logo">
                             <img src="{{ asset('assets/images/logo/LogoGNA.png') }}" class="img-fluid" alt="Logo GNA" style="width: 120px;">
                         </a>
-                        <p class="information-text">Innovación y tecnología a tu alcance. Especialistas en desarrollo de software, servicios técnicos avanzados y las mejores 
+                        <p class="information-text">Innovación y tecnología a tu alcance. Especialistas en desarrollo de software, servicios técnicos avanzados y las mejores
                             soluciones tecnológicas para tu negocio o proyectos.
                         </p>
                         <ul class="social-icon">
@@ -129,16 +129,7 @@
                             <img src="../assets/images/icon/paymant/visa.png" alt="">
                         </li>
                         <li>
-                            <img src="../assets/images/icon/paymant/discover.png" alt="">
-                        </li>
-                        <li>
-                            <img src="../assets/images/icon/paymant/american.png" alt="">
-                        </li>
-                        <li>
                             <img src="../assets/images/icon/paymant/master-card.png" alt="">
-                        </li>
-                        <li>
-                            <img src="../assets/images/icon/paymant/giro-pay.png" alt="">
                         </li>
                     </ul>
                 </div>

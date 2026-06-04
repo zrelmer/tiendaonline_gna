@@ -306,7 +306,8 @@
                                                         @js($imagenUrl),
                                                         @js(route('product.details', ['idproducto' => $product->Id_Producto, 'slug_producto' => $product->Prod_Slug])),
                                                         @js($product->Prod_Precio),
-                                                        @js($product->Prod_Nombre)
+                                                        @js($product->Prod_Nombre),
+                                                        @js($product->categoria?->Cate_Slug ?? '')
                                                     )">
                                                 <i class="iconly-Buy icli text-white m-0"></i>
                                             </button>

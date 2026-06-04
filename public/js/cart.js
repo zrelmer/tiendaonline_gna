@@ -144,7 +144,7 @@ function saveCart(cart) {
 // ➕ AGREGAR AL CARRITO
 // ===============================
 
-async function addToCart(id, imagen, url, precio, nombre) {
+async function addToCart(id, imagen, url, precio, nombre, categoriaSlug) {
 
     id = parseInt(id, 10);
 
@@ -205,7 +205,9 @@ async function addToCart(id, imagen, url, precio, nombre) {
                 precio: parseFloat(precio),
                 imagen: imagen,
                 url: url,
-                cantidad: cantidadSeleccionada
+                cantidad: cantidadSeleccionada,
+                categoria_slug: categoriaSlug || '',
+                es_digital: esItemDigital({ categoria_slug: categoriaSlug || '' }),
             });
         }
 
@@ -396,10 +398,79 @@ function getTotal() {
     }, 0);
 }
 
-/** Envío según subtotal (misma regla que updateCartSummary). */
+function normalizarSlugCategoria(slug) {
+
+    if (!slug) {
+        return '';
+    }
+
+    return String(slug)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+}
+
+/** Producto de entrega digital (ej. categoría slug "licencia"). */
+function esItemDigital(item) {
+
+    if (!item) {
+        return false;
+    }
+
+    if (item.es_digital === true) {
+        return true;
+    }
+
+    const slug = normalizarSlugCategoria(item.categoria_slug || '');
+
+    if (slug === 'licencia') {
+        return true;
+    }
+
+    const slugsDigitales = (window.CART_CONFIG
+        && window.CART_CONFIG.shipping
+        && window.CART_CONFIG.shipping.digitalSlugs) || [];
+
+    return slugsDigitales
+        .map(normalizarSlugCategoria)
+        .includes(slug);
+}
+
+/** Envío según carrito: solo digital → Q0; mixto/físico → Q35 si subtotal < umbral. */
+function getShippingForCart(cart) {
+
+    if (!cart || cart.length === 0) {
+        return 0;
+    }
+
+    const requiereFisico = cart.some(function (item) {
+        return !esItemDigital(item);
+    });
+
+    if (!requiereFisico) {
+        return 0;
+    }
+
+    const subtotal = cart.reduce(function (total, item) {
+        return total + (item.precio * item.cantidad);
+    }, 0);
+
+    const config = (window.CART_CONFIG && window.CART_CONFIG.shipping) || {};
+    const umbral = typeof config.freeThreshold === 'number'
+        ? config.freeThreshold
+        : 300;
+    const costo = typeof config.cost === 'number'
+        ? config.cost
+        : 35;
+
+    return subtotal < umbral ? costo : 0;
+}
+
+/** @deprecated Usar getShippingForCart; se mantiene por compatibilidad interna. */
 function getShippingForSubtotal(subtotal) {
 
-    return subtotal < 300 ? 35 : 0;
+    return getShippingForCart(getCart());
 }
 
 // ===============================
@@ -443,7 +514,7 @@ function updateCartCounter() {
 
             let subtotal = getTotal();
 
-            let shipping = getShippingForSubtotal(subtotal);
+            let shipping = getShippingForCart(cart);
 
             totalCart2.innerText =
                 'Q' + (subtotal + shipping).toFixed(2);
@@ -659,9 +730,11 @@ function renderCart() {
 
 function updateCartSummary() {
 
+    let cart = getCart();
+
     let subtotal = getTotal();
 
-    let shipping = getShippingForSubtotal(subtotal);
+    let shipping = getShippingForCart(cart);
 
     let total = subtotal + shipping;
 
@@ -776,11 +849,9 @@ function renderMiniCart() {
 
     if (totalElement) {
 
-        // Mini carrito: el total incluye envío con la misma regla que updateCartSummary()
-        // (getShippingForSubtotal: Q35 si subtotal < 300, si no Q0).
         let subtotal = getTotal();
 
-        let shipping = getShippingForSubtotal(subtotal);
+        let shipping = getShippingForCart(cart);
 
         let totalConEnvio = subtotal + shipping;
 

@@ -1,6 +1,28 @@
 /**=====================
     Custom Slick js
 ==========================**/
+$('.home-main-banner-slider').slick({
+    arrows: true,
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: true,
+    speed: 600,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    adaptiveHeight: false,
+    responsive: [{
+        breakpoint: 767,
+        settings: {
+            arrows: true,
+            dots: true,
+        }
+    }]
+});
+
 $('.category-slider').slick({
     arrows: true,
     infinite: true,

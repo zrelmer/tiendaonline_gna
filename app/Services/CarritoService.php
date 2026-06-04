@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class CarritoService
 {
+    public function __construct(
+        protected EnvioService $envioService,
+    ) {}
     /**
      * Obtiene el Id_Usuario del usuario autenticado (PK real, no el correo).
      */
@@ -200,6 +203,8 @@ class CarritoService
                     'slug_producto' => $producto->Prod_Slug,
                 ]),
                 'cantidad' => (int) $detalle->Cantidad,
+                'categoria_slug' => (string) ($producto->categoria?->Cate_Slug ?? ''),
+                'es_digital' => $this->envioService->esProductoDigital($producto),
             ];
         })->values()->all();
     }

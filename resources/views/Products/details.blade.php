@@ -139,7 +139,8 @@
                         @js($imagenUrl),
                         @js(route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug])),
                         @js($producto->Prod_Precio),
-                        @js($producto->Prod_Nombre)
+                        @js($producto->Prod_Nombre),
+                        @js($producto->categoria?->Cate_Slug ?? '')
                     )">
                 Agregar
             </button>
@@ -440,7 +441,8 @@
                                                 @js($relImgUrl),
                                                 @js(route('product.details', ['idproducto' => $relacionado->Id_Producto, 'slug_producto' => $relacionado->Prod_Slug])),
                                                 @js($relacionado->Prod_Precio),
-                                                @js($relacionado->Prod_Nombre)
+                                                @js($relacionado->Prod_Nombre),
+                                                @js($relacionado->categoria?->Cate_Slug ?? '')
                                             )">
                                             <i class="iconly-Buy icli text-white m-0"></i>
                                         </button>

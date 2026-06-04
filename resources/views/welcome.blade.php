@@ -12,6 +12,9 @@
     @include('partials.category')
     <!-- Category Section End -->
 
+    <!-- Recomendados para ti -->
+    @include('partials.home-recommended-products')
+
     <!-- Value Section Start -->
     @include('partials.value')
     <!-- Value Section End -->
@@ -136,7 +139,8 @@
                                         @js($imagenUrl),
                                         @js(route('product.details', ['idproducto' => $product->Id_Producto, 'slug_producto' => $product->Prod_Slug])),
                                         @js($product->Prod_Precio),
-                                        @js($product->Prod_Nombre)
+                                        @js($product->Prod_Nombre),
+                                        @js($product->categoria?->Cate_Slug ?? '')
                                     )">
                                     <i class="iconly-Buy icli text-white m-0"></i>
                                 </button>
@@ -155,5 +159,8 @@
     <!-- Newsletter Section Start -->
     @include('partials.news')
     <!-- Newsletter Section End -->
+
+    <!-- Antivirus y seguridad -->
+    @include('partials.home-security-products')
 </div>
 @endsection

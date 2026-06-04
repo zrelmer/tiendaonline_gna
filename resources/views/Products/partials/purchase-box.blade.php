@@ -56,7 +56,8 @@
                     @js($imagenUrl),
                     @js(route('product.details', ['idproducto' => $producto->Id_Producto, 'slug_producto' => $producto->Prod_Slug])),
                     @js($producto->Prod_Precio),
-                    @js($producto->Prod_Nombre)
+                    @js($producto->Prod_Nombre),
+                    @js($producto->categoria?->Cate_Slug ?? '')
                 )">
             Agregar al carrito
         </button>

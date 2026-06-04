@@ -1,4 +1,10 @@
 /* Home */
+/* Sin imagen de fondo decorativa en la sección hero */
+.home-page-sections .home-section-2 {
+    background-image: none;
+    background-color: transparent;
+}
+
 /* Fase 2 — Home móvil */
 .home-page-sections {
     overflow-x: clip;
@@ -128,4 +134,125 @@
 
 .home-page-sections .product-section .product-box-4 .name {
     word-break: break-word;
+}
+
+.home-page-sections .home-security-products .title h2 {
+    margin-bottom: 4px;
+}
+
+.home-page-sections .home-recommended-products .title h2,
+.home-page-sections .home-recommended-title {
+    margin-bottom: 0;
+}
+
+.home-page-sections .home-recommended-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+}
+
+.home-page-sections .home-recommended-title__star {
+    color: var(--theme-color);
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.home-page-sections .home-recommended-products .product-box-4 .name {
+    word-break: break-word;
+}
+
+/* Banner principal — carrusel 5 slides */
+.home-page-sections .home-main-banner-slider {
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.home-page-sections .home-main-banner-slider .slick-list,
+.home-page-sections .home-main-banner-slider .slick-track,
+.home-page-sections .home-main-banner-slider .slick-slide,
+.home-page-sections .home-main-banner-slider .slick-slide > div {
+    height: 100%;
+}
+
+.home-page-sections .home-main-banner-slider .home-contain {
+    min-height: clamp(240px, 42vw, 420px);
+}
+
+.home-page-sections .home-main-banner-slider .home-contain .bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.home-page-sections .home-main-banner-slider .slick-arrow {
+    z-index: 3;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(34, 34, 34, 0.15);
+}
+
+.home-page-sections .home-main-banner-slider .slick-arrow::before {
+    color: var(--theme-color);
+    font-size: 16px;
+}
+
+.home-page-sections .home-main-banner-slider .slick-arrow:hover {
+    background: var(--theme-color);
+}
+
+.home-page-sections .home-main-banner-slider .slick-arrow:hover::before {
+    color: #fff;
+}
+
+.home-page-sections .home-main-banner-slider .slick-prev {
+    left: 12px;
+    right: auto;
+}
+
+.home-page-sections .home-main-banner-slider .slick-next {
+    right: 12px;
+}
+
+.home-page-sections .home-main-banner-slider .slick-dots {
+    bottom: 14px;
+    z-index: 3;
+    line-height: 1;
+}
+
+.home-page-sections .home-main-banner-slider .slick-dots li button:before {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.75);
+    opacity: 1;
+}
+
+.home-page-sections .home-main-banner-slider .slick-dots li.slick-active button:before {
+    color: #fff;
+    opacity: 1;
+}
+
+@media (max-width: 575.98px) {
+    .home-page-sections .home-main-banner-slider .slick-arrow {
+        width: 34px;
+        height: 34px;
+    }
+
+    .home-page-sections .home-main-banner-slider .slick-prev {
+        left: 8px;
+    }
+
+    .home-page-sections .home-main-banner-slider .slick-next {
+        right: 8px;
+    }
+
+    .home-page-sections .home-main-banner-slider .home-contain {
+        min-height: 220px;
+    }
 }
