@@ -53,9 +53,7 @@ sup {
 
 html {
     font-family: sans-serif;
-    line-height: 1.15;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%
+    line-height: 1.15
 }
 
 body {
@@ -188,14 +186,6 @@ html [type=button] {
     -webkit-appearance: button
 }
 
-[type=button]::-moz-focus-inner,
-[type=reset]::-moz-focus-inner,
-[type=submit]::-moz-focus-inner,
-button::-moz-focus-inner {
-    border-style: none;
-    padding: 0
-}
-
 [type=button]:-moz-focusring,
 [type=reset]:-moz-focusring,
 [type=submit]:-moz-focusring,
@@ -282,7 +272,6 @@ template {
 .fa-duotone,
 .fab,
 .fa-brands {
-    -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     display: var(--fa-display, inline-block);
     font-style: normal;
@@ -12479,8 +12468,7 @@ template {
     line-height: 1;
     color: #fff;
     opacity: .75;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
+    -webkit-font-smoothing: antialiased
 }
 
 .slick-prev {
@@ -12579,8 +12567,7 @@ template {
     text-align: center;
     color: #000;
     opacity: .25;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
+    -webkit-font-smoothing: antialiased
 }
 
 .slick-dots li.slick-active button:before {
@@ -13278,8 +13265,8 @@ template {
 .breadcrumb-section .breadcrumb-order .order-box .order-image .checkmark {
     position: relative;
     padding: 30px;
-    -webkit-animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
-    animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    -webkit-animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
     display: inline-block;
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -13385,8 +13372,8 @@ template {
 .breadcrumb-section .breadcrumb-order .order-box .order-image .checkmark {
     position: relative;
     padding: 30px;
-    -webkit-animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
-    animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    -webkit-animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
     display: inline-block;
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -13631,8 +13618,8 @@ template {
 .digital-breadcrumb .breadcrumb-order .order-box .order-image .checkmark {
     position: relative;
     padding: 30px;
-    -webkit-animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
-    animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    -webkit-animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
     display: inline-block;
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -13738,8 +13725,8 @@ template {
 .digital-breadcrumb .breadcrumb-order .order-box .order-image .checkmark {
     position: relative;
     padding: 30px;
-    -webkit-animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
-    animation: checkmark 5m cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    -webkit-animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    animation: checkmark 300s cubic-bezier(0.42, 0, 0.275, 1.155) both;
     display: inline-block;
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -14532,16 +14519,6 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: calc(14px + 4*(100vw - 320px)/1600)
 }
 
-.newsletter-form .form-control:-ms-input-placeholder {
-    color: #fff;
-    font-size: calc(14px + 4*(100vw - 320px)/1600)
-}
-
-.newsletter-form .form-control::-ms-input-placeholder {
-    color: #fff;
-    font-size: calc(14px + 4*(100vw - 320px)/1600)
-}
-
 .newsletter-form .form-control::placeholder {
     color: #fff;
     font-size: calc(14px + 4*(100vw - 320px)/1600)
@@ -14598,37 +14575,6 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 0 8px
 }
 
-.theme-form-floating>.form-control:not(:-moz-placeholder-shown)~label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(14px + 4*(100vw - 320px)/1600);
-    opacity: .95;
-    top: -5px;
-    left: 5px;
-    height: 31px;
-    background-color: #fff;
-    white-space: nowrap;
-    opacity: 1
-}
-
-.theme-form-floating>.form-control:not(:-ms-input-placeholder)~label {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    font-size: calc(14px + 4*(100vw - 320px)/1600);
-    opacity: .95;
-    top: -5px;
-    left: 5px;
-    height: 31px;
-    background-color: #fff;
-    white-space: nowrap;
-    opacity: 1
-}
-
 .theme-form-floating>.form-control:focus~label,
 .theme-form-floating>.form-control:not(:placeholder-shown)~label,
 .theme-form-floating>.form-select~label {
@@ -14651,16 +14597,6 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: 1
 }
 
-[dir=rtl] .theme-form-floating>.form-control:not(:-moz-placeholder-shown)~label {
-    right: 10px;
-    left: unset
-}
-
-[dir=rtl] .theme-form-floating>.form-control:not(:-ms-input-placeholder)~label {
-    right: 10px;
-    left: unset
-}
-
 [dir=rtl] .theme-form-floating>.form-control:focus~label,
 [dir=rtl] .theme-form-floating>.form-control:not(:placeholder-shown)~label,
 [dir=rtl] .theme-form-floating>.form-select~label {
@@ -14672,20 +14608,6 @@ input[type=number]::-webkit-outer-spin-button {
 .theme-form-floating .form-select {
     height: calc(51px + 3*(100vw - 320px)/1600);
     line-height: normal
-}
-
-.theme-form-floating>.form-control:not(:-moz-placeholder-shown) {
-    padding-top: 17px;
-    padding-bottom: 10px;
-    font-size: calc(15px + 2*(100vw - 320px)/1600);
-    font-weight: 500
-}
-
-.theme-form-floating>.form-control:not(:-ms-input-placeholder) {
-    padding-top: 17px;
-    padding-bottom: 10px;
-    font-size: calc(15px + 2*(100vw - 320px)/1600);
-    font-weight: 500
 }
 
 .theme-form-floating>.form-control:focus,
@@ -14721,37 +14643,6 @@ input[type=number]::-webkit-outer-spin-button {
     border: none
 }
 
-.theme-form-floating-2>.form-control:not(:-moz-placeholder-shown)~label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(14px + 4*(100vw - 320px)/1600);
-    opacity: .95;
-    top: -5px;
-    left: 10px;
-    height: 31px;
-    background-color: #fff;
-    padding: 0 10px;
-    opacity: 1
-}
-
-.theme-form-floating-2>.form-control:not(:-ms-input-placeholder)~label {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    font-size: calc(14px + 4*(100vw - 320px)/1600);
-    opacity: .95;
-    top: -5px;
-    left: 10px;
-    height: 31px;
-    background-color: #fff;
-    padding: 0 10px;
-    opacity: 1
-}
-
 .theme-form-floating-2>.form-control:focus~label,
 .theme-form-floating-2>.form-control:not(:placeholder-shown)~label,
 .theme-form-floating-2>.form-select~label {
@@ -14774,35 +14665,11 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: 1
 }
 
-[dir=rtl] .theme-form-floating-2>.form-control:not(:-moz-placeholder-shown)~label {
-    left: unset;
-    right: 10px
-}
-
-[dir=rtl] .theme-form-floating-2>.form-control:not(:-ms-input-placeholder)~label {
-    left: unset;
-    right: 10px
-}
-
 [dir=rtl] .theme-form-floating-2>.form-control:focus~label,
 [dir=rtl] .theme-form-floating-2>.form-control:not(:placeholder-shown)~label,
 [dir=rtl] .theme-form-floating-2>.form-select~label {
     left: unset;
     right: 10px
-}
-
-.theme-form-floating-2>.form-control:not(:-moz-placeholder-shown) {
-    padding-top: 12px;
-    padding-bottom: 10px;
-    font-size: 15px;
-    font-weight: 500
-}
-
-.theme-form-floating-2>.form-control:not(:-ms-input-placeholder) {
-    padding-top: 12px;
-    padding-bottom: 10px;
-    font-size: 15px;
-    font-weight: 500
 }
 
 .theme-form-floating-2>.form-control:focus,
@@ -16265,7 +16132,7 @@ body.rtl .delivery-modal .modal-dialog .modal-content .modal-body.policy-body ul
 
 .product-section-box .product-description .description-list li {
     display: list-item;
-    text-align: -webkit-match-parent;
+    text-align: inherit;
     color: #4a5568;
     font-size: 16px
 }
@@ -19031,7 +18898,6 @@ span {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: space-evenly;
     -ms-flex-pack: space-evenly;
     justify-content: space-evenly
 }
@@ -22196,7 +22062,6 @@ header .top-nav .navbar-top {
 
 @media(max-width: 1199px) {
     header .top-nav .navbar-top {
-        -webkit-box-pack: normal;
         -ms-flex-pack: normal;
         justify-content: normal
     }
@@ -22383,16 +22248,6 @@ header .top-nav .navbar-top .middle-box .search-box .input-group ::-webkit-input
 }
 
 header .top-nav .navbar-top .middle-box .search-box .input-group ::-moz-placeholder {
-    font-size: 16px;
-    font-weight: 400
-}
-
-header .top-nav .navbar-top .middle-box .search-box .input-group :-ms-input-placeholder {
-    font-size: 16px;
-    font-weight: 400
-}
-
-header .top-nav .navbar-top .middle-box .search-box .input-group ::-ms-input-placeholder {
     font-size: 16px;
     font-weight: 400
 }
@@ -24109,16 +23964,6 @@ header .location-box button i {
     font-size: 16px
 }
 
-.header-2 .top-nav .middle-box .searchbar-box input:-ms-input-placeholder {
-    color: #4a5568;
-    font-size: 16px
-}
-
-.header-2 .top-nav .middle-box .searchbar-box input::-ms-input-placeholder {
-    color: #4a5568;
-    font-size: 16px
-}
-
 .header-2 .top-nav .middle-box .searchbar-box input::placeholder {
     color: #4a5568;
     font-size: 16px
@@ -24975,8 +24820,8 @@ header .location-box button i {
     left: 45%;
     background-color: #fff;
     border-radius: 50%;
-    -webkit-animation: particleUp 2s ease-out 0;
-    animation: particleUp 2s ease-out 0;
+    -webkit-animation: particleUp 2s ease-out 0s;
+    animation: particleUp 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -24987,8 +24832,8 @@ header .location-box button i {
     width: 100%;
     height: 100%;
     position: absolute;
-    -webkit-animation: shake 2s ease-out 0;
-    animation: shake 2s ease-out 0;
+    -webkit-animation: shake 2s ease-out 0s;
+    animation: shake 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -25017,8 +24862,8 @@ header .location-box button i {
     -webkit-transform: scaleX(0.8) rotate(45deg);
     transform: scaleX(0.8) rotate(45deg);
     border-radius: 50%;
-    -webkit-animation: particleUp 2s ease-out 0;
-    animation: particleUp 2s ease-out 0;
+    -webkit-animation: particleUp 2s ease-out 0s;
+    animation: particleUp 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -25029,8 +24874,8 @@ header .location-box button i {
     width: 100%;
     height: 100%;
     position: absolute;
-    -webkit-animation: shake 3s ease-out 0;
-    animation: shake 3s ease-out 0;
+    -webkit-animation: shake 3s ease-out 0s;
+    animation: shake 3s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -25057,8 +24902,8 @@ header .location-box button i {
     left: 20%;
     background-color: #fff;
     border-radius: 50%;
-    -webkit-animation: particleUp 3s infinite ease-out 0;
-    animation: particleUp 3s infinite ease-out 0;
+    -webkit-animation: particleUp 3s infinite ease-out 0s;
+    animation: particleUp 3s infinite ease-out 0s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both
 }
@@ -25672,7 +25517,6 @@ header .location-box button i {
 
 @media(max-width: 767px) {
     .header-3 .top-nav .navbar-top {
-        -webkit-box-pack: normal;
         -ms-flex-pack: normal;
         justify-content: normal
     }
@@ -25932,16 +25776,6 @@ header .location-box button i {
 }
 
 .header-3 .top-nav .middle-box .searchbar-box-2 input::-moz-placeholder {
-    color: #4a5568;
-    font-size: 16px
-}
-
-.header-3 .top-nav .middle-box .searchbar-box-2 input:-ms-input-placeholder {
-    color: #4a5568;
-    font-size: 16px
-}
-
-.header-3 .top-nav .middle-box .searchbar-box-2 input::-ms-input-placeholder {
     color: #4a5568;
     font-size: 16px
 }
@@ -26858,8 +26692,8 @@ header .location-box button i {
     left: 45%;
     background-color: #fff;
     border-radius: 50%;
-    -webkit-animation: particleUp 2s ease-out 0;
-    animation: particleUp 2s ease-out 0;
+    -webkit-animation: particleUp 2s ease-out 0s;
+    animation: particleUp 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -26870,8 +26704,8 @@ header .location-box button i {
     width: 100%;
     height: 100%;
     position: absolute;
-    -webkit-animation: shake 2s ease-out 0;
-    animation: shake 2s ease-out 0;
+    -webkit-animation: shake 2s ease-out 0s;
+    animation: shake 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -26900,8 +26734,8 @@ header .location-box button i {
     -webkit-transform: scaleX(0.8) rotate(45deg);
     transform: scaleX(0.8) rotate(45deg);
     border-radius: 50%;
-    -webkit-animation: particleUp 2s ease-out 0;
-    animation: particleUp 2s ease-out 0;
+    -webkit-animation: particleUp 2s ease-out 0s;
+    animation: particleUp 2s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -26912,8 +26746,8 @@ header .location-box button i {
     width: 100%;
     height: 100%;
     position: absolute;
-    -webkit-animation: shake 3s ease-out 0;
-    animation: shake 3s ease-out 0;
+    -webkit-animation: shake 3s ease-out 0s;
+    animation: shake 3s ease-out 0s;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: both;
@@ -26940,8 +26774,8 @@ header .location-box button i {
     left: 20%;
     background-color: #fff;
     border-radius: 50%;
-    -webkit-animation: particleUp 3s infinite ease-out 0;
-    animation: particleUp 3s infinite ease-out 0;
+    -webkit-animation: particleUp 3s infinite ease-out 0s;
+    animation: particleUp 3s infinite ease-out 0s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both
 }
@@ -27507,10 +27341,8 @@ header.header-gradient .top-nav .navbar-top .rightside-box .right-side-menu .rig
 }
 
 .home-section-2 {
-    background-image: url("../images/veg-3/home-bg.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover
+    background-image: none;
+    background-color: transparent
 }
 
 .home-section-2.home-section-bg {
@@ -28487,8 +28319,6 @@ header .navbar-nav .dropdown-menu-2::after {
 [dir=rtl] header .navbar-nav .dropdown-menu-2::after {
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    -webkit-filter: FlipH;
-    filter: FlipH
 }
 
 @media(max-width: 1199px) {
@@ -28967,7 +28797,7 @@ header .navbar:not(.navbar-stuck) .navbar-stuck-btn {
     padding: 0 !important;
     margin: -1px !important;
     overflow: hidden !important;
-    clip: rect(#222222, 0) !important;
+    clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important
 }
@@ -28991,7 +28821,7 @@ header .navbar-stuck .navbar-btn {
     padding: 0 !important;
     margin: -1px !important;
     overflow: hidden !important;
-    clip: rect(#222222, 0) !important;
+    clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important
 }
@@ -29949,8 +29779,6 @@ body.rtl .menu-label {
 [dir=rtl] .newsletter-section .newsletter-box-2:after {
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    -webkit-filter: FlipH;
-    filter: FlipH
 }
 
 .newsletter-section .newsletter-box-3:after {
@@ -29971,8 +29799,6 @@ body.rtl .menu-label {
 [dir=rtl] .newsletter-section .newsletter-box-3:after {
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    -webkit-filter: FlipH;
-    filter: FlipH
 }
 
 .newsletter-section .newsletter-box .newsletter-contain .newsletter-detail h2 {
@@ -30002,16 +29828,6 @@ body.rtl .menu-label {
     color: #4a5568
 }
 
-.newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box :-ms-input-placeholder {
-    font-size: 14px;
-    color: #4a5568
-}
-
-.newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box ::-ms-input-placeholder {
-    font-size: 14px;
-    color: #4a5568
-}
-
 .newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box ::placeholder {
     font-size: 14px;
     color: #4a5568
@@ -30023,14 +29839,6 @@ body.rtl .menu-label {
     }
 
     .newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box ::-moz-placeholder {
-        padding-left: 0
-    }
-
-    .newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box :-ms-input-placeholder {
-        padding-left: 0
-    }
-
-    .newsletter-section .newsletter-box .newsletter-contain .newsletter-detail .input-box ::-ms-input-placeholder {
         padding-left: 0
     }
 
@@ -31581,7 +31389,7 @@ body.rtl .menu-label {
 
 .product-category .product-category-list {
     -webkit-column-count: 2;
-    -moz-column-count: 2;
+    column-count: 2;
     column-count: 2
 }
 
@@ -31821,7 +31629,6 @@ body.rtl .menu-label {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: space-evenly;
     -ms-flex-pack: space-evenly;
     justify-content: space-evenly;
     position: absolute;
@@ -31985,7 +31792,6 @@ body.rtl .menu-label {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: space-evenly;
     -ms-flex-pack: space-evenly;
     justify-content: space-evenly;
     position: absolute;
@@ -34677,7 +34483,7 @@ body.rtl .menu-label {
     font-weight: 700
 }
 
->>.table:not(:last-child):last-child>* {
+.table:not(:last-child):last-child>* {
     border-bottom: none
 }
 
@@ -41424,9 +41230,8 @@ body.rtl .menu-label {
         position: relative;
         text-align: left;
         margin-left: 30px;
-        -webkit-box-align: self-start;
-        -ms-flex-align: self-start;
-        align-items: self-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
         padding-bottom: calc(20px + 20*(100vw - 320px)/1600);
         border-top: unset;
         border-left: 4px solid var(--theme-color)
@@ -43229,12 +43034,12 @@ body.rtl .question-answer li .question-box .link-dislike-box {
 
 .irs .lt-ie9 .irs-disable-mask {
     background: #222;
-    filter: alpha(opacity=0);
+    opacity: 0;
     cursor: not-allowed
 }
 
 .irs .lt-ie9 .irs-shadow {
-    filter: alpha(opacity=30)
+    opacity: 0.3
 }
 
 .irs .lt-ie9 .irs-min {
@@ -43657,7 +43462,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
     text-align: right
 }
 
-.shop-section .left-box .shop-left-sidebar .custom-nav-tab .nav-item .nav-link:hover(not) img {
+.shop-section .left-box .shop-left-sidebar .custom-nav-tab .nav-item .nav-link:not(:hover) img {
     width: 75px;
     height: 75px;
     -webkit-transform: translateY(-50%) rotate(-4deg);
@@ -45051,7 +44856,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
     text-align: left;
     display: inline-block;
     -webkit-column-count: 2;
-    -moz-column-count: 2;
+    column-count: 2;
     column-count: 2;
     background-color: #f9f9f9;
     padding: 15px;
@@ -45066,7 +44871,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
 @media(max-width: 480px) {
     .product-section .right-box-contain .pickup-box .product-info .product-info-list {
         -webkit-column-count: 1;
-        -moz-column-count: 1;
+        column-count: 1;
         column-count: 1;
         padding: 15px
     }
@@ -45087,7 +44892,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
 @media(max-width: 1450px) {
     .product-section .right-box-contain .pickup-box .product-info .product-info-list-2 {
         -webkit-column-count: 1;
-        -moz-column-count: 1;
+        column-count: 1;
         column-count: 1;
         padding: 15px
     }
@@ -45096,7 +44901,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
 @media(max-width: 1199px) {
     .product-section .right-box-contain .pickup-box .product-info .product-info-list-2 {
         -webkit-column-count: 2;
-        -moz-column-count: 2;
+        column-count: 2;
         column-count: 2;
         display: block;
         padding-bottom: 4px
@@ -46271,7 +46076,7 @@ body.rtl .question-answer li .question-box .link-dislike-box {
 @media(max-width: 1199px) {
     .theme-product-section .right-box-contain .pickup-box .product-info .product-info-list.product-info-list-2 {
         -webkit-column-count: unset;
-        -moz-column-count: unset;
+        column-count: unset;
         column-count: unset
     }
 }
@@ -47154,4 +46959,3 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
             display: none;
         }
     }
-/*# sourceMappingURL=style.css.map */

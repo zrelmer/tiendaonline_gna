@@ -12,6 +12,7 @@
 <!-- Slick Slider -->
 <script src="{{ asset('assets/js/slick/slick.js') }}"></script>
 <script src="{{ asset('assets/js/slick/custom_slick.js') }}"></script>
+<script src="{{ asset('assets/js/home-hero-height.js') }}"></script>
 <!-- Cambio: se quita zoom del detalle para evitar comportamiento inestable -->
 <!-- Notificaciones -->
 <script src="{{ asset('assets/js/bootstrap/bootstrap-notify.min.js') }}"></script>
