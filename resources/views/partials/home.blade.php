@@ -74,60 +74,48 @@
             <div class="col-xxl-3 col-md-4 ratio_medium d-md-block d-none home-side-banner-col">
                 <div class="home-contain home-small h-100">
                     <div class="h-100">
-                        <img src="{{ asset('assets/images/veg-3/home/2.png') }}"
+                        <img src="{{ asset('assets/images/veg-3/home/6.png') }}"
                              class="img-fluid bg-img blur-up lazyload" alt="Ofertas">
                     </div>
 
                     <div class="home-detail text-center p-top-center w-100 text-white">
                         <div>
-                            <h4 class="fw-bold">Ofertas en tecnología</h4>
-                            <h5 class="text-center">Descuentos especiales</h5>
+                            <!-- <h4 class="fw-bold">Ofertas en tecnología</h4>
+                            <h5 class="text-center">Descuentos especiales</h5> -->
 
-                            <a href="{{ route('shop.index') }}"
+                            <!-- <a href="{{ route('shop.index') }}"
                                class="btn bg-white theme-color mt-3 home-button mx-auto btn-2">
                                 Ver productos
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Banners pequeños -->
+            <!-- Banners pequeños (columna derecha) -->
             <div class="col-xxl-3 ratio_65 d-xxl-block d-none home-side-stack-col">
-                <div class="row g-3">
+                <div class="home-side-stack">
+                    <div class="home-side-stack__item home-contain">
+                        <a href="{{ route('shop.index') }}">
+                            <img src="{{ asset('assets/images/veg-3/home/9.png') }}"
+                                 class="img-fluid bg-img blur-up lazyload" alt="Promociones">
+                        </a>
 
-                    <div class="col-xxl-12 col-sm-6">
-                        <div class="home-contain">
-                            <a href="{{ route('shop.index') }}">
-                                <img src="{{ asset('assets/images/veg-3/home/3.png') }}"
-                                     class="img-fluid bg-img blur-up lazyload" alt="Promociones">
-                            </a>
-
-                            <div class="home-detail text-white p-center text-center">
-                                <div>
-                                    <h4 class="text-center">Ofertas exclusivas</h4>
-                                    <h5 class="text-center">Fin de semana</h5>
-                                </div>
-                            </div>
+                        <div class="home-detail text-white p-center text-center">
+                            <div></div>
                         </div>
                     </div>
 
-                    <div class="col-xxl-12 col-sm-6">
-                        <div class="home-contain">
-                            <a href="{{ route('shop.index') }}">
-                                <img src="{{ asset('assets/images/veg-3/home/4.png') }}"
-                                     class="img-fluid bg-img blur-up lazyload" alt="Descuentos">
-                            </a>
+                    <div class="home-side-stack__item home-contain">
+                        <a href="{{ route('shop.index') }}">
+                            <img src="{{ asset('assets/images/veg-3/home/10.png') }}"
+                                 class="img-fluid bg-img blur-up lazyload" alt="Descuentos">
+                        </a>
 
-                            <div class="home-detail text-white w-50 p-center-left home-p-sm">
-                                <div>
-                                    <h4 class="fw-bold">Compra segura</h4>
-                                    <h5>Grandes descuentos</h5>
-                                </div>
-                            </div>
+                        <div class="home-detail text-white w-50 p-center-left home-p-sm">
+                            <div></div>
                         </div>
                     </div>
-
                 </div>
             </div>
 

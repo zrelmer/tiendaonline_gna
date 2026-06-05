@@ -1,17 +1,21 @@
 /**
- * Iguala la altura del banner principal con los banners laterales del home.
+ * Ajusta el carrusel hero a la altura de la celda grid del home.
  */
 (function ($) {
     'use strict';
 
     var resizeTimer;
 
-    function resetHeroHeights($slider) {
-        $slider.css('height', '');
-        $slider.find('.slick-list, .slick-track, .slick-slide, .slick-slide > div, .home-contain').css('height', '');
+    function resetHomeHeroLayout($row, $slider) {
+        if ($slider.length) {
+            $slider.css('height', '');
+            $slider.find('.slick-list, .slick-track, .slick-slide, .slick-slide > div, .home-contain, .home-hero-slide').css('height', '');
+        }
+
+        $row.children().css('min-height', '');
     }
 
-    function syncHomeHeroBannerHeight() {
+    function syncHomeHeroLayout() {
         var $row = $('.home-page-sections .home-section-2 > .container-fluid-lg > .row.g-4');
         var $heroCol = $row.find('.home-hero-banner-col');
         var $slider = $heroCol.find('.home-main-banner-slider');
@@ -21,33 +25,34 @@
         }
 
         if (!window.matchMedia('(min-width: 768px)').matches) {
-            resetHeroHeights($slider);
+            resetHomeHeroLayout($row, $slider);
 
             return;
         }
 
-        var maxH = 0;
+        resetHomeHeroLayout($row, $slider);
 
-        $row.children().not('.home-hero-banner-col').each(function () {
+        var targetH = 0;
+
+        $row.children().each(function () {
             var $col = $(this);
 
             if ($col.is(':visible') && $col.css('display') !== 'none') {
-                maxH = Math.max(maxH, $col.outerHeight());
+                targetH = Math.max(targetH, $col.innerHeight());
             }
         });
 
-        if (maxH < 240) {
+        if (targetH < 240) {
             return;
         }
 
-        $slider.css('height', maxH + 'px');
-        $slider.find('.slick-list, .slick-track, .slick-slide, .slick-slide > div').css('height', maxH + 'px');
-        $slider.find('.home-contain').css('height', maxH + 'px');
+        $slider.css('height', targetH + 'px');
+        $slider.find('.slick-list, .slick-track, .slick-slide, .slick-slide > div, .home-contain, .home-hero-slide').css('height', targetH + 'px');
     }
 
     function scheduleSync() {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(syncHomeHeroBannerHeight, 80);
+        resizeTimer = setTimeout(syncHomeHeroLayout, 80);
     }
 
     $(window).on('load resize', scheduleSync);

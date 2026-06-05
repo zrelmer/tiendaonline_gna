@@ -4,6 +4,7 @@
             <div class="col-12">
 
                 <div class="newsletter-box hover-effect">
+                <!-- {{ asset('assets/images/veg-3/shape/background.png') }} -->
                     <img src="{{ asset('assets/images/veg-3/shape/background.png') }}"
                          class="img-fluid bg-img" alt="Registro">
 
@@ -34,7 +35,8 @@
                         <!-- Imagen decorativa -->
                         <div class="col-xxl-4 col-xl-5 d-xl-block d-none">
                             <div class="shape-box">
-                                <img src="{{ asset('assets/images/veg-3/shape/basket.png') }}"
+                            <!-- {{ asset('assets/images/veg-3/shape/basket.png') }} -->
+                                <img src="#"
                                      alt="Registro usuario"
                                      class="img-fluid image-1">
                             </div>
