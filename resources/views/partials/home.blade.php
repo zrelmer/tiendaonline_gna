@@ -49,27 +49,21 @@
 
             <!-- Banner principal (carrusel 5 imágenes) -->
             <div class="col-xxl-6 col-md-8 home-hero-banner-col">
-                <div class="home-main-banner-slider h-100 w-100" role="region" aria-label="Promociones destacadas">
+                <div class="home-main-banner-slider w-100" role="region" aria-label="Promociones destacadas">
                     @foreach ($homeBannerSlides as $slide)
                         <div>
-                            <div class="home-contain h-100">
-                                <img src="{{ asset($slide['image']) }}"
-                                     class="img-fluid bg-img blur-up lazyload"
-                                     alt="{{ $slide['alt'] }}">
-
-                                <div class="home-detail home-width p-center-left position-relative">
-                                    <div>
-                                        <!-- <h6 class="ls-expanded theme-color">{{ $slide['tag'] }}</h6>
-                                        <h1 class="fw-bold w-100">{{ $slide['title'] }}</h1>
-                                        <h3 class="text-content fw-light">{{ $slide['subtitle'] }}</h3>
-                                        <p class="d-sm-block d-none">{{ $slide['description'] }}</p> -->
-
-                                        <a href="{{ route('shop.index') }}"
-                                           class="btn mt-sm-4 btn-2 theme-bg-color text-white mend-auto btn-2-animation">
-                                            Comprar ahora
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="home-contain home-hero-slide">
+                                <a href="{{ route('shop.index') }}"
+                                   class="home-hero-slide__shop-link"
+                                   aria-label="{{ $slide['alt'] }} — Ir a la tienda">
+                                    <img src="{{ asset($slide['image']) }}"
+                                         class="img-fluid home-hero-slide__image"
+                                         alt="{{ $slide['alt'] }}"
+                                         loading="eager"
+                                         decoding="async"
+                                         width="1200"
+                                         height="500">
+                                </a>
                             </div>
                         </div>
                     @endforeach

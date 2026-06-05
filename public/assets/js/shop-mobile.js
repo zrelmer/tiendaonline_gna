@@ -12,6 +12,33 @@
         }
     }
 
+    /* Home — hero carrusel: recalcular altura en móvil tras cargar imágenes */
+    onReady(function () {
+        if (!window.jQuery) {
+            return;
+        }
+
+        var $heroSlider = jQuery('.home-main-banner-slider');
+
+        if ($heroSlider.length) {
+            function refreshHomeHeroSlider() {
+                if (!$heroSlider.hasClass('slick-initialized')) {
+                    return;
+                }
+                $heroSlider.slick('setPosition');
+            }
+
+            $heroSlider.find('img').on('load', refreshHomeHeroSlider);
+            window.addEventListener('load', refreshHomeHeroSlider);
+
+            window.addEventListener('resize', function () {
+                if (window.matchMedia('(max-width: 767.98px)').matches) {
+                    refreshHomeHeroSlider();
+                }
+            });
+        }
+    });
+
     /* Home — categorías: flechas móvil */
     onReady(function () {
         if (!window.jQuery) {

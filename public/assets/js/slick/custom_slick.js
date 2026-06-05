@@ -19,6 +19,8 @@ $('.home-main-banner-slider').slick({
         settings: {
             arrows: true,
             dots: true,
+            adaptiveHeight: true,
+            fade: true,
         }
     }]
 });
