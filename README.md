@@ -77,7 +77,7 @@ Copia `.env.example` a `.env` y configura al menos:
 | Variable | Descripción |
 |----------|-------------|
 | `APP_NAME` | Nombre visible de la tienda |
-| `APP_URL` | URL base (ej. `http://127.0.0.1:8000`) |
+| `APP_URL` | URL base (producción: `https://gnacore.com.gt`) |
 | `APP_DEBUG` | `true` en local, `false` en producción |
 | `APP_TIMEZONE` | Zona horaria de la app (`America/Guatemala`) |
 
@@ -87,7 +87,7 @@ Copia `.env.example` a `.env` y configura al menos:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=tiendaonline_gnacore
+DB_DATABASE=gnacorecom001_bdgnacore
 DB_USERNAME=root
 DB_PASSWORD=
 DB_TIMEZONE=-06:00

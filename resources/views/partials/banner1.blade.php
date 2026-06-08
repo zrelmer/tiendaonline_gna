@@ -5,7 +5,7 @@
             <!-- Banner 1 -->
             <div class="col-xl-6">
                 <div class="banner-contain-3 hover-effect">
-                    <img src="{{ asset('assets/images/veg-3/banner/1.png') }}"
+                    <img src="{{ asset('assets/images/veg-3/banner/1.webp') }}"
                          class="bg-img img-fluid" alt="Tecnología premium">
 
                     <div class="banner-detail banner-details-dark text-white p-center-left w-50 position-relative mend-auto">
@@ -26,7 +26,7 @@
             <!-- Banner 2 -->
             <div class="col-xl-6">
                 <div class="banner-contain-3 hover-effect">
-                    <img src="{{ asset('assets/images/veg-3/banner/2.png') }}"
+                    <img src="{{ asset('assets/images/veg-3/banner/2.webp') }}"
                          class="bg-img img-fluid" alt="Ofertas especiales">
 
                     <div class="banner-detail text-dark p-center-left w-50 position-relative mend-auto">

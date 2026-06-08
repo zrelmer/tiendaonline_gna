@@ -1,7 +1,7 @@
 @php
     $homeBannerSlides = [
         [
-            'image' => 'assets/images/veg-3/home/1.png',
+            'image' => 'assets/images/veg-3/home/1.webp',
             'alt' => 'Tecnología e innovación',
             'tag' => 'TECNOLOGÍA',
             'title' => 'Lo último en innovación',
@@ -9,7 +9,7 @@
             'description' => 'Envíos a todo el país. Compra fácil, rápido y seguro.',
         ],
         [
-            'image' => 'assets/images/veg-3/home/2.png',
+            'image' => 'assets/images/veg-3/home/2.webp',
             'alt' => 'Ofertas en tecnología',
             'tag' => 'OFERTAS',
             'title' => 'Descuentos especiales',
@@ -17,7 +17,7 @@
             'description' => 'Aprovecha promociones por tiempo limitado.',
         ],
         [
-            'image' => 'assets/images/veg-3/home/3.png',
+            'image' => 'assets/images/veg-3/home/3.webp',
             'alt' => 'Laptops y computación',
             'tag' => 'LAPTOPS',
             'title' => 'Potencia para trabajar',
@@ -25,7 +25,7 @@
             'description' => 'Rendimiento y garantía en cada compra.',
         ],
         [
-            'image' => 'assets/images/veg-3/home/4.png',
+            'image' => 'assets/images/veg-3/home/4.webp',
             'alt' => 'Smartphones y accesorios',
             'tag' => 'SMARTPHONES',
             'title' => 'Conectividad al mejor precio',
@@ -33,7 +33,7 @@
             'description' => 'Encuentra el equipo ideal para tu día a día.',
         ],
         [
-            'image' => 'assets/images/veg-3/home/5.png',
+            'image' => 'assets/images/veg-3/home/5.webp',
             'alt' => 'Accesorios y periféricos',
             'tag' => 'ACCESORIOS',
             'title' => 'Completa tu setup',
@@ -74,7 +74,7 @@
             <div class="col-xxl-3 col-md-4 ratio_medium d-md-block d-none home-side-banner-col">
                 <div class="home-contain home-small h-100">
                     <div class="h-100">
-                        <img src="{{ asset('assets/images/veg-3/home/6.png') }}"
+                        <img src="{{ asset('assets/images/veg-3/home/6.webp') }}"
                              class="img-fluid bg-img blur-up lazyload" alt="Ofertas">
                     </div>
 
@@ -97,7 +97,7 @@
                 <div class="home-side-stack">
                     <div class="home-side-stack__item home-contain">
                         <a href="{{ route('shop.index') }}">
-                            <img src="{{ asset('assets/images/veg-3/home/9.png') }}"
+                            <img src="{{ asset('assets/images/veg-3/home/9.webp') }}"
                                  class="img-fluid bg-img blur-up lazyload" alt="Promociones">
                         </a>
 
@@ -108,7 +108,7 @@
 
                     <div class="home-side-stack__item home-contain">
                         <a href="{{ route('shop.index') }}">
-                            <img src="{{ asset('assets/images/veg-3/home/10.png') }}"
+                            <img src="{{ asset('assets/images/veg-3/home/10.webp') }}"
                                  class="img-fluid bg-img blur-up lazyload" alt="Descuentos">
                         </a>
 
