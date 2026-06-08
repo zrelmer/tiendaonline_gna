@@ -22,6 +22,7 @@ class AdminMarcaStoreRequest extends FormRequest
             'Nom_Marca' => ['required', 'string', 'max:200'],
             'slug_Marca' => ['required', 'string', 'max:200', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:tb_marca,slug_Marca'],
             'Descrip_Marca' => ['required', 'string'],
+            'logo' => ['nullable', 'file', 'mimes:jpeg,jpg,png,gif,webp,svg', 'max:2048'],
         ];
     }
 
@@ -36,6 +37,8 @@ class AdminMarcaStoreRequest extends FormRequest
             'slug_Marca.unique' => 'Ese slug ya está en uso por otra marca.',
             'slug_Marca.regex' => 'El slug solo puede usar minúsculas, números y guiones.',
             'Descrip_Marca.required' => 'Escribe la descripción de la marca.',
+            'logo.mimes' => 'El logo debe ser imagen (JPG, PNG, GIF, WebP o SVG).',
+            'logo.max' => 'El logo no puede superar 2 MB.',
         ];
     }
 

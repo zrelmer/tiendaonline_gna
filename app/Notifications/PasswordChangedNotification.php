@@ -21,6 +21,7 @@ class PasswordChangedNotification extends Notification
             ->line('Si realizaste este cambio, puedes ignorar este mensaje.')
             ->line('⚠️ Si NO fuiste tú, te recomendamos cambiar tu contraseña inmediatamente y contactar soporte.')
             ->action('Ir a mi cuenta', url('/login'))
-            ->line('Gracias por confiar en GNA Core.');
+            ->line('Gracias por confiar en GNA Core.')
+            ->salutation('Saludos,' . "\n" . 'GNA Core');
     }
 }

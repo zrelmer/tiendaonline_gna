@@ -4,7 +4,7 @@
 <html lang="es">
 
 <head>
-    <title>On-demand last-mile delivery</title>
+    <title>@yield('title', 'Inicio') — GNA Core</title>
     @include('partials.head')
 </head>
 

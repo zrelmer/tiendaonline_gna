@@ -19,6 +19,7 @@ class Marca extends Model
         'Nom_Marca',
         'slug_Marca',
         'Descrip_Marca',
+        'Marc_Logo',
     ];
 
     public function productos()

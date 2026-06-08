@@ -227,7 +227,18 @@ class ProductoController extends Controller
         $categories = Categoria::orderBy('Cate_Nombre')->get();
         $brands = Marca::orderBy('Nom_Marca')->get();
 
-        return view('shop.index', compact('products', 'categories', 'brands'));
+        $pageTitle = 'Tienda';
+        if ($request->filled('search')) {
+            $pageTitle = 'Búsqueda: '.$request->string('search')->trim();
+        } elseif ($request->filled('category')) {
+            $categoria = $categories->firstWhere('Id_Categoria', $request->integer('category'));
+            $pageTitle = $categoria?->Cate_Nombre ?? 'Tienda';
+        } elseif ($request->filled('brand')) {
+            $marca = $brands->firstWhere('Id_Marca', $request->integer('brand'));
+            $pageTitle = $marca?->Nom_Marca ?? 'Tienda';
+        }
+
+        return view('shop.index', compact('products', 'categories', 'brands', 'pageTitle'));
     }
 
 }

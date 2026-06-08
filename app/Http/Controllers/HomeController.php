@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Services\HomeBrandMarqueeService;
 use App\Services\HomeRecommendationService;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +12,7 @@ class HomeController extends Controller
 {
     public function __construct(
         protected HomeRecommendationService $homeRecommendationService,
+        protected HomeBrandMarqueeService $homeBrandMarqueeService,
     ) {}
 
     public function index()
@@ -47,9 +49,12 @@ class HomeController extends Controller
                 ->get();
         }
 
+        $brandMarqueeItems = $this->homeBrandMarqueeService->itemsParaHome();
+
         return view('welcome', compact(
             'topSellingProducts',
             'recommendedProducts',
+            'brandMarqueeItems',
             'securityCategory',
             'securityProducts',
         ));

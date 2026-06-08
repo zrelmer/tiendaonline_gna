@@ -39,7 +39,10 @@ class AdminMarcaController extends Controller
 
     public function store(AdminMarcaStoreRequest $request): RedirectResponse
     {
-        $this->adminMarcaService->crear($request->validated());
+        $this->adminMarcaService->crear(
+            $request->validated(),
+            $request->file('logo'),
+        );
 
         return redirect()
             ->route('admin.marcas.index')
@@ -55,7 +58,11 @@ class AdminMarcaController extends Controller
 
     public function update(AdminMarcaUpdateRequest $request, Marca $marca): RedirectResponse
     {
-        $this->adminMarcaService->actualizar($marca, $request->validated());
+        $this->adminMarcaService->actualizar(
+            $marca,
+            $request->validated(),
+            $request->file('logo'),
+        );
 
         return redirect()
             ->route('admin.marcas.edit', $marca)

@@ -33,6 +33,7 @@ class AdminMarcaUpdateRequest extends FormRequest
                 Rule::unique('tb_marca', 'slug_Marca')->ignore($marca->Id_Marca, 'Id_Marca'),
             ],
             'Descrip_Marca' => ['required', 'string'],
+            'logo' => ['nullable', 'file', 'mimes:jpeg,jpg,png,gif,webp,svg', 'max:2048'],
         ];
     }
 
@@ -47,6 +48,8 @@ class AdminMarcaUpdateRequest extends FormRequest
             'slug_Marca.unique' => 'Ese slug ya está en uso por otra marca.',
             'slug_Marca.regex' => 'El slug solo puede usar minúsculas, números y guiones.',
             'Descrip_Marca.required' => 'Escribe la descripción de la marca.',
+            'logo.mimes' => 'El logo debe ser imagen (JPG, PNG, GIF, WebP o SVG).',
+            'logo.max' => 'El logo no puede superar 2 MB.',
         ];
     }
 

@@ -33,14 +33,14 @@
                         </div>
 
                         <!-- Imagen decorativa -->
-                        <div class="col-xxl-4 col-xl-5 d-xl-block d-none">
+                        {{-- <div class="col-xxl-4 col-xl-5 d-xl-block d-none">
                             <div class="shape-box">
-                            <!-- {{ asset('assets/images/veg-3/shape/basket.png') }} -->
+                            {{ asset('assets/images/veg-3/shape/basket.png') }}
                                 <img src="#"
                                      alt="Registro usuario"
                                      class="img-fluid image-1">
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>

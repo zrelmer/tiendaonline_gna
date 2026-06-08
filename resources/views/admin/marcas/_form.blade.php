@@ -11,6 +11,9 @@
 
         return $default;
     };
+    $logoActual = $esEdicion && ! empty($marca->Marc_Logo)
+        ? asset($marca->Marc_Logo)
+        : null;
 @endphp
 
 <div class="container-fluid">
@@ -20,6 +23,7 @@
                 <div class="col-sm-8 m-auto">
                     <form method="POST"
                           action="{{ $formAction }}"
+                          enctype="multipart/form-data"
                           class="theme-form theme-form-2 mega-form">
                         @csrf
                         @if (($formMethod ?? 'POST') !== 'POST')
@@ -77,6 +81,30 @@
                                 </div>
 
                                 <div class="mb-4 row align-items-start">
+                                    <label class="col-sm-3 col-form-label form-label-title" for="logo">Logo</label>
+                                    <div class="col-sm-9">
+                                        @if ($logoActual)
+                                            <div class="mb-2">
+                                                <img src="{{ $logoActual }}"
+                                                     alt="Logo actual de {{ $marca->Nom_Marca }}"
+                                                     class="rounded border bg-white p-2"
+                                                     style="max-height: 72px; max-width: 180px; object-fit: contain;">
+                                            </div>
+                                        @endif
+                                        <p class="text-muted small mb-2">PNG, SVG o WebP con fondo transparente. Se muestra en el carrusel del inicio.</p>
+                                        <input class="form-control form-choose @error('logo') is-invalid @enderror"
+                                               type="file"
+                                               id="logo"
+                                               name="logo"
+                                               accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml">
+                                        @error('logo')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <div id="marca-logo-preview" class="mt-3"></div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 row align-items-start">
                                     <label class="col-sm-3 col-form-label form-label-title" for="Descrip_Marca">Descripción</label>
                                     <div class="col-sm-9">
                                         <textarea id="Descrip_Marca"
@@ -123,8 +151,27 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const inputLogo = document.getElementById('logo');
+            const previewLogo = document.getElementById('marca-logo-preview');
             const inputNombre = document.getElementById('Nom_Marca');
             const inputSlug = document.getElementById('slug_Marca');
+
+            if (inputLogo && previewLogo) {
+                inputLogo.addEventListener('change', function () {
+                    previewLogo.innerHTML = '';
+                    const archivo = inputLogo.files && inputLogo.files[0];
+                    if (!archivo) {
+                        return;
+                    }
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(archivo);
+                    img.className = 'rounded border bg-white p-2';
+                    img.style.maxHeight = '72px';
+                    img.style.maxWidth = '180px';
+                    img.style.objectFit = 'contain';
+                    previewLogo.appendChild(img);
+                });
+            }
 
             function slugDesdeNombre(texto) {
                 return texto

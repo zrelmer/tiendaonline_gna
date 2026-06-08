@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Restablecer Contraseña')
+@section('title', 'Restablecer contraseña')
 
 @section('noFooter', true)
 

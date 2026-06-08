@@ -15,6 +15,9 @@
     <!-- Recomendados para ti -->
     @include('partials.home-recommended-products')
 
+    <!-- Marcas destacadas (carrusel) -->
+    @include('partials.home-brand-marquee')
+
     <!-- Value Section Start -->
     @include('partials.value')
     <!-- Value Section End -->

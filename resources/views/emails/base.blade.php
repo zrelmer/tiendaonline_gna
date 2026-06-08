@@ -10,7 +10,7 @@
 
         <!-- HEADER -->
         <div style="background:#ff3c00; padding:20px; text-align:center;">
-            {{--  <img src="{{ asset('assets/images/logo/3.png') }}" width="120" alt="GNA Core">  --}}
+            <span style="color:#ffffff; font-size:22px; font-weight:bold; letter-spacing:0.5px;">GNA Core</span>
         </div>
 
         <!-- CONTENIDO -->
